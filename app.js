@@ -4,11 +4,20 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+
+// database setup
+mongoose.connect('mongodb://localhost/nutella')
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.once('open', function() {
+  console.log('database connected');
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
