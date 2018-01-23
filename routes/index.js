@@ -3,14 +3,14 @@ var bcrypt = require('bcrypt');
 var User = require('../models/user');
 var router = express.Router();
 
-/* GET welcome page. */
+/* GET welcome or home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Productivity', message: '' });
-});
-
-/* GET user's home page. */
-router.get('/home', function(req, res, next) {
-  res.render('home', { title: 'Productivity', username: '' });
+  var user = req.session.currentUser;
+  if (user) {
+    res.redirect('/home');
+  } else {
+    res.render('index', { title: 'Productivity', message: '' });
+  }
 });
 
 /* GET login page. */
@@ -30,8 +30,8 @@ router.post('/login', function(req, res, next) {
 
   User.authenticate(username, password, function(result) {
     if (result.success) {
+      req.session.currentUser = result.user;
       res.redirect('/home');
-      //res.render('home', { title: 'Productivity', username: username });
     } else {
       res.render('login', { title: 'Login', message: result.message });
     }
@@ -46,8 +46,7 @@ router.post('/register', function(req, res, next) {
 
   User.register(username, password, password_confirm, function(result) {
     if (result.success) {
-      res.redirect('/login');
-      //res.render('login', { title: 'Login', message: 'Registration successful! Please login.' });
+      res.render('login', { title: 'Login', message: 'Registration successful! Please login.' });
     } else {
       res.render('register', { title: 'Register', message: result.message });
     }
