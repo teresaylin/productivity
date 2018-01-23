@@ -53,4 +53,9 @@ router.post('/register', function(req, res, next) {
   });
 });
 
+router.get('/logout', function(req, res, next) {
+  req.session.currentUser = undefined;
+  res.redirect('/');
+});
+
 module.exports = router;
