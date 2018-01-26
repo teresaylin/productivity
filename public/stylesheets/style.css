@@ -47,3 +47,64 @@ a {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
+
+
+/* adding a task list */
+ul {
+  padding: 0px;
+  margin: 0px;
+}
+
+/* list items */
+li {
+  cursor: pointer;
+  list-style-type: none;
+  font-size: 18px;
+  background: #eee;
+  padding: 12px 8px 12px 40px;
+  position: relative;
+  transition: 0.2s; /* delay when li properties change */
+}
+
+/* all odd list items are different shade of gray */
+li:nth-child(odd) {
+  background: #f9f9f9;
+}
+
+/* change background color when hovering on a list item */
+li:hover {
+  background: #ddd;
+}
+
+/* change background color when clicking on a list item */
+li.checked {
+  background: #888;
+  color: #fff;
+  text-decoration: line-through;
+}
+
+/* create a check (rotated box) to add before the list item */
+li.checked::before {
+  content: '';
+  position: absolute;
+  border-color: #fff;
+  border-style: solid;
+  border-width: 0 2px 2px 0;
+  top: 10px;
+  left: 16px;
+  transform: rotate(45deg);
+  height: 15px;
+  width: 7px;
+}
+
+.close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 12px 16px 12px 16px;
+}
+
+.close:hover {
+  background: red;
+  color: white;
+}
