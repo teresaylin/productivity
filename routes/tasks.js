@@ -19,6 +19,7 @@ router.get('/create_tasklist', function(req, res, next) {
 
 /* POST tasklist data */
 router.post('/create_tasklist', function(req, res, next) {
+  var username = req.session.currentUser.username;
   tasks = [];
   var data = req.body;    // {listname: 'errands', task0: 'groceries', task1: 'shop'}
   for(var item in data) {
@@ -26,10 +27,12 @@ router.post('/create_tasklist', function(req, res, next) {
       tasks.push(data[item]);
     }
   }
-  Tasklist.create(req.session.currentUser.username, req.body.listname, tasks, function(result) {
-    console.log("creating new tasklist");
+  Tasklist.create(username, req.body.listname, tasks, function(result) {
     if (result.success) {
-      res.render('home', { title: 'Productivity', username: req.session.currentUser.username });
+      Tasklist.find({ username: username }, function(err, lists) {
+        console.log(lists);
+        res.render('home', { title: 'Productivity', username: username, tasklists: lists });
+      });
     } else {
       // TODO save data, re-render same page with data, and message
       res.render('create_tasklist', { message: result.message });

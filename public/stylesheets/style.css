@@ -21,6 +21,25 @@ a {
   transition: 0.5s; /* 0.5 sec transition effect to slide in the sidenav */
 }
 
+.sidenav .section {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  margin: 12px 0px 0px 0px;
+}
+
+.sidenav .menulist {
+  padding: 8px 8px 8px 48px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  margin: 0px;
+  transition: 0.3s;
+}
+
 .sidenav a {
   padding: 8px 8px 8px 32px;
   text-decoration: none;
