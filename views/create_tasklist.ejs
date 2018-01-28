@@ -8,11 +8,11 @@
   </head>
   <body>
     <h1>New Tasklist</h1>
-    <form action='/tasks/create_tasklist' method='post'>
-      <input type='text' name='listname' placeholder='Name of your task list'><br>
+    <p><%= message %></p>
+    <form id='taskform' action='/tasks/create_tasklist' method='post'>
+      <input type='text' name='listname' placeholder='Name of your task list' required><br>
       <input type='text' id='newtask' placeholder='Enter task'>
       <input type='button' onclick="addTask()" value='Add'><br>
-
       <input type='button' onclick="history.back()" value='Cancel'>
       <input type='submit' value='Save!'>
 

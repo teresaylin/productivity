@@ -4,6 +4,7 @@ var bcrypt = require('bcrypt');
 var userSchema = new mongoose.Schema({
   username: { type: String, required: true, index: { unique: true } },
   password_hash: { type: String, required: true },
+  tasklists: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tasklist'}] /* [Tasklist object id] */
 });
 
 /*
@@ -56,20 +57,35 @@ userSchema.statics.authenticate = function(username, password, cb) {
   this.findOne({ username: username }, function(err, user) {
     if (user === null) {
       cb({ success: false,
-                 message: 'Username or password is not correct',
-                 user: {} });
+           message: 'Username or password is not correct',
+           user: {} });
     } else {
       bcrypt.compare(password, user.password_hash, function(err, result) {
         if (result === false) {
           cb({ success: false,
-                     message: 'Username or password is not correct',
-                     user: {} });
+               message: 'Username or password is not correct',
+               user: {} });
         } else {
           cb({ success: true, message: '', user: user });
         }
       });
     }
   });
+};
+
+
+/*
+ * Add a new tasklist to the user's profile.
+ */
+userSchema.statics.addList = function(username, tasklist_obj, cb) {
+  User.update({ 'username': username },
+              { $push: { tasklists: tasklist_obj } }, function(err) {
+                if (err) {
+                  console.log(err);
+                  cb({ success: false });
+                }
+                cb({ success: true });
+              });
 };
 
 
