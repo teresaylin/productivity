@@ -16,7 +16,8 @@ var tasklistSchema = new mongoose.Schema({
  *   success: if creation of tasklist was successful
  *   message: feedback message for user
  */
-tasklistSchema.statics.create = function(username, listname, listoftasks, cb) {  
+tasklistSchema.statics.create = function(username, listname, listoftasks, cb) {
+  // listoftasks = [[task,time], [task,time], ...]
   User.findOne({'username': username}, function(err, user) {
     if (user == null) {
       cb({ success: false, message: 'User does not exist!' });
@@ -36,7 +37,7 @@ tasklistSchema.statics.create = function(username, listname, listoftasks, cb) {
         var promises = listoftasks.map(function(task) {
           return new Promise(function(resolve, reject) {
             // for each task, create a Task object
-            Task.create(new_list._id, task, function(result) {
+            Task.create(new_list._id, task[0], task[1], function(result) {
               if (result.success) {
                 resolve(result.task_obj);
               } else {

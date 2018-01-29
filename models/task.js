@@ -10,12 +10,12 @@ var taskSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// TODO taskSchema.statics.create = function(listid, task, deadline, cb) {
-taskSchema.statics.create = function(listid, task, cb) {
+taskSchema.statics.create = function(listid, task, deadline, cb) {
   // TODO check for completion of tasks
   var new_task = new Task({
     list: listid,
-    objective: task
+    objective: task,
+    deadline: deadline
   });
   new_task.save(function(err) {
     if (err) {

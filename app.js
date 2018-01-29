@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var session = require('express-session');
+var moment = require('moment');
 
 var index = require('./routes/index');
 var users = require('./routes/users');

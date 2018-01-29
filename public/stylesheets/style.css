@@ -127,3 +127,11 @@ li.checked::before {
   background: red;
   color: white;
 }
+
+.deadline {
+  position: absolute;
+  top: 0px;
+  right: 100px;
+  padding-top: 12px;
+  color: #de0000;
+}
