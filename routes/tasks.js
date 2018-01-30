@@ -45,7 +45,7 @@ router.post('/create_tasklist', function(req, res, next) {
   Tasklist.create(username, req.body.listname, tasks, function(result) {
     if (result.success) {
       Tasklist.find({ username: username }, function(err, lists) {
-        res.render('home', { title: 'Productivity', username: username, tasklists: lists });
+        res.render('home', { title: 'Productivity', username: username, tasklists: lists, message: '' });
       });
     } else {
       // TODO save data, re-render same page with data, and message

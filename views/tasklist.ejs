@@ -19,9 +19,11 @@
       <a href='#' style='margin-top:24px'>Edit Tasklists</a>
       <!-- TODO add edit tasklist feature -->
     </div>
-
     <span style='font-size:30px;cursor:pointer' onclick='openNav()'>&#9776;Projects</span>
-    <h1>Welcome <%= username %>!</h1>
-    <p><%= message %></p>
+    <h1>Working on: <%= thislist.listname %></h1>
+    <% tasks.forEach(function(task) { %>
+      <p class='task'><%= task.objective %></p>
+    <% }); %>
+
   </body>
 </html>
