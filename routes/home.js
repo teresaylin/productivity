@@ -36,28 +36,33 @@ router.get('/:listname', function(req, res, next) {
       }
     });
 
-    var promises = correct_list.tasks.map(function(task) {
-      return new Promise(function(resolve, reject) {
-        var taskId = new ObjectId(task);
-        Task.findOne({'_id': taskId}, function(err, task_obj) {
-          if(task_obj) {
-            resolve(task_obj);
-          } else {
-            reject(err);
-          }
+    if(!correct_list) {
+      // if the user does not have such a list
+      var errorMsg = "'" + listname + "' does not exist.";
+      res.render('home', { title: 'Productivity', username: user.username, tasklists: lists, message: errorMsg });
+    } else {
+      var promises = correct_list.tasks.map(function(task) {
+        return new Promise(function(resolve, reject) {
+          var taskId = new ObjectId(task);
+          Task.findOne({'_id': taskId}, function(err, task_obj) {
+            if(task_obj) {
+              resolve(task_obj);
+            } else {
+              reject(err);
+            }
+          });
         });
       });
-    });
 
-    Promise.all(promises).then(function(data) {
-      var task_objects = data;
-      res.render('tasklist', { title: correct_list.listname, tasklists: lists, thislist: correct_list, tasks: task_objects });
-    }, function(err) {
-      var errorMsg = 'Error fetching tasks for list: ' + correct_list.listname;
-      res.render('home', { title: 'Productivity', username: user.username, tasklists: lists, message: errorMsg });
-    });
+      Promise.all(promises).then(function(data) {
+        var task_objects = data;
+        res.render('tasklist', { title: correct_list.listname, tasklists: lists, thislist: correct_list, tasks: task_objects });
+      }, function(err) {
+        var errorMsg = 'Error fetching tasks for list: ' + correct_list.listname;
+        res.render('home', { title: 'Productivity', username: user.username, tasklists: lists, message: errorMsg });
+      });
+    }
   });
 });
-
 
 module.exports = router;
