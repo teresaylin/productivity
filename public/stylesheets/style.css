@@ -116,6 +116,7 @@ li.checked::before {
   width: 7px;
 }
 
+/* 'x' button to remove a task from a tasklist */
 .close {
   position: absolute;
   right: 0;
@@ -128,6 +129,7 @@ li.checked::before {
   color: white;
 }
 
+/* positioning of task deadlines */
 .deadline {
   position: absolute;
   top: 0px;
@@ -135,3 +137,48 @@ li.checked::before {
   padding-top: 12px;
   color: #de0000;
 }
+
+/* dropdown for selecting environment */
+.dropbtn {
+  background-color: #3498DB;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #2980B9;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: absolute;
+    display: inline-block;
+    top: 50px;
+    right: 50px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  width: 100%;
+}
+
+/* dropdown links */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}

@@ -24,6 +24,16 @@
     <% tasks.forEach(function(task) { %>
       <p class='task'><%= task.objective %></p>
     <% }); %>
+    <div class='dropdown'>
+      <button onclick='drop()' class='dropbtn'>Select your environment</button>
+      <div id='myDropdown' class='dropdown-content'>
+        <a href='#'>Neutral</a>
+        <a href='#'>Calm</a>
+        <a href='#'>Motivational</a>
+        <a href='#'>Depressing</a>
+        <a href='#'>Stressful</a>
+      </div>
+    </div>
 
   </body>
 </html>
