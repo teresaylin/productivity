@@ -146,6 +146,8 @@ li.checked::before {
   font-size: 16px;
   border: none;
   cursor: pointer;
+  width: 300px;
+  height: 80px;
 }
 
 .dropbtn:hover, .dropbtn:focus {
@@ -156,8 +158,6 @@ li.checked::before {
 .dropdown {
     position: absolute;
     display: inline-block;
-    top: 50px;
-    right: 50px;
 }
 
 .dropdown-content {

@@ -27,13 +27,18 @@
     <div class='dropdown'>
       <button onclick='drop()' class='dropbtn'>Select your environment</button>
       <div id='myDropdown' class='dropdown-content'>
-        <a href='#'>Neutral</a>
-        <a href='#'>Calm</a>
-        <a href='#'>Motivational</a>
-        <a href='#'>Depressing</a>
-        <a href='#'>Stressful</a>
+        <a href='/home/<%= thislist.listname %>/neutral'>Neutral</a>
+        <a href='/home/<%= thislist.listname %>/calm'>Calm</a>
+        <a href='/home/<%= thislist.listname %>/motivational'>Motivational</a>
+        <a href='/home/<%= thislist.listname %>/depressing'>Depressing</a>
+        <a href='/home/<%= thislist.listname %>/stressful'>Stressful</a>
       </div>
     </div>
+
+    <script>
+      $('.dropdown').css('left', ($(window).width() - 300)/2);
+      $('.dropdown').css('top', ($(window).height() - 80)/2 - 100); /* putting it 100px above center so that when the dropdown menu is clicked, the entire thing is more centered */
+    </script>
 
   </body>
 </html>
