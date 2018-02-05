@@ -10,6 +10,9 @@
     <div class='backhome'>
       <button onclick="location.href = '/home'" id='homebtn'>&lt; Home</button>
     </div>
+    <% tasks.forEach(function(task) { %>
+      <p class='task'><%= task.objective %></p>
+    <% }); %>
     <div class='dropdown' id='skin'>
       <button onclick='drop()' class='dropbtn' id='skinbtn'>Change environment</button>
       <div id='myDropdown' class='dropdown-content'>

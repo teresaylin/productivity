@@ -4,10 +4,8 @@ var User = require('./user')
 
 var tasklistSchema = new mongoose.Schema({
   username: { type: String, required: true, ref: 'User' },
-  //username: { type: userSchema, required: true },
   listname: { type: String, required: true, index: { unique: true } },
-  tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }],   /* [Task object id] */
-  emotion: { type: String }   //TODO may need to modify
+  tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }]   /* [Task object id] */
 });
 
 /*
@@ -30,8 +28,7 @@ tasklistSchema.statics.create = function(username, listname, listoftasks, cb) {
         var new_list = new Tasklist({
           username: username,
           listname: listname,
-          tasks: [],
-          emotion: ''
+          tasks: []
         });
 
         var promises = listoftasks.map(function(task) {

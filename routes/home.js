@@ -24,9 +24,12 @@ router.get('/', function(req, res, next) {
 });
 
 /* GET a tasklist page */
-router.get('/:listname', function(req, res, next) {
+router.get('/:listname/:environment?', function(req, res, next) {
   var user = req.session.currentUser;
   var listname = req.params.listname;
+  var environments = new Set(['neutral', 'calm', 'motivational', 'depressing', 'stressful']);
+  var env = req.params.environment; // a String or undefined
+  var valid = environments.has(env);
 
   Tasklist.find({ username: user.username }, function(err, lists) {
     var correct_list;
@@ -36,10 +39,16 @@ router.get('/:listname', function(req, res, next) {
       }
     });
 
+    // list does not exist -> home page w/error msg
+    // list exists, environment not valid -> home page w/error msg
+    // list exists, environment valid -> go to environment page
+    // list exists, environment undefined -> go to list page
     if(!correct_list) {
       // if the user does not have such a list
-      var errorMsg = "'" + listname + "' does not exist.";
-      res.render('home', { title: 'Productivity', username: user.username, tasklists: lists, message: errorMsg });
+      res.render('home', { title: 'Productivity', username: user.username, tasklists: lists, message: 'Sorry, no such page exists. Please choose a tasklist from the Projects menu.' });
+    } else if(typeof env !== 'undefined' && !valid) {
+      // environment is defined but does not exist
+      res.render('home', { title: 'Productivity', username: user.username, tasklists: lists, message: 'Sorry, no such page exists. Please go back to /home and choose a tasklist from the side menu and an environment from the dropdown.' });
     } else {
       var promises = correct_list.tasks.map(function(task) {
         return new Promise(function(resolve, reject) {
@@ -56,7 +65,13 @@ router.get('/:listname', function(req, res, next) {
 
       Promise.all(promises).then(function(data) {
         var task_objects = data;
-        res.render('tasklist', { title: correct_list.listname, tasklists: lists, thislist: correct_list, tasks: task_objects });
+        if(typeof env === 'undefined') {
+          // go to lists page
+          res.render('tasklist', { title: correct_list.listname, tasklists: lists, thislist: correct_list, tasks: task_objects });
+        } else {
+          // go to environment page
+          res.render(env, { title: listname + ' | ' + env, listname: listname, tasks: task_objects });
+        }
       }, function(err) {
         var errorMsg = 'Error fetching tasks for list: ' + correct_list.listname;
         res.render('home', { title: 'Productivity', username: user.username, tasklists: lists, message: errorMsg });
