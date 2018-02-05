@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/js/home.js"></script>
+  </head>
+  <body>
+    <div class='backhome'>
+      <button onclick="location.href = '/home'" id='homebtn'>&lt; Home</button>
+    </div>
+    <div class='dropdown' id='skin'>
+      <button onclick='drop()' class='dropbtn' id='skinbtn'>Change environment</button>
+      <div id='myDropdown' class='dropdown-content'>
+        <a href='/home/<%= listname %>/neutral'>Neutral</a>
+        <a href='/home/<%= listname %>/calm'>Calm</a>
+        <a href='/home/<%= listname %>/motivational'>Motivational</a>
+        <a href='/home/<%= listname %>/depressing'>Depressing</a>
+        <a href='/home/<%= listname %>/stressful'>Stressful</a>
+      </div>
+    </div>
+  </body>
+</html>
