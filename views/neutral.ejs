@@ -4,15 +4,15 @@
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
     <script src="/js/home.js"></script>
+    <script src="/js/env-stressful.js"></script>
   </head>
   <body>
     <div class='backhome'>
       <button onclick="location.href = '/home'" id='homebtn'>&lt; Home</button>
     </div>
-    <% tasks.forEach(function(task) { %>
-      <p class='task'><%= task.objective %></p>
-    <% }); %>
+    
     <div class='dropdown' id='skin'>
       <button onclick='drop()' class='dropbtn' id='skinbtn'>Change environment</button>
       <div id='myDropdown' class='dropdown-content'>
@@ -23,5 +23,51 @@
         <a href='/home/<%= listname %>/stressful'>Stressful</a>
       </div>
     </div>
+
+    <div class='dropdownTasks'>
+      <button onclick='dropTasks()' class='dropbtntasks' id='taskbtn'>Right now, I want to work on...</button>
+      <div id='dropTasks' class='dropdown-content-tasks'>
+        <% tasks.forEach(function(task) { %>
+          <div class='taskobj'>
+            <p class='task'><%= task.objective %></p>
+            <p class='date'><%= task.deadline %></p>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+
+    <div id='countdown'>
+      <div class='containers'>
+        <span class='time' id='days'></span>
+        <div class='timetext'>days</div>
+      </div>
+      <div class='containers'>
+        <span class='time' id='hours'></span>
+        <div class='timetext'>hrs</div>
+      </div>
+      <div class='containers'>
+        <span class='time' id='minutes'></span>
+        <div class='timetext'>mins</div>
+      </div>
+      <div class='containers'>
+        <span class='time' id='seconds'></span>
+        <div class='timetext'>sec</div>
+      </div>
+      <!-- <span id='timer'></span> -->
+    </div>
+
+    <div id='alltasks'>
+      <% tasks.forEach(function(task) { %>
+        <div class='taskoption'>
+          <span class='task-description'><%= task.objective %></span>
+          <span class='task-deadline'><%= task.deadline %></span>
+        </div>
+      <% }); %>
+    </div>
+
+    <script>
+      $('.dropdownTasks').css('left', ($(window).width() - 300)/2);
+      $('.dropdownTasks').css('top', ($(window).height() - 80)/2 - 100); /* putting it 100px above center so that when the dropdown menu is clicked, the entire thing is more centered */
+    </script>
   </body>
 </html>

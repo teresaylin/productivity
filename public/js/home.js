@@ -15,10 +15,16 @@ function drop() {
 }
 
 $(window).click(function(event) {
-  if(event.target.className!=='dropbtn') {
+  if(event.target.className!=='dropbtn' && event.target.className!=='dropbtntasks') {
     if($('#myDropdown').hasClass('show')) {
-      console.log('outside of target');
       $('#myDropdown').removeClass('show');
+    }
+    if($('#dropTasks').hasClass('show')) {
+      $('#dropTasks').removeClass('show');
     }
   }
 });
+
+function dropTasks() {
+  $('#dropTasks').toggleClass('show');
+}
