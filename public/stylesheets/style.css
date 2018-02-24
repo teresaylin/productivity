@@ -287,10 +287,10 @@ li.checked::before {
 
 .time {
   font-size: 60px;
-  color: white;
+  color: #ffefef;
   padding: 15px;
   border-radius: 3px;
-  background: #ffb8b8;
+  background: #ff1111;
   display: inline-block;
 }
 

@@ -88,7 +88,7 @@ function startClock(deadline) {
   }
   // make timer red if < 10 minutes remaining
   if(diff <= 600000) {
-    $('.time').css('color', 'red');
+    $('.time').css('color', '#f5ff74');
   }
   // position entire div in vertical center
   var timerWidth = $('#countdown').width();
