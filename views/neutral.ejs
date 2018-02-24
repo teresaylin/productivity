@@ -25,7 +25,7 @@
     </div>
 
     <div class='dropdownTasks'>
-      <button onclick='dropTasks()' class='dropbtntasks' id='taskbtn'>Right now, I want to work on...</button>
+      <button onclick='dropTasks()' class='dropbtntasks unfinished' id='taskbtn'>Right now, I want to work on...</button>
       <div id='dropTasks' class='dropdown-content-tasks'>
         <% tasks.forEach(function(task) { %>
           <div class='taskobj'>
@@ -34,6 +34,10 @@
           </div>
         <% }); %>
       </div>
+    </div>
+
+    <div class='currentTask'>
+      <span id='workingOn'></span>
     </div>
 
     <div id='countdown'>

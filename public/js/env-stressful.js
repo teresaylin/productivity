@@ -1,4 +1,7 @@
 var intervalId = null;
+// TODO clicking on task in side list changes timer to that 
+// TODO cross out tasks differently for completed / unfinished
+// TODO method for user to mark task as completed before 0:00
 
 $(function() {
   // in "Right now" dropdown, format each task deadline
@@ -14,6 +17,7 @@ $(function() {
     }
   });
 
+  var numTasksLeft = 0;
   // format each task deadline on the side menu, label expired with class 'expired'
   $('.taskoption').each(function(index, element) {
     var children = $(element).children();
@@ -23,11 +27,20 @@ $(function() {
     if(diff <= 0) {
       $(children[0]).addClass('expired');
       $(children[1]).addClass('expired');
+    } else {
+      numTasksLeft++;
     }
     var date_formatted = moment(date).format('h:mm a MMM D, YYYY');
     $(children[1]).text(date_formatted);
   });
 
+  // if no tasks left, disable the button
+  if(numTasksLeft === 0) {
+    $('#taskbtn').text('No more tasks left!');
+    $('#taskbtn').removeClass('unfinished');
+    $('#taskbtn').addClass('finished');
+    $('#taskbtn').prop('disabled', true);
+  }
   // check every 10 seconds to see if the clock is still ticking
   setInterval(checkClock, 10000);
 });
@@ -38,7 +51,12 @@ $(document).on("click", ".taskobj", function() {
   var task = $(children[0]).text();
   var date = $(children[1]).text();
   $('.dropdownTasks').hide();
-  $('#countdown').show();
+  $('#workingOn').text('Working on: ' + task);
+  var timerWidth = $('#workingOn').width();
+  var timerHeight = $('#workingOn').height();
+  $('#workingOn').css('top', ($(window).height() - timerHeight)/2 - 100);
+  $('#workingOn').css('left', ($(window).width() - timerWidth)/2);
+  $('#workingOn').show();
   // implement countdown
   var deadline = new Date(date).getTime();
   intervalId = setInterval(function() { 
@@ -77,6 +95,7 @@ function startClock(deadline) {
   var timerHeight = $('#countdown').height();
   $('#countdown').css('top', ($(window).height() - timerHeight)/2);
   $('#countdown').css('left', ($(window).width() - timerWidth)/2);
+  $('#countdown').show();
 }
 
 // Check to see if timer has expired, and if so, show the dropdown menu again

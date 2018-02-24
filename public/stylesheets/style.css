@@ -222,19 +222,26 @@ li.checked::before {
 
 /* Dropdown menu for selecting current task */
 .dropbtntasks {
-  background-color: #f13c3c;
   color: white;
   padding: 16px;
   font-size: 16px;
   border: none;
-  cursor: pointer;
   width: 300px;
   height: 80px;
 }
 
-.dropbtntasks:hover, .dropbtntasks:focus {
-  background-color: #f30d0d;
+.dropbtntasks.finished {
+  background-color: #c5c5c5;
 }
+
+.unfinished {
+  background-color: #f13c3c;
+  cursor: pointer;
+}
+
+.dropbtntasks.unfinished:hover, .dropbtntasks:focus {
+  background-color: #f30d0d;
+} 
 
 /* The container <div> - needed to position the dropdown content */
 .dropdownTasks {
@@ -331,4 +338,12 @@ li.checked::before {
 .expired {
   color: red;
   font-style: italic;
+}
+
+#workingOn {
+  position: absolute;
+  display: none;
+  font-style: bold;
+  font-size: 30px;
+  text-align: center;
 }

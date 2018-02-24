@@ -15,7 +15,7 @@ function drop() {
 }
 
 $(window).click(function(event) {
-  if(event.target.className!=='dropbtn' && event.target.className!=='dropbtntasks') {
+  if(event.target.className!=='dropbtn' && !$(event.target).hasClass('dropbtntasks')) {
     if($('#myDropdown').hasClass('show')) {
       $('#myDropdown').removeClass('show');
     }
