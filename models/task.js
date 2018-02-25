@@ -11,7 +11,6 @@ var taskSchema = new mongoose.Schema({
 });
 
 taskSchema.statics.create = function(listid, task, deadline, cb) {
-  // TODO check for completion of tasks
   var new_task = new Task({
     list: listid,
     objective: task,
@@ -25,8 +24,15 @@ taskSchema.statics.create = function(listid, task, deadline, cb) {
   });
 };
 
-taskSchema.statics.update = function(listid, task, completed, deadline, cb) {
-  // TODO
+// Update task to have 'completed' = true
+taskSchema.statics.markComplete = function(listid, task, cb) {
+  Task.update({ list: listid, objective: task }, {$set: { completed: true }}, function(err) {
+    if (err) {
+      console.log(err);
+      cb({ success: false });
+    }
+    cb({ success: true });
+  });
 };
 
 var Task = mongoose.model('Task', taskSchema);

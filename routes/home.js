@@ -80,4 +80,17 @@ router.get('/:listname/:environment?', function(req, res, next) {
   });
 });
 
+/* POST completion of a task */
+router.post('/:listname/complete', function(req, res, next) {
+  var user = req.session.currentUser;
+  var listname = req.body.listname;
+  var taskname = req.body.taskname;
+
+  Tasklist.findOne({ username: user.username, listname: listname }, '_id', function(err, listid) {
+    Task.markComplete(listid, taskname, function(result) {
+      res.send(result);
+    });
+  });
+});
+
 module.exports = router;

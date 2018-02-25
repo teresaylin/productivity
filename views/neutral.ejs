@@ -9,6 +9,7 @@
     <script src="/js/env-stressful.js"></script>
   </head>
   <body>
+    <div id='currentList'><%= listname %></div>
     <div class='backhome'>
       <button onclick="location.href = '/home'" id='homebtn'>&lt; Home</button>
     </div>
@@ -31,6 +32,7 @@
           <div class='taskobj'>
             <p class='task'><%= task.objective %></p>
             <p class='date'><%= task.deadline %></p>
+            <p class='completed'><%= task.completed %></p>
           </div>
         <% }); %>
       </div>
@@ -57,7 +59,10 @@
         <span class='time' id='seconds'></span>
         <div class='timetext'>sec</div>
       </div>
-      <!-- <span id='timer'></span> -->
+    </div>
+
+    <div id='finishedCircleDiv'>
+      <div id='checkmark'></div>
     </div>
 
     <div id='alltasks'>
@@ -65,6 +70,7 @@
         <div class='taskoption'>
           <span class='task-description'><%= task.objective %></span>
           <span class='task-deadline'><%= task.deadline %></span>
+          <span class='task-completed'><%= task.completed %></span>
         </div>
       <% }); %>
     </div>

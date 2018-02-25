@@ -1,18 +1,18 @@
 var intervalId = null;
-// TODO clicking on task in side list changes timer to that 
-// TODO cross out tasks differently for completed / unfinished
-// TODO method for user to mark task as completed before 0:00
+// TODO clicking on task in side list changes timer to that
+// TODO when hovering on checkmark, give a hint as to what it does ('Mark as finished!')
 
 $(function() {
   // in "Right now" dropdown, format each task deadline
   $('.taskobj').each(function(index, element) {
     var children = $(element).children();
+    var complete = $(children[2]).text();
     var date = $(children[1]).text();
     var date_formatted = moment(date).format('h:mm a MMM D, YYYY');
     $(children[1]).text(date_formatted);
     var now = new Date().getTime();
     var diff = new Date(date).getTime() - now;
-    if(diff <= 0) {
+    if(diff <= 0 || complete == 'true') {
       $(element).hide();
     }
   });
@@ -21,10 +21,15 @@ $(function() {
   // format each task deadline on the side menu, label expired with class 'expired'
   $('.taskoption').each(function(index, element) {
     var children = $(element).children();
+    var complete = $(children[2]).text();
     var date = $(children[1]).text();
     var now = new Date().getTime();
     var diff = new Date(date).getTime() - now;
-    if(diff <= 0) {
+    // check if complete, then check if expired
+    if(complete == 'true') {
+      $(children[0]).addClass('finished');
+      $(children[1]).addClass('finished');
+    } else if(diff <= 0) {
       $(children[0]).addClass('expired');
       $(children[1]).addClass('expired');
     } else {
@@ -51,18 +56,44 @@ $(document).on("click", ".taskobj", function() {
   var task = $(children[0]).text();
   var date = $(children[1]).text();
   $('.dropdownTasks').hide();
+  // position the 'Working on' text
   $('#workingOn').text('Working on: ' + task);
   var timerWidth = $('#workingOn').width();
   var timerHeight = $('#workingOn').height();
-  $('#workingOn').css('top', ($(window).height() - timerHeight)/2 - 100);
+  $('#workingOn').css('top', ($(window).height() - timerHeight)/2 - 200);
   $('#workingOn').css('left', ($(window).width() - timerWidth)/2);
   $('#workingOn').show();
+  // position checkmark button
+  var checkmarkSide = $('#finishedCircleDiv').width();
+  $('#finishedCircleDiv').css('top', ($(window).height() - checkmarkSide)/2 + 50);
+  $('#finishedCircleDiv').css('left', ($(window).width() - checkmarkSide)/2);
+  $('#finishedCircleDiv').show();
   // implement countdown
   var deadline = new Date(date).getTime();
   intervalId = setInterval(function() { 
     startClock(deadline);
-    console.log('still ticking');
   }, 1000);
+});
+
+// When the user clicks on the green checkmark, send update as POST request and reload
+$(document).on("click", "#checkmark", function() {
+  var listname = $('#currentList').text();
+  var taskname = $('#workingOn').text().slice(12);
+
+  $.ajax({
+    url: '/home/' + listname + '/complete',
+    type: 'POST',
+    data: {
+      listname: listname,
+      taskname: taskname
+    },
+    success: function(data) {
+      location.reload();
+    },
+    error: function(xhr, status, error) {
+      location.reload();
+    }
+  });
 });
 
 // Display remaining time left
@@ -93,7 +124,7 @@ function startClock(deadline) {
   // position entire div in vertical center
   var timerWidth = $('#countdown').width();
   var timerHeight = $('#countdown').height();
-  $('#countdown').css('top', ($(window).height() - timerHeight)/2);
+  $('#countdown').css('top', ($(window).height() - timerHeight)/2 - 100);
   $('#countdown').css('left', ($(window).width() - timerWidth)/2);
   $('#countdown').show();
 }
@@ -104,7 +135,5 @@ function checkClock() {
     clearInterval(intervalId);
     intervalId = null;
     location.reload();
-    // $('#countdown').hide();
-    // $('.dropdownTasks').show();
   }
 }

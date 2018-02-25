@@ -305,6 +305,35 @@ li.checked::before {
   font-size: 16px;
 }
 
+/* Div for marking current task finished */
+#finishedCircleDiv {
+  display: none;
+  position: absolute;
+  height: 100px;
+  width: 100px;
+  border-radius: 50px;
+  background: #00d41e;
+  top: 250px;
+  left: 650px;
+}
+
+#checkmark {
+  position: relative;
+  border-color: #eaeaea;
+  border-style: solid;
+  border-width: 0 5px 5px 0;
+  top: 20px;
+  left: 38px;
+  transform: rotate(45deg);
+  height: 40px;
+  width: 20px;
+  cursor: pointer;
+}
+
+#checkmark:hover {
+  border-color: #5a5a5a;
+}
+
 /* list of tasks on the side */
 #alltasks {
   position: absolute;
@@ -321,14 +350,11 @@ li.checked::before {
 
 .task-description {
   position: relative;
-  /*width: 200px;*/
 }
 
 .task-deadline {
   position: relative;
   color: blue;
-  /*right: 0px;*/
-  /*width: 180px;*/
 }
 
 .task-description.expired {
@@ -340,10 +366,31 @@ li.checked::before {
   font-style: italic;
 }
 
+.task-description.finished {
+  text-decoration: line-through;
+}
+
+.finished {
+  color: green;
+  font-style: italic;
+}
+
 #workingOn {
   position: absolute;
   display: none;
   font-style: bold;
   font-size: 30px;
   text-align: center;
+}
+
+#currentList {
+  display: none;
+}
+
+.completed {
+  display: none;
+}
+
+.task-completed {
+  display: none;
 }
