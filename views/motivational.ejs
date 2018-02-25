@@ -4,9 +4,11 @@
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
     <script src="/js/home.js"></script>
   </head>
   <body>
+    <div id='currentList'><%= listname %></div>
     <div class='backhome'>
       <button onclick="location.href = '/home'" id='homebtn'>&lt; Home</button>
     </div>
