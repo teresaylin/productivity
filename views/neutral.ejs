@@ -12,9 +12,7 @@
     <div class='backhome'>
       <button onclick="location.href = '/home'" id='homebtn'>&lt; Home</button>
     </div>
-    <% tasks.forEach(function(task) { %>
-      <p class='task'><%= task.objective %></p>
-    <% }); %>
+
     <div class='dropdown' id='skin'>
       <button onclick='drop()' class='dropbtn' id='skinbtn'>Change environment</button>
       <div id='myDropdown' class='dropdown-content'>
@@ -25,5 +23,23 @@
         <a href='/home/<%= listname %>/stressful'>Stressful</a>
       </div>
     </div>
+
+    <div class='dropdownTasks'>
+      <button onclick='dropTasks()' class='dropbtntasks unfinished' id='taskbtn'>Right now, I want to work on...</button>
+      <div id='dropTasks' class='dropdown-content-tasks'>
+        <% tasks.forEach(function(task) { %>
+          <div class='taskobj'>
+            <p class='task'><%= task.objective %></p>
+            <p class='date'><%= task.deadline %></p>
+            <p class='completed'><%= task.completed %></p>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+
+    <script>
+      $('.dropdownTasks').css('left', ($(window).width() - 300)/2);
+      $('.dropdownTasks').css('top', ($(window).height() - 80)/2 - 100); /* putting it 100px above center so that when the dropdown menu is clicked, the entire thing is more centered */
+    </script>
   </body>
 </html>
