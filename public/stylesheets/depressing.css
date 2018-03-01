@@ -1,0 +1,25 @@
+/* DEPRESSING ENV */
+/* Timer */
+#countdown{
+  color: #676464;
+  display: none;
+  text-align: center;
+  position: absolute;
+}
+
+.time {
+  font-size: 30px;
+  color: #4e4e4e;
+  padding: 0px 7px 0px 7px;
+  display: inline-block;
+}
+
+.containers{
+  padding: 10px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.timetext{
+  font-size: 15px;
+}
