@@ -4,6 +4,7 @@
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/stylesheets/motivational.css' />
+    <link href="https://fonts.googleapis.com/css?family=Shadows+Into+Light+Two" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
     <script src="/js/home.js"></script>
@@ -39,9 +40,8 @@
       </div>
     </div>
 
-    <div class='currentTask'>
-      <span id='workingOn'></span>
-    </div>
+    <span id='workingOn'></span>
+    <img id='workingOnDisplay' src='/images/env-motiv-current-task.png'>
 
     <div id='countdown'>
       <div class='containers'>
@@ -64,6 +64,35 @@
 
     <div id='finishedCircleDiv'>
       <div id='checkmark'></div>
+    </div>
+
+    <div id='fullbloomDiv'>
+      <img id='fullbloom' src='/images/env-motiv-full-bloom.png'>
+    </div>
+    <div id='progressbarDiv'>
+      <img id='progressbar' src='/images/env-motiv-progress-bar.png'>
+    </div>
+    <div>
+      <% tasks.forEach(function(task) { %>
+        <div class='tasksOnBar'>
+          <p class='task-bar'><%= task.objective %></p>
+          <p class='date-bar'><%= task.deadline %></p>
+          <p class='completed-bar'><%= task.completed %></p>
+          <div class='dots' id='progressdot'></div>
+        </div>
+      <% }); %>
+    </div>
+    <div>
+      <img id='plant1' src='/images/env-motiv-plant1.png'>
+    </div>
+    <div>
+      <img id='plant2' src='/images/env-motiv-plant2.png'>
+    </div>
+    <div>
+      <img id='plant3' src='/images/env-motiv-plant3.png'>
+    </div>
+    <div>
+      <img id='plant4' src='/images/env-motiv-plant4.png'>
     </div>
 
     <script>

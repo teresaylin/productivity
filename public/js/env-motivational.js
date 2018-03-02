@@ -1,6 +1,11 @@
 var intervalId = null;
+var whichPlant = '#plant1';
+// TODO make dots clickable to change task
 
 $(function() {
+  var numTasks = $('.tasksOnBar').length;
+  var numFinished = 0; // number of tasks completed and expired
+
   // in "Right now" dropdown, format each task deadline
   $('.taskobj').each(function(index, element) {
     var children = $(element).children();
@@ -12,9 +17,51 @@ $(function() {
     var diff = new Date(date).getTime() - now;
     if(diff <= 0 || complete == 'true') {
       $(element).hide();
+      numFinished++;
     }
   });
 
+  $('.tasksOnBar').each(function(index, element) {
+    var children = $(element).children();
+    var dot = children[3];
+    console.log(dot);
+    var complete = $(children[2]).text();
+    var date = $(children[1]).text();
+    var now = new Date().getTime();
+    var diff = new Date(date).getTime() - now;
+    if(diff <= 0 || complete == 'true') {
+      $(dot).css('background-color', 'green');
+    }
+    // var progressbarTop = $('#progressbar').css('top');
+    // console.log('progressbar top:' + progressbarTop);
+    $(dot).css('top', 170 + index/numTasks*500+4);    // TODO 170 = top of progressbar; 500 = progressbar height
+  });
+
+  // What stage plant is in
+  var percentFinished = numFinished / numTasks;
+  if(percentFinished >= 0.75) {
+    whichPlant = '#plant4';
+  } else if(percentFinished >= 0.5) {
+    whichPlant = '#plant3';
+  } else if(percentFinished >= 0.25) {
+    whichPlant = '#plant2';
+  } else {
+    whichPlant = '#plant1';
+  }
+
+  // if no tasks left, disable the button
+  if(numFinished === numTasks) {
+    $('.dropdownTasks').hide();
+    $('#workingOn').text("CONGRATS, YOU'RE DONE!");
+    $('#workingOn').show();
+    $('#workingOnDisplay').show();
+    $('#progressbar').show();
+    $('#fullbloom').show();
+    $('.dots').each(function(index, element) {
+      $(element).show();
+    });
+    $(whichPlant).show();
+  }
   // check every 10 seconds to see if the clock is still ticking
   setInterval(checkClock, 10000);
 });
@@ -26,25 +73,44 @@ $(document).on("click", ".taskobj", function() {
   var date = $(children[1]).text();
   $('.dropdownTasks').hide();
 
-  // position the 'Working on' text
-  $('#workingOn').text('Working on: ' + task);
-  var timerWidth = $('#workingOn').width();
-  var timerHeight = $('#workingOn').height();
-  $('#workingOn').css('top', ($(window).height() - timerHeight)/2 - 200);
-  $('#workingOn').css('left', ($(window).width() - timerWidth)/2);
+  $('#workingOn').text('FINISH ' + task + ' BY ' + date);
   $('#workingOn').show();
-  
-  // position checkmark button
-  var checkmarkSide = $('#finishedCircleDiv').width();
-  $('#finishedCircleDiv').css('top', ($(window).height() - checkmarkSide)/2 + 50);
-  $('#finishedCircleDiv').css('left', ($(window).width() - checkmarkSide)/2);
+  $('#workingOnDisplay').show();
   $('#finishedCircleDiv').show();
+  $('#progressbar').show();
+  $('#fullbloom').show();
+  $('.dots').each(function(index, element) {
+    $(element).show();
+  });
+  $(whichPlant).show();
 
   // implement countdown
   var deadline = new Date(date).getTime();
   intervalId = setInterval(function() { 
     startClock(deadline);
   }, 1000);
+});
+
+// When the user clicks on the green checkmark, send update as POST request and reload
+$(document).on("click", "#checkmark", function() {
+  var listname = $('#currentList').text();
+  var text = $('#workingOn').text().split(" ");
+  var taskname = text[1];
+
+  $.ajax({
+    url: '/home/' + listname + '/complete',
+    type: 'POST',
+    data: {
+      listname: listname,
+      taskname: taskname
+    },
+    success: function(data) {
+      location.reload();
+    },
+    error: function(xhr, status, error) {
+      location.reload();
+    }
+  });
 });
 
 // Display remaining time left
@@ -75,7 +141,6 @@ function startClock(deadline) {
   // position entire div in vertical center
   var timerWidth = $('#countdown').width();
   var timerHeight = $('#countdown').height();
-  // $('#countdown').css('top', ($(window).height() - timerHeight)/2 - 100);
   $('#countdown').css('top', 0)
   $('#countdown').css('left', ($(window).width() - timerWidth)/2);
   $('#countdown').show();
