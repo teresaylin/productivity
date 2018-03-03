@@ -1,6 +1,5 @@
 var intervalId = null;
 var whichPlant = '#plant1';
-// TODO make dots clickable to change task
 
 $(function() {
   var numTasks = $('.tasksOnBar').length;
@@ -24,7 +23,6 @@ $(function() {
   $('.tasksOnBar').each(function(index, element) {
     var children = $(element).children();
     var dot = children[3];
-    console.log(dot);
     var complete = $(children[2]).text();
     var date = $(children[1]).text();
     var now = new Date().getTime();
@@ -32,9 +30,9 @@ $(function() {
     if(diff <= 0 || complete == 'true') {
       $(dot).css('background-color', 'green');
     }
-    // var progressbarTop = $('#progressbar').css('top');
-    // console.log('progressbar top:' + progressbarTop);
-    $(dot).css('top', 170 + index/numTasks*500+4);    // TODO 170 = top of progressbar; 500 = progressbar height
+    var progressbarTop = parseFloat($('#progressbar').css('top').slice(0,-2));
+    var progressbarHeight = $('#progressbar').height();
+    $(dot).css('top', progressbarTop + index/numTasks * progressbarHeight + 4);
   });
 
   // What stage plant is in
@@ -49,7 +47,7 @@ $(function() {
     whichPlant = '#plant1';
   }
 
-  // if no tasks left, disable the button
+  // if no tasks left
   if(numFinished === numTasks) {
     $('.dropdownTasks').hide();
     $('#workingOn').text("CONGRATS, YOU'RE DONE!");
@@ -94,10 +92,13 @@ $(document).on("click", ".taskobj", function() {
   $('.tasksOnBar').each(function(index, element) {
     var children = $(element).children();
     var dotTask = children[0];
-    // console.log(dotTask);
+    var dot = children[3];
     if($(dotTask).text() === task) {
-      // console.log(dotTask + " this is the currently selected task");
       $(element).addClass('current');
+      var arrowHeight = $('#progressarrow').height()/2;
+      var arrowPos = $(dot).css('top').slice(0,-2) - arrowHeight + 4;
+      $('#progressarrow').css('top', arrowPos);
+      $('#progressarrow').show();
     } else {
       $(element).removeClass('current');
     }
@@ -120,6 +121,11 @@ $(document).on("click", "#progressdot", function() {
   var date = $(children[1]).text();
   var date_formatted = moment(date).format('h:mm a MMM D, YYYY');
   $('#workingOn').text('FINISH ' + task + ' BY ' + date_formatted);
+
+  // update progress arrow
+  var arrowHeight = $('#progressarrow').height()/2;
+  var arrowPos = $(this).css('top').slice(0,-2) - arrowHeight + 4;
+  $('#progressarrow').css('top', arrowPos);
 
   // clear clock and start new countdown
   var deadline = new Date(date).getTime();

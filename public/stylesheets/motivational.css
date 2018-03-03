@@ -150,3 +150,11 @@ body {
   z-index: 5;
   text-align: center;
 }
+
+/* Progress bar arrow */
+#progressarrow {
+  left: 325px;
+  position: absolute;
+  width: 20px;
+  display: none;
+}
