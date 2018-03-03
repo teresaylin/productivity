@@ -4,6 +4,7 @@ var whichPlant = '#plant1';
 $(function() {
   var numTasks = $('.tasksOnBar').length;
   var numFinished = 0; // number of tasks completed and expired
+  var numUnfinished = 0;
 
   // in "Right now" dropdown, format each task deadline
   $('.taskobj').each(function(index, element) {
@@ -16,7 +17,6 @@ $(function() {
     var diff = new Date(date).getTime() - now;
     if(diff <= 0 || complete == 'true') {
       $(element).hide();
-      numFinished++;
     }
   });
 
@@ -27,12 +27,18 @@ $(function() {
     var date = $(children[1]).text();
     var now = new Date().getTime();
     var diff = new Date(date).getTime() - now;
-    if(diff <= 0 || complete == 'true') {
-      $(dot).css('background-color', 'green');
-    }
+
     var progressbarTop = parseFloat($('#progressbar').css('top').slice(0,-2));
     var progressbarHeight = $('#progressbar').height();
-    $(dot).css('top', progressbarTop + index/numTasks * progressbarHeight + 4);
+
+    if(diff <= 0 || complete == 'true') {
+      $(dot).css('background-color', 'green');
+      numFinished++;
+      $(dot).css('top', progressbarTop + (numTasks-numFinished)/numTasks * progressbarHeight + 4);
+    } else {
+      $(dot).css('top', progressbarTop + numUnfinished/numTasks * progressbarHeight + 4);
+      numUnfinished++;
+    }
   });
 
   // What stage plant is in
@@ -96,7 +102,7 @@ $(document).on("click", ".taskobj", function() {
     if($(dotTask).text() === task) {
       $(element).addClass('current');
       var arrowHeight = $('#progressarrow').height()/2;
-      var arrowPos = $(dot).css('top').slice(0,-2) - arrowHeight + 4;
+      var arrowPos = parseFloat($(dot).css('top').slice(0,-2)) - arrowHeight + 4;
       $('#progressarrow').css('top', arrowPos);
       $('#progressarrow').show();
     } else {
@@ -124,7 +130,7 @@ $(document).on("click", "#progressdot", function() {
 
   // update progress arrow
   var arrowHeight = $('#progressarrow').height()/2;
-  var arrowPos = $(this).css('top').slice(0,-2) - arrowHeight + 4;
+  var arrowPos = parseFloat($(this).css('top').slice(0,-2)) - arrowHeight + 4;
   $('#progressarrow').css('top', arrowPos);
 
   // clear clock and start new countdown
