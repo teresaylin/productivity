@@ -134,7 +134,7 @@ body {
 #workingOnDisplay {
   width: 275px;
   position: absolute;
-  right: 250px;
+  right: 350px;
   top: 200px;
   z-index: 3;
   display: none;
@@ -144,7 +144,7 @@ body {
   position: absolute;
   width: 130px;
   top: 250px;
-  right: 300px;
+  right: 400px;
   font-family: 'Shadows Into Light Two', cursive;
   font-size: 30px;
   z-index: 5;

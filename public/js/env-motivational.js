@@ -89,6 +89,45 @@ $(document).on("click", ".taskobj", function() {
   intervalId = setInterval(function() { 
     startClock(deadline);
   }, 1000);
+
+  // make a note of selected task in the corresponding dot on the progress bar
+  $('.tasksOnBar').each(function(index, element) {
+    var children = $(element).children();
+    var dotTask = children[0];
+    // console.log(dotTask);
+    if($(dotTask).text() === task) {
+      // console.log(dotTask + " this is the currently selected task");
+      $(element).addClass('current');
+    } else {
+      $(element).removeClass('current');
+    }
+  });
+});
+
+// When the user clicks on a progress dot, switch to that task
+$(document).on("click", "#progressdot", function() {
+  var parentTaskDiv = $(this).parent();
+
+  // update which progressdot is the currently selected one
+  $('.tasksOnBar').each(function(index, element) {
+    $(element).removeClass('current');
+  });
+  $(parentTaskDiv).addClass('current');
+
+  // update the task displayed on the right
+  var children = $(parentTaskDiv).children();
+  var task = $(children[0]).text();
+  var date = $(children[1]).text();
+  var date_formatted = moment(date).format('h:mm a MMM D, YYYY');
+  $('#workingOn').text('FINISH ' + task + ' BY ' + date_formatted);
+
+  // clear clock and start new countdown
+  var deadline = new Date(date).getTime();
+  clearInterval(intervalId);
+  intervalId = null;
+  intervalId = setInterval(function() {
+    startClock(deadline);
+  }, 1000);
 });
 
 // When the user clicks on the green checkmark, send update as POST request and reload
