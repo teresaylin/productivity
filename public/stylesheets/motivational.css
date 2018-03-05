@@ -97,6 +97,30 @@ body {
   display: none;
 }
 
+/* Task boxes that show up to the left of the progress bar */
+#hoverCompleteTask {
+  display: none;
+  position: absolute;
+  width: 200px;
+  left: 80px;
+  z-index: 3;
+}
+
+#hoverIncompleteTask {
+  display: none;
+  position: absolute;
+  width: 200px;
+  left: 80px;
+  z-index: 3;
+}
+
+#hoverTask {
+  z-index: 5;
+  position: absolute;
+  left: 100px;
+  width: 140px;
+}
+
 /* Plant */
 #plant1 {
   display: none;

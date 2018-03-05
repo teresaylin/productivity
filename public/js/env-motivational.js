@@ -111,6 +111,38 @@ $(document).on("click", ".taskobj", function() {
   });
 });
 
+// When user hovers on a progress dot, show the task to the left
+$(document).on({
+  mouseenter: function() {
+    var parentTaskDiv = $(this).parent();
+    var children = $(parentTaskDiv).children();
+    var task = $(children[0]).text();
+    var date = $(children[1]).text();
+    var date_formatted = moment(date).format('h:mm a MMM D');
+
+    var dotColor = $(this).css('background-color');
+    var dotTop = parseFloat($(this).css('top').slice(0,-2));
+    var dotHeight = $(this).height()/2;
+    var boxHeight = $('#hoverCompleteTask').height()/2;
+    var boxTop = dotTop - boxHeight + dotHeight;
+    $('#hoverCompleteTask').css('top', boxTop);
+    $('#hoverIncompleteTask').css('top', boxTop);
+    $('#hoverTask').css('top', boxTop + 20);
+    $('#hoverTask').text(task + ": " + date_formatted);
+
+    if(dotColor === 'rgb(0, 128, 0)') {
+      $('#hoverCompleteTask').show();
+    } else {
+      $('#hoverIncompleteTask').show();
+    }
+  },
+  mouseleave: function() {
+    $('#hoverTask').text('');
+    $('#hoverCompleteTask').hide();
+    $('#hoverIncompleteTask').hide();
+  }
+}, "#progressdot");
+
 // When the user clicks on a progress dot, switch to that task
 $(document).on("click", "#progressdot", function() {
   var parentTaskDiv = $(this).parent();
