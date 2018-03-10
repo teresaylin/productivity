@@ -1,6 +1,20 @@
 var intervalId = null;
 var whichPlant = '#plant1';
 
+function stage_of_plant(percentFinished) {
+  var plant = '#plant1';
+  if(percentFinished >= 0.75) {
+    plant = '#plant4';
+  } else if(percentFinished >= 0.5) {
+    plant = '#plant3';
+  } else if(percentFinished >= 0.25) {
+    plant = '#plant2';
+  } else {
+    plant = '#plant1';
+  }
+  return plant;
+}
+
 $(function() {
   var numTasks = $('.tasksOnBar').length;
   var numFinished = 0; // number of tasks completed and expired
@@ -43,15 +57,17 @@ $(function() {
 
   // What stage plant is in
   var percentFinished = numFinished / numTasks;
-  if(percentFinished >= 0.75) {
-    whichPlant = '#plant4';
-  } else if(percentFinished >= 0.5) {
-    whichPlant = '#plant3';
-  } else if(percentFinished >= 0.25) {
-    whichPlant = '#plant2';
-  } else {
-    whichPlant = '#plant1';
-  }
+  whichPlant = stage_of_plant(percentFinished);
+  console.log('plant stage: ' + whichPlant);
+  // if(percentFinished >= 0.75) {
+  //   whichPlant = '#plant4';
+  // } else if(percentFinished >= 0.5) {
+  //   whichPlant = '#plant3';
+  // } else if(percentFinished >= 0.25) {
+  //   whichPlant = '#plant2';
+  // } else {
+  //   whichPlant = '#plant1';
+  // }
 
   // if no tasks left
   if(numFinished === numTasks) {
@@ -180,6 +196,29 @@ $(document).on("click", "#checkmark", function() {
   var text = $('#workingOn').text().split(" ");
   var taskname = text[1];
 
+  // change dot to green
+  // get percentage of tasks completed & update plant
+  var numTasks = $('.tasksOnBar').length;
+  var numCompleted = 0;
+  var fade = false;
+  var taskdot;
+  $('.tasksOnBar').each(function(index, element) {
+    var children = $(element).children();
+    var task = children[0];
+    var dot = children[3];
+    var dotColor = $(dot).css('background-color');
+    if(dotColor === 'rgb(0, 128, 0)') {
+      numCompleted++;
+    }
+    if($(task).text() === taskname) {
+      fade = true;
+      taskdot = dot;
+    }
+  });
+
+  var percentFinished = (numCompleted+1)/numTasks;
+  var nextPlant = stage_of_plant(percentFinished);
+
   $.ajax({
     url: '/home/' + listname + '/complete',
     type: 'POST',
@@ -188,7 +227,10 @@ $(document).on("click", "#checkmark", function() {
       taskname: taskname
     },
     success: function(data) {
-      location.reload();
+      $(taskdot).css('background-color', 'green');
+      $(whichPlant).fadeOut(750);
+      $(nextPlant).fadeIn(750);
+      setTimeout(function(){location.reload();}, 3000);
     },
     error: function(xhr, status, error) {
       location.reload();
