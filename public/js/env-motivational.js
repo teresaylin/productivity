@@ -58,16 +58,6 @@ $(function() {
   // What stage plant is in
   var percentFinished = numFinished / numTasks;
   whichPlant = stage_of_plant(percentFinished);
-  console.log('plant stage: ' + whichPlant);
-  // if(percentFinished >= 0.75) {
-  //   whichPlant = '#plant4';
-  // } else if(percentFinished >= 0.5) {
-  //   whichPlant = '#plant3';
-  // } else if(percentFinished >= 0.25) {
-  //   whichPlant = '#plant2';
-  // } else {
-  //   whichPlant = '#plant1';
-  // }
 
   // if no tasks left
   if(numFinished === numTasks) {
