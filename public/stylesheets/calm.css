@@ -1,4 +1,7 @@
 /* CALM ENV */
+body {
+  background-color: #ffddfe;
+}
 /* Timer */
 #countdown{
   color: #676464;
@@ -22,4 +25,74 @@
 
 .timetext{
   font-size: 15px;
+}
+
+/* Div for marking current task finished */
+#finishedCircleDiv {
+  display: none;
+  position: absolute;
+  height: 50px;
+  width: 50px;
+  border-radius: 25px;
+  background: #4eca45;
+  top: 12.5px;
+  left: 870px;
+}
+
+#checkmark {
+  position: relative;
+  border-color: white;
+  border-style: solid;
+  border-width: 0 3px 3px 0;
+  top: 9px;
+  left: 18px;
+  transform: rotate(45deg);
+  height: 22px;
+  width: 10px;
+  cursor: pointer;
+}
+
+#checkmark:hover {
+  border-color: #5a5a5a;
+}
+
+/* Path */
+#path {
+  position: absolute;
+  top: 200px;
+  left: 0px;
+  display: none;
+}
+
+#progressdot {
+  height: 12px;
+  width: 12px;
+  background-color: #fffc98;
+  border-radius: 6px;
+  position: absolute;
+  display: none;
+  cursor: pointer;
+  z-index: 3;
+}
+
+#progressdotborder {
+  height: 16px;
+  width: 16px;
+  background-color: black;
+  border-radius: 8px;
+  position: absolute;
+  display: none;
+  z-index: 2;
+}
+
+.task-bar {
+  display: none;
+}
+
+.date-bar {
+  display: none;
+}
+
+.completed-bar {
+  display: none;
 }

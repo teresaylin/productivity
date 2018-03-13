@@ -1,7 +1,8 @@
-/*
+/* 
 Original code: https://github.com/Ciechan/Drawing-Bezier-Curves-JS
+Modified by teresaylin
+*/
 
- */
 window.BezierDrawer = function(canvas, autoTesselates, mode) {
 	
 	// consts
@@ -28,6 +29,7 @@ window.BezierDrawer = function(canvas, autoTesselates, mode) {
 	
 	this.getTesselationCount = function () {return tesselationCount;};
 	this.setTesselationCount = function (c) {tesselationCount = c; draw();};
+	this.getTesselationPoints = function() {return tesselationPoints;};
 	
 	// setup
 
@@ -47,19 +49,23 @@ window.BezierDrawer = function(canvas, autoTesselates, mode) {
 		canvas.getContext("2d").scale(scale, scale);
 	}
 	
-	canvas.onmousedown = canvasDown;
-	canvas.ontouchstart = genericTouchHandler(canvasDown);
+	// canvas.onmousedown = canvasDown;
+	// canvas.ontouchstart = genericTouchHandler(canvasDown);
 
-	canvas.onmousemove = canvasMove;
-	canvas.ontouchmove = genericTouchHandler(canvasMove);
+	// canvas.onmousemove = canvasMove;
+	// canvas.ontouchmove = genericTouchHandler(canvasMove);
 		
-	canvas.onmouseup = canvasUp;
-	canvas.ontouchup = genericTouchHandler(canvasUp);
+	// canvas.onmouseup = canvasUp;
+	// canvas.ontouchup = genericTouchHandler(canvasUp);
 	
-	for (var i = 1; i < 5; i++) { 
-		controlPoints.push(new Point(i * width / 5, ((i % 3) + 1)*height/4));
-	}
-	
+	// for (var i = 1; i < 5; i++) { 
+	// 	controlPoints.push(new Point(i * width / 5, ((i % 3) + 1)*height/4));
+	// }
+	controlPoints.push(new Point(700,0));
+	controlPoints.push(new Point(-700,160));
+	controlPoints.push(new Point(2100,190));
+	controlPoints.push(new Point(700,400));
+
 	draw();
 	
 	// drawing functions
@@ -71,19 +77,20 @@ window.BezierDrawer = function(canvas, autoTesselates, mode) {
 		var ctx = canvas.getContext("2d");
 		ctx.clearRect (0, 0, canvas.width, canvas.height);
 		
-		drawBorder(ctx);
+		// drawBorder(ctx);
 		
 		if (mode == BezierMode.Line) {
 			drawPerfectBezier(ctx);
-			drawTessLineBezier(ctx);
-			drawTessPoints(ctx);
+			// drawTessLineBezier(ctx);
+			// drawTessPoints(ctx);
 		} else if (mode == BezierMode.Rects) {
 			drawTessRectBezier(ctx);
 		} else if (mode == BezierMode.Perfect) {
 			drawTessPerfectBezier(ctx);
+			// drawTessPoints(ctx);
 		}
 		
-		drawControlPoints(ctx);
+		// drawControlPoints(ctx);
 	}
 	
 	function drawBorder(ctx)
@@ -100,8 +107,8 @@ window.BezierDrawer = function(canvas, autoTesselates, mode) {
 	
 	function drawPerfectBezier(ctx)
 	{
-		ctx.strokeStyle = '#BBBBBB';
-
+		ctx.strokeStyle = '#5b1f96';
+		ctx.lineWidth = 4;
 		ctx.beginPath();
 	
 		ctx.moveTo(controlPoints[0].x, controlPoints[0].y);
@@ -113,7 +120,8 @@ window.BezierDrawer = function(canvas, autoTesselates, mode) {
 
 	function drawTessLineBezier(ctx)
 	{
-		ctx.strokeStyle = LineColor;
+		// ctx.strokeStyle = LineColor;
+		ctx.strokeStyle = '#055608';
 	
 		ctx.beginPath();
 		ctx.moveTo(tesselationPoints[0].x, tesselationPoints[0].y);
@@ -183,7 +191,8 @@ window.BezierDrawer = function(canvas, autoTesselates, mode) {
 	
 	function drawTessPoints(ctx)
 	{
-		ctx.fillStyle = LineColor;
+		// ctx.fillStyle = LineColor;
+		ctx.fillStyle = '#ffffff';
 
 		for (var i = 0; i <  tesselationPoints.length; i++) { 
 			ctx.beginPath();
@@ -245,14 +254,13 @@ window.BezierDrawer = function(canvas, autoTesselates, mode) {
 		perpendicularVectors = [];
 		
 		var count = tesselationCount;
-		
+
 		if (autoTesselates) {
 			count = tesselationSegmentsForLength(approximateLength());
 		}
 		
 		for (var i = 0; i < count; i++) { 
 			var t = i / (count - 1);
-			
 			tesselationPoints.push(bezierAt(t));
 			perpendicularVectors.push(bezierPerpAt(t));
 		}

@@ -3,9 +3,11 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/calm.css' />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
     <script src="/js/home.js"></script>
+    <script src="/js/beziers.js"></script>
     <script src="/js/env-calm.js"></script>
   </head>
   <body>
@@ -36,6 +38,44 @@
           </div>
         <% }); %>
       </div>
+    </div>
+
+    <span id='workingOn'></span>
+
+    <div id='countdown'>
+      <div class='containers'>
+        <span class='time' id='days'></span>
+        <div class='timetext'>days</div>
+      </div>
+      <div class='containers'>
+        <span class='time' id='hours'></span>
+        <div class='timetext'>hrs</div>
+      </div>
+      <div class='containers'>
+        <span class='time' id='minutes'></span>
+        <div class='timetext'>mins</div>
+      </div>
+      <div class='containers'>
+        <span class='time' id='seconds'></span>
+        <div class='timetext'>sec</div>
+      </div>
+    </div>
+
+    <div id='finishedCircleDiv'>
+      <div id='checkmark'></div>
+    </div>
+
+    <canvas id='path' width='1300' height='700'></canvas>
+    <div>
+      <% tasks.forEach(function(task) { %>
+        <div class='tasksOnBar'>
+          <p class='task-bar'><%= task.objective %></p>
+          <p class='date-bar'><%= task.deadline %></p>
+          <p class='completed-bar'><%= task.completed %></p>
+          <div class='dots' id='progressdot'></div>
+          <div class='dotborder' id='progressdotborder'></div>
+        </div>
+      <% }); %>
     </div>
 
     <script>
