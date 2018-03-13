@@ -1,5 +1,6 @@
 var intervalId = null;
 // TODO make canvas positioning (X coords) more flexible to different window sizes
+// TODO make current task the first yellow dot
 
 $(function() {
   var numTasks = $('.tasksOnBar').length;
@@ -25,11 +26,12 @@ $(function() {
   path.setTesselationCount(numTasks);
   taskDots = path.getTesselationPoints();
 
-  // position dots based on finished (expired + completed) or unfinished
+  // position task dots based on finished (expired + completed) or unfinished
   $('.tasksOnBar').each(function(index, element) {
     var children = $(element).children();
     var dot = children[3];
-    var border = children[4]
+    var border = children[4];
+    var flag = children[5];
     var complete = $(children[2]).text();
     var date = $(children[1]).text();
     var now = new Date().getTime();
@@ -44,6 +46,15 @@ $(function() {
       $(dot).css('top', canvasTop + taskDots[numFinished].y - 4);
       $(border).css('left', taskDots[numFinished].x - 2);
       $(border).css('top', canvasTop + taskDots[numFinished].y - 6);
+      $(border).css('background-color', '#4c4c4d');
+
+      // position flag
+      var dotTop = parseFloat($(dot).css('top').slice(0,-2));
+      var dotLeft = parseFloat($(dot).css('left').slice(0,-2));
+      var flagHeight = $(flag).height();
+      $(flag).css('top', dotTop - flagHeight);
+      $(flag).css('left', dotLeft);
+
       numFinished++;
     } else {
       // put towards end of path
@@ -53,8 +64,9 @@ $(function() {
       $(border).css('top', canvasTop + taskDots[numTasks - numUnfinished].y - 6);
       numUnfinished++;
     }
-
   });
+
+  // TODO IF NO TASKS LEFT
 
   // check every 10 seconds to see if the clock is still ticking
   setInterval(checkClock, 10000);
@@ -67,31 +79,113 @@ $(document).on("click", ".taskobj", function() {
   var date = $(children[1]).text();
   $('.dropdownTasks').hide();
 
-  // position the 'Working on' text
-  $('#workingOn').text('Working on: ' + task);
-  var timerWidth = $('#workingOn').width();
-  var timerHeight = $('#workingOn').height();
-  $('#workingOn').css('top', ($(window).height() - timerHeight)/2 - 200);
-  $('#workingOn').css('left', ($(window).width() - timerWidth)/2);
+  $('#workingOn').text('FINISH ' + task + ' BY ' + date);
   $('#workingOn').show();
-
   $('#path').show();
-  $('.dots').each(function(index, element) {
-    $(element).show();
-  });
-  $('.dotborder').each(function(index, element) {
-    $(element).show();
-  });
-
-  // position checkmark button
-  var checkmarkSide = $('#finishedCircleDiv').width();
   $('#finishedCircleDiv').show();
+  $('.tasksOnBar').each(function(index, element) {
+    var children = $(element).children();
+    var dot = children[3];
+    var dotborder = children[4];
+    var flag = children[5];
+    $(dot).show();
+    $(dotborder).show();
+    if($(dot).css('background-color') === 'rgb(0, 128, 0)') {
+      $(flag).removeClass('hideflag');
+    }
+  });
 
   // implement countdown
   var deadline = new Date(date).getTime();
   intervalId = setInterval(function() { 
     startClock(deadline);
   }, 1000);
+});
+
+// When user hovers on a progress dot, show the task to the left
+$(document).on({
+  mouseenter: function() {
+    var parentTaskDiv = $(this).parent();
+    var children = $(parentTaskDiv).children();
+    var task = $(children[0]).text();
+    var flag = children[5];
+    var date = $(children[1]).text();
+    var date_formatted = moment(date).format('h:mm a MMM D');
+
+    var dotborder = children[4];
+    var dotColor = $(this).css('background-color');
+    var dotBottom = parseFloat($(this).css('bottom').slice(0,-2));
+    var dotLeft = parseFloat($(this).css('left').slice(0,-2));
+
+    // position flags
+    $('#flag-green').css('bottom', dotBottom);
+    $('#flag-green').css('left', dotLeft - 5);
+    $('#flag-yellow').css('bottom', dotBottom);
+    $('#flag-yellow').css('left', dotLeft - 5);
+
+    // position flag text
+    var flagTop = dotBottom + $('#flag-green').height();
+    var flagLeft = parseFloat($('#flag-green').css('left').slice(0,-2));
+    $('#hoverTask').css('bottom',  flagTop - 100);
+    $('#hoverTask').css('left', flagLeft + 20);
+    $('#hoverTask').text(task + ": " + date_formatted);
+
+    if(dotColor === 'rgb(0, 128, 0)') {
+      $(flag).addClass('hideflag comeback');
+      $('#flag-green').show();
+    } else {
+      $('#flag-yellow').show();
+    }
+  },
+  mouseleave: function() {
+    var parentTaskDiv = $(this).parent();
+    var children = $(parentTaskDiv).children();
+    var flag = children[5];
+    $('#hoverTask').text('');
+    $('#flag-green').hide();
+    $('#flag-yellow').hide();
+    if($(flag).hasClass('comeback')) {
+      $(flag).removeClass('hideflag comeback');
+    }
+  }
+}, "#progressdot");
+
+// When the user clicks on the green checkmark, send update as POST request and reload
+$(document).on("click", "#checkmark", function() {
+  var listname = $('#currentList').text();
+  var text = $('#workingOn').text().split(" ");
+  var taskname = text[1];
+
+  var taskdot;
+  var taskdotborder;
+  $('.tasksOnBar').each(function(index, element) {
+    var children = $(element).children();
+    var task = children[0];
+    var dot = children[3];
+    var border = children[4];
+
+    if($(task).text() === taskname) {
+      taskdot = dot;
+      taskdotborder = border;
+    }
+  });
+
+  $.ajax({
+    url: '/home/' + listname + '/complete',
+    type: 'POST',
+    data: {
+      listname: listname,
+      taskname: taskname
+    },
+    success: function(data) {
+      $(taskdot).css('background-color', 'green');
+      $(taskdotborder).css('background-color', '#4c4c4d');
+      setTimeout(function(){location.reload();}, 3000);
+    },
+    error: function(xhr, status, error) {
+      location.reload();
+    }
+  });
 });
 
 // Display remaining time left

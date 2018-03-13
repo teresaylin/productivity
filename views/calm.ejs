@@ -4,6 +4,7 @@
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/stylesheets/calm.css' />
+    <link href="https://fonts.googleapis.com/css?family=Yantramanav" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
     <script src="/js/home.js"></script>
@@ -73,10 +74,19 @@
           <p class='date-bar'><%= task.deadline %></p>
           <p class='completed-bar'><%= task.completed %></p>
           <div class='dots' id='progressdot'></div>
-          <div class='dotborder' id='progressdotborder'></div>
+          <div class='dotborder' id='progressdotborder'></div>          
+          <img class='flag-done hideflag' id='flag-small' src='/images/env-calm-flag-green-small.png'>
         </div>
       <% }); %>
     </div>
+
+    <div>
+      <img id='flag-green' src='/images/env-calm-flag-green-big.png'>
+    </div>
+    <div>
+      <img id='flag-yellow' src='/images/env-calm-flag-yellow.png'>
+    </div>
+    <span id='hoverTask'></span>
 
     <script>
       $('.dropdownTasks').css('left', ($(window).width() - 300)/2);

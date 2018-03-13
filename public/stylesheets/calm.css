@@ -78,7 +78,7 @@ body {
 #progressdotborder {
   height: 16px;
   width: 16px;
-  background-color: black;
+  background-color: #a2a2a2;
   border-radius: 8px;
   position: absolute;
   display: none;
@@ -96,3 +96,36 @@ body {
 .completed-bar {
   display: none;
 }
+
+/* Flags */
+#flag-small {
+  position: absolute;
+  width: 60px;
+  /*display: none;*/
+}
+
+.hideflag {
+  display: none;
+}
+
+#flag-green {
+  position: absolute;
+  width: 150px;
+  display: none;
+}
+
+
+#flag-yellow {
+  position: absolute;
+  width: 150px;
+  display: none;
+}
+#hoverTask {
+  z-index: 5;
+  position: absolute;
+  width: 120px;
+  height: 80px;
+  font-family: 'Yantramanav', sans-serif;
+  font-size: 18px;
+}
+
