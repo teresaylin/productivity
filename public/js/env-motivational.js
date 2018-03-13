@@ -190,7 +190,6 @@ $(document).on("click", "#checkmark", function() {
   // get percentage of tasks completed & update plant
   var numTasks = $('.tasksOnBar').length;
   var numCompleted = 0;
-  var fade = false;
   var taskdot;
   $('.tasksOnBar').each(function(index, element) {
     var children = $(element).children();
@@ -201,7 +200,6 @@ $(document).on("click", "#checkmark", function() {
       numCompleted++;
     }
     if($(task).text() === taskname) {
-      fade = true;
       taskdot = dot;
     }
   });
