@@ -153,32 +153,34 @@ $(document).on({
 // When the user clicks on a progress dot, switch to that task
 $(document).on("click", "#progressdot", function() {
   var parentTaskDiv = $(this).parent();
+  var dotColor = $(this).css('background-color');
+  var currentTaskDiv = $('.current');
 
-  // update which progressdot is the currently selected one
-  $('.tasksOnBar').each(function(index, element) {
-    $(element).removeClass('current');
-  });
-  $(parentTaskDiv).addClass('current');
+  if(dotColor !== 'rgb(0, 128, 0)') {
+    // update which progressdot is the currently selected one
+    currentTaskDiv.removeClass('current');
+    $(parentTaskDiv).addClass('current');
 
-  // update the task displayed on the right
-  var children = $(parentTaskDiv).children();
-  var task = $(children[0]).text();
-  var date = $(children[1]).text();
-  var date_formatted = moment(date).format('h:mm a MMM D');
-  $('#workingOn').text('FINISH ' + task + ' BY ' + date_formatted);
+    // update the task displayed on the right
+    var children = $(parentTaskDiv).children();
+    var task = $(children[0]).text();
+    var date = $(children[1]).text();
+    var date_formatted = moment(date).format('h:mm a MMM D');
+    $('#workingOn').text('FINISH ' + task + ' BY ' + date_formatted);
 
-  // update progress arrow
-  var arrowHeight = $('#progressarrow').height()/2;
-  var arrowPos = parseFloat($(this).css('top').slice(0,-2)) - arrowHeight + 4;
-  $('#progressarrow').css('top', arrowPos);
+    // update progress arrow
+    var arrowHeight = $('#progressarrow').height()/2;
+    var arrowPos = parseFloat($(this).css('top').slice(0,-2)) - arrowHeight + 4;
+    $('#progressarrow').css('top', arrowPos);
 
-  // clear clock and start new countdown
-  var deadline = new Date(date).getTime();
-  clearInterval(intervalId);
-  intervalId = null;
-  intervalId = setInterval(function() {
-    startClock(deadline);
-  }, 1000);
+    // clear clock and start new countdown
+    var deadline = new Date(date).getTime();
+    clearInterval(intervalId);
+    intervalId = null;
+    intervalId = setInterval(function() {
+      startClock(deadline);
+    }, 1000);
+  }
 });
 
 // When the user clicks on the green checkmark, send update as POST request and reload
