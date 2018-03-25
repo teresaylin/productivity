@@ -1,6 +1,5 @@
 var intervalId = null;
 // TODO make canvas positioning (X coords) more flexible to different window sizes
-// TODO add working on flag, position working on text
 
 $(function() {
   var numTasks = $('.tasksOnBar').length;
@@ -77,9 +76,10 @@ $(document).on("click", ".taskobj", function() {
   var children = $(this).children();
   var task = $(children[0]).text();
   var date = $(children[1]).text();
+  var date_formatted = moment(date).format('h:mm a MMM D');
   $('.dropdownTasks').hide();
 
-  $('#workingOn').text('FINISH ' + task + ' BY ' + date);
+  $('#workingOn').text('FINISH ' + task + ' BY ' + date_formatted);
   // $('#workingOn').show();
   $('#path').show();
   $('#finishedCircleDiv').show();
@@ -135,6 +135,18 @@ $(document).on("click", ".taskobj", function() {
   $(selectedDotBorder).css('top', parseFloat(tempDotTop.slice(0,-2)) - 2);
   $(selectedDotBorder).css('left', parseFloat(tempDotLeft.slice(0,-2)) - 2);
 
+  // position current yellow flag
+  $('#flag-yellow-current').css('bottom', $(selectedDot).css('bottom'));
+  $('#flag-yellow-current').css('left', parseFloat($(selectedDot).css('left').slice(0,-2)) - 5);
+  $('#flag-yellow-current').show();
+
+  // position current flag text
+  var flagTop = parseFloat($(selectedDot).css('bottom').slice(0,-2)) + $('#flag-yellow-current').height();
+  var flagLeft = parseFloat($('#flag-yellow-current').css('left').slice(0,-2));
+  $('#workingOn').css('bottom',  flagTop - 100);
+  $('#workingOn').css('left', flagLeft + 20);
+  $('#workingOn').show();
+
   // implement countdown
   var deadline = new Date(date).getTime();
   intervalId = setInterval(function() { 
@@ -157,24 +169,28 @@ $(document).on({
     var dotBottom = parseFloat($(this).css('bottom').slice(0,-2));
     var dotLeft = parseFloat($(this).css('left').slice(0,-2));
 
-    // position flags
-    $('#flag-green').css('bottom', dotBottom);
-    $('#flag-green').css('left', dotLeft - 5);
-    $('#flag-yellow').css('bottom', dotBottom);
-    $('#flag-yellow').css('left', dotLeft - 5);
+    // if dot is not current task, show flags
+    // if dot is current task, don't do anything
+    if(!$(parentTaskDiv).hasClass('current')) {
+      // position flags
+      $('#flag-green').css('bottom', dotBottom);
+      $('#flag-green').css('left', dotLeft - 5);
+      $('#flag-yellow').css('bottom', dotBottom);
+      $('#flag-yellow').css('left', dotLeft - 5);
 
-    // position flag text
-    var flagTop = dotBottom + $('#flag-green').height();
-    var flagLeft = parseFloat($('#flag-green').css('left').slice(0,-2));
-    $('#hoverTask').css('bottom',  flagTop - 100);
-    $('#hoverTask').css('left', flagLeft + 20);
-    $('#hoverTask').text(task + ": " + date_formatted);
+      // position flag text
+      var flagTop = dotBottom + $('#flag-green').height();
+      var flagLeft = parseFloat($('#flag-green').css('left').slice(0,-2));
+      $('#hoverTask').css('bottom',  flagTop - 100);
+      $('#hoverTask').css('left', flagLeft + 20);
+      $('#hoverTask').text(task + ": " + date_formatted);
 
-    if(dotColor === 'rgb(0, 128, 0)') {
-      $(flag).addClass('hideflag comeback');
-      $('#flag-green').show();
-    } else {
-      $('#flag-yellow').show();
+      if(dotColor === 'rgb(0, 128, 0)') {
+        $(flag).addClass('hideflag comeback');
+        $('#flag-green').show();
+      } else {
+        $('#flag-yellow').show();
+      }
     }
   },
   mouseleave: function() {
@@ -204,7 +220,7 @@ $(document).on("click", "#progressdot", function() {
   var children = $(parentTaskDiv).children();
   var task = $(children[0]).text();
   var date = $(children[1]).text();
-  var date_formatted = moment(date).format('h:mm a MMM D, YYYY');
+  var date_formatted = moment(date).format('h:mm a MMM D');
   $('#workingOn').text('FINISH ' + task + ' BY ' + date_formatted);
 
   // clear clock and start new countdown
@@ -221,6 +237,7 @@ $(document).on("click", "#checkmark", function() {
   var listname = $('#currentList').text();
   var text = $('#workingOn').text().split(" ");
   var taskname = text[1];
+  console.log('working on: ' + taskname);
 
   var taskdot;
   var taskdotborder;
@@ -230,7 +247,9 @@ $(document).on("click", "#checkmark", function() {
     var dot = children[3];
     var border = children[4];
 
+    console.log('this task is: ' + $(task).text());
     if($(task).text() === taskname) {
+      console.log('found task')
       taskdot = dot;
       taskdotborder = border;
     }
@@ -244,6 +263,9 @@ $(document).on("click", "#checkmark", function() {
       taskname: taskname
     },
     success: function(data) {
+
+      $('#workingOn').fadeOut();
+      $('#flag-yellow-current').fadeOut();
       $(taskdot).css('background-color', 'green');
       $(taskdotborder).css('background-color', '#4c4c4d');
       setTimeout(function(){location.reload();}, 3000);

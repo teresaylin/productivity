@@ -119,6 +119,12 @@ body {
   display: none;
 }
 
+#flag-yellow-current {
+  position: absolute;
+  width: 150px;
+  display: none;
+}
+
 #hoverTask {
   z-index: 5;
   position: absolute;
@@ -129,6 +135,12 @@ body {
 }
 
 #workingOn {
+  z-index: 5;
+  position: absolute;
+  width: 120px;
+  height: 80px;
+  font-family: 'Yantramanav', sans-serif;
+  font-size: 18px;
   display: none;
 }
 
