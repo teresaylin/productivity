@@ -80,7 +80,6 @@ $(document).on("click", ".taskobj", function() {
   $('.dropdownTasks').hide();
 
   $('#workingOn').text('FINISH ' + task + ' BY ' + date_formatted);
-  // $('#workingOn').show();
   $('#path').show();
   $('#finishedCircleDiv').show();
 
@@ -235,9 +234,7 @@ $(document).on("click", "#progressdot", function() {
 // When the user clicks on the green checkmark, send update as POST request and reload
 $(document).on("click", "#checkmark", function() {
   var listname = $('#currentList').text();
-  var text = $('#workingOn').text().split(" ");
-  var taskname = text[1];
-  console.log('working on: ' + taskname);
+  var taskname = $('#workingOn').text().split("FINISH ")[1].split(" BY")[0];
 
   var taskdot;
   var taskdotborder;
@@ -247,9 +244,7 @@ $(document).on("click", "#checkmark", function() {
     var dot = children[3];
     var border = children[4];
 
-    console.log('this task is: ' + $(task).text());
     if($(task).text() === taskname) {
-      console.log('found task')
       taskdot = dot;
       taskdotborder = border;
     }
@@ -263,7 +258,6 @@ $(document).on("click", "#checkmark", function() {
       taskname: taskname
     },
     success: function(data) {
-
       $('#workingOn').fadeOut();
       $('#flag-yellow-current').fadeOut();
       $(taskdot).css('background-color', 'green');

@@ -81,9 +81,10 @@ $(document).on("click", ".taskobj", function() {
   var children = $(this).children();
   var task = $(children[0]).text();
   var date = $(children[1]).text();
+  var date_formatted = moment(date).format('h:mm a MMM D');
   $('.dropdownTasks').hide();
 
-  $('#workingOn').text('FINISH ' + task + ' BY ' + date);
+  $('#workingOn').text('FINISH ' + task + ' BY ' + date_formatted);
   $('#workingOn').show();
   $('#workingOnDisplay').show();
   $('#finishedCircleDiv').show();
@@ -163,7 +164,7 @@ $(document).on("click", "#progressdot", function() {
   var children = $(parentTaskDiv).children();
   var task = $(children[0]).text();
   var date = $(children[1]).text();
-  var date_formatted = moment(date).format('h:mm a MMM D, YYYY');
+  var date_formatted = moment(date).format('h:mm a MMM D');
   $('#workingOn').text('FINISH ' + task + ' BY ' + date_formatted);
 
   // update progress arrow
@@ -183,8 +184,7 @@ $(document).on("click", "#progressdot", function() {
 // When the user clicks on the green checkmark, send update as POST request and reload
 $(document).on("click", "#checkmark", function() {
   var listname = $('#currentList').text();
-  var text = $('#workingOn').text().split(" ");
-  var taskname = text[1];
+  var taskname = $('#workingOn').text().split("FINISH ")[1].split(" BY")[0];
 
   // change dot to green
   // get percentage of tasks completed & update plant
