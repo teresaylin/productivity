@@ -1,5 +1,7 @@
 var intervalId = null;
 // TODO make canvas positioning (X coords) more flexible to different window sizes
+// TODO make sure first point's flag does not cover up timer
+// TODO click on checkmark => place green flag on that dot
 
 $(function() {
   var numTasks = $('.tasksOnBar').length;
@@ -208,27 +210,47 @@ $(document).on({
 // When the user clicks on a progress dot, switch to that task
 $(document).on("click", "#progressdot", function() {
   var parentTaskDiv = $(this).parent();
+  var dot = $(this);
+  var dotBorder = $(parentTaskDiv).children()[4];
+  var dotColor = $(this).css('background-color');
+  var currentTaskDiv = $('.current');
 
-  // update which progressdot is the currently selected one
-  $('.tasksOnBar').each(function(index, element) {
-    $(element).removeClass('current');
-  });
-  $(parentTaskDiv).addClass('current');
+  if(dotColor !== 'rgb(0, 128, 0)') {
+    // switch dot positions
+    var currentDot = currentTaskDiv.children()[3];
+    var currentDotBorder = currentTaskDiv.children()[4];
+    var tempDotTop = $(currentDot).css('top');
+    var tempDotLeft = $(currentDot).css('left');
 
-  // update the task displayed on the right
-  var children = $(parentTaskDiv).children();
-  var task = $(children[0]).text();
-  var date = $(children[1]).text();
-  var date_formatted = moment(date).format('h:mm a MMM D');
-  $('#workingOn').text('FINISH ' + task + ' BY ' + date_formatted);
+    $(currentDot).css('top', $(dot).css('top'));
+    $(currentDot).css('left', $(dot).css('left'));
+    $(currentDotBorder).css('top', $(dotBorder).css('top'));
+    $(currentDotBorder).css('left', $(dotBorder).css('left'));
 
-  // clear clock and start new countdown
-  var deadline = new Date(date).getTime();
-  clearInterval(intervalId);
-  intervalId = null;
-  intervalId = setInterval(function() {
-    startClock(deadline);
-  }, 1000);
+    $(dot).css('top', tempDotTop);
+    $(dot).css('left', tempDotLeft);
+    $(dotBorder).css('top', parseFloat(tempDotTop.slice(0,-2)) - 2);
+    $(dotBorder).css('left', parseFloat(tempDotLeft.slice(0,-2)) - 2);
+
+    // change which taskdiv is current
+    currentTaskDiv.removeClass('current');
+    $(parentTaskDiv).addClass('current');
+
+    // update the task displayed on the right
+    var children = $(parentTaskDiv).children();
+    var task = $(children[0]).text();
+    var date = $(children[1]).text();
+    var date_formatted = moment(date).format('h:mm a MMM D');
+    $('#workingOn').text('FINISH ' + task + ' BY ' + date_formatted);
+
+    // clear clock and start new countdown
+    var deadline = new Date(date).getTime();
+    clearInterval(intervalId);
+    intervalId = null;
+    intervalId = setInterval(function() {
+      startClock(deadline);
+    }, 1000);
+  }
 });
 
 // When the user clicks on the green checkmark, send update as POST request and reload
