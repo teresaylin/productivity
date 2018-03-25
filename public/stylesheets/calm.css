@@ -101,7 +101,6 @@ body {
 #flag-small {
   position: absolute;
   width: 60px;
-  /*display: none;*/
 }
 
 .hideflag {
@@ -114,12 +113,12 @@ body {
   display: none;
 }
 
-
 #flag-yellow {
   position: absolute;
   width: 150px;
   display: none;
 }
+
 #hoverTask {
   z-index: 5;
   position: absolute;
@@ -129,3 +128,12 @@ body {
   font-size: 18px;
 }
 
+#workingOn {
+  display: none;
+}
+
+#workingOnFlag {
+  position: absolute;
+  width: 150px;
+  display: none;
+}

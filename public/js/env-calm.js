@@ -1,6 +1,6 @@
 var intervalId = null;
 // TODO make canvas positioning (X coords) more flexible to different window sizes
-// TODO make current task the first yellow dot
+// TODO add working on flag, position working on text
 
 $(function() {
   var numTasks = $('.tasksOnBar').length;
@@ -42,10 +42,10 @@ $(function() {
     if(diff <= 0 || complete == 'true') {
       // put towards beginning of path
       $(dot).css('background-color', 'green');
-      $(dot).css('left', taskDots[numFinished].x);
-      $(dot).css('top', canvasTop + taskDots[numFinished].y - 4);
-      $(border).css('left', taskDots[numFinished].x - 2);
-      $(border).css('top', canvasTop + taskDots[numFinished].y - 6);
+      $(dot).css('left', taskDots[numFinished].x - 6);
+      $(dot).css('top', canvasTop + taskDots[numFinished].y - 6);
+      $(border).css('left', taskDots[numFinished].x - 8);
+      $(border).css('top', canvasTop + taskDots[numFinished].y - 8);
       $(border).css('background-color', '#4c4c4d');
 
       // position flag
@@ -58,10 +58,10 @@ $(function() {
       numFinished++;
     } else {
       // put towards end of path
-      $(dot).css('left', taskDots[numTasks - numUnfinished].x);
-      $(dot).css('top', canvasTop + taskDots[numTasks - numUnfinished].y - 4);
-      $(border).css('left', taskDots[numTasks - numUnfinished].x - 2);
-      $(border).css('top', canvasTop + taskDots[numTasks - numUnfinished].y - 6);
+      $(dot).css('left', taskDots[numTasks - numUnfinished].x - 6);
+      $(dot).css('top', canvasTop + taskDots[numTasks - numUnfinished].y - 6);
+      $(border).css('left', taskDots[numTasks - numUnfinished].x - 8);
+      $(border).css('top', canvasTop + taskDots[numTasks - numUnfinished].y - 8);
       numUnfinished++;
     }
   });
@@ -80,20 +80,60 @@ $(document).on("click", ".taskobj", function() {
   $('.dropdownTasks').hide();
 
   $('#workingOn').text('FINISH ' + task + ' BY ' + date);
-  $('#workingOn').show();
+  // $('#workingOn').show();
   $('#path').show();
   $('#finishedCircleDiv').show();
+
+  var firstYellowDot;
+  var firstYellowDotBorder;
   $('.tasksOnBar').each(function(index, element) {
     var children = $(element).children();
+    var dotTask = children[0];
     var dot = children[3];
     var dotborder = children[4];
     var flag = children[5];
     $(dot).show();
     $(dotborder).show();
+    // don't hide small green flag if the dot color is green
     if($(dot).css('background-color') === 'rgb(0, 128, 0)') {
       $(flag).removeClass('hideflag');
+    } else { // yellow dot
+      if(firstYellowDot) {
+        // compare top of first yellow dot to this yellow dot
+        var firstYellowDotTop = parseFloat($(firstYellowDot).css('top').slice(0,-2));
+        var dotTop = parseFloat($(dot).css('top').slice(0,-2));
+        if(firstYellowDotTop > dotTop) {
+          firstYellowDot = dot;
+          firstYellowDotBorder = dotborder;
+        }
+      } else {
+        firstYellowDot = dot;
+        firstYellowDotBorder = dotborder;
+      }
+    }
+    // make a note of selected task in the corresponding dot on the progress bar
+    if($(dotTask).text() === task) {
+      $(element).addClass('current');
+    } else {
+      $(element).removeClass('current');
     }
   });
+
+  // switch current dot with first yellow dot
+  var selectedDot = $('.current').children()[3];
+  var selectedDotBorder = $('.current').children()[4];
+  var tempDotTop = $(firstYellowDot).css('top');
+  var tempDotLeft = $(firstYellowDot).css('left');
+
+  $(firstYellowDot).css('top', $(selectedDot).css('top'));
+  $(firstYellowDot).css('left', $(selectedDot).css('left'));
+  $(firstYellowDotBorder).css('top', $(selectedDotBorder).css('top'));
+  $(firstYellowDotBorder).css('left', $(selectedDotBorder).css('left'));
+
+  $(selectedDot).css('top', tempDotTop);
+  $(selectedDot).css('left', tempDotLeft);
+  $(selectedDotBorder).css('top', parseFloat(tempDotTop.slice(0,-2)) - 2);
+  $(selectedDotBorder).css('left', parseFloat(tempDotLeft.slice(0,-2)) - 2);
 
   // implement countdown
   var deadline = new Date(date).getTime();
@@ -102,7 +142,7 @@ $(document).on("click", ".taskobj", function() {
   }, 1000);
 });
 
-// When user hovers on a progress dot, show the task to the left
+// When user hovers on a progress dot, show the task in a flag
 $(document).on({
   mouseenter: function() {
     var parentTaskDiv = $(this).parent();
@@ -149,6 +189,32 @@ $(document).on({
     }
   }
 }, "#progressdot");
+
+// When the user clicks on a progress dot, switch to that task
+$(document).on("click", "#progressdot", function() {
+  var parentTaskDiv = $(this).parent();
+
+  // update which progressdot is the currently selected one
+  $('.tasksOnBar').each(function(index, element) {
+    $(element).removeClass('current');
+  });
+  $(parentTaskDiv).addClass('current');
+
+  // update the task displayed on the right
+  var children = $(parentTaskDiv).children();
+  var task = $(children[0]).text();
+  var date = $(children[1]).text();
+  var date_formatted = moment(date).format('h:mm a MMM D, YYYY');
+  $('#workingOn').text('FINISH ' + task + ' BY ' + date_formatted);
+
+  // clear clock and start new countdown
+  var deadline = new Date(date).getTime();
+  clearInterval(intervalId);
+  intervalId = null;
+  intervalId = setInterval(function() {
+    startClock(deadline);
+  }, 1000);
+});
 
 // When the user clicks on the green checkmark, send update as POST request and reload
 $(document).on("click", "#checkmark", function() {
@@ -216,7 +282,6 @@ function startClock(deadline) {
   // position entire div in vertical center
   var timerWidth = $('#countdown').width();
   var timerHeight = $('#countdown').height();
-  // $('#countdown').css('top', ($(window).height() - timerHeight)/2 - 100);
   $('#countdown').css('top', 0)
   $('#countdown').css('left', ($(window).width() - timerWidth)/2);
   $('#countdown').show();
