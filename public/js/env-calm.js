@@ -1,6 +1,5 @@
 var intervalId = null;
 // TODO make canvas positioning (X coords) more flexible to different window sizes
-// TODO make sure first point's flag does not cover up timer
 // TODO click on checkmark => place green flag on that dot
 
 $(function() {
