@@ -1,6 +1,5 @@
 var intervalId = null;
 // TODO make canvas positioning (X coords) more flexible to different window sizes
-// TODO click on checkmark => place green flag on that dot
 
 $(function() {
   var numTasks = $('.tasksOnBar').length;
@@ -47,14 +46,6 @@ $(function() {
       $(border).css('left', taskDots[numFinished].x - 8);
       $(border).css('top', canvasTop + taskDots[numFinished].y - 8);
       $(border).css('background-color', '#4c4c4d');
-
-      // position flag
-      var dotTop = parseFloat($(dot).css('top').slice(0,-2));
-      var dotLeft = parseFloat($(dot).css('left').slice(0,-2));
-      var flagHeight = $(flag).height();
-      $(flag).css('top', dotTop - flagHeight);
-      $(flag).css('left', dotLeft);
-
       numFinished++;
     } else {
       // put towards end of path
@@ -64,6 +55,13 @@ $(function() {
       $(border).css('top', canvasTop + taskDots[numTasks - numUnfinished].y - 8);
       numUnfinished++;
     }
+
+    // position flag
+    var dotTop = parseFloat($(dot).css('top').slice(0,-2));
+    var dotLeft = parseFloat($(dot).css('left').slice(0,-2));
+    var flagHeight = $(flag).height();
+    $(flag).css('top', dotTop - flagHeight);
+    $(flag).css('left', dotLeft);
   });
 
   // TODO IF NO TASKS LEFT
@@ -86,6 +84,7 @@ $(document).on("click", ".taskobj", function() {
 
   var firstYellowDot;
   var firstYellowDotBorder;
+  var firstYellowDotFlag;
   $('.tasksOnBar').each(function(index, element) {
     var children = $(element).children();
     var dotTask = children[0];
@@ -105,10 +104,12 @@ $(document).on("click", ".taskobj", function() {
         if(firstYellowDotTop > dotTop) {
           firstYellowDot = dot;
           firstYellowDotBorder = dotborder;
+          firstYellowDotFlag = flag;
         }
       } else {
         firstYellowDot = dot;
         firstYellowDotBorder = dotborder;
+        firstYellowDotFlag = flag;
       }
     }
     // make a note of selected task in the corresponding dot on the progress bar
@@ -120,20 +121,28 @@ $(document).on("click", ".taskobj", function() {
   });
 
   // switch current dot with first yellow dot
+  // switch current dot's green flag with first yellow dot's green flag
   var selectedDot = $('.current').children()[3];
   var selectedDotBorder = $('.current').children()[4];
+  var selectedDotFlag = $('.current').children()[5];
   var tempDotTop = $(firstYellowDot).css('top');
   var tempDotLeft = $(firstYellowDot).css('left');
+  var tempFlagTop = $(firstYellowDotFlag).css('top');
+  var tempFlagLeft = $(firstYellowDot).css('left');
 
   $(firstYellowDot).css('top', $(selectedDot).css('top'));
   $(firstYellowDot).css('left', $(selectedDot).css('left'));
   $(firstYellowDotBorder).css('top', $(selectedDotBorder).css('top'));
   $(firstYellowDotBorder).css('left', $(selectedDotBorder).css('left'));
+  $(firstYellowDotFlag).css('top', $(selectedDotFlag).css('top'));
+  $(firstYellowDotFlag).css('left', $(selectedDotFlag).css('left'));
 
   $(selectedDot).css('top', tempDotTop);
   $(selectedDot).css('left', tempDotLeft);
   $(selectedDotBorder).css('top', parseFloat(tempDotTop.slice(0,-2)) - 2);
   $(selectedDotBorder).css('left', parseFloat(tempDotLeft.slice(0,-2)) - 2);
+  $(selectedDotFlag).css('top', tempFlagTop);
+  $(selectedDotFlag).css('left', tempFlagLeft);
 
   // position current yellow flag
   $('#flag-yellow-current').css('bottom', $(selectedDot).css('bottom'));
@@ -212,24 +221,32 @@ $(document).on("click", "#progressdot", function() {
   var dot = $(this);
   var dotBorder = $(parentTaskDiv).children()[4];
   var dotColor = $(this).css('background-color');
+  var dotFlag = $(parentTaskDiv).children()[5];
   var currentTaskDiv = $('.current');
 
   if(dotColor !== 'rgb(0, 128, 0)') {
-    // switch dot positions
+    // switch dot positions and their mini green flags' positions
     var currentDot = currentTaskDiv.children()[3];
     var currentDotBorder = currentTaskDiv.children()[4];
+    var currentDotFlag = currentTaskDiv.children()[5];
     var tempDotTop = $(currentDot).css('top');
     var tempDotLeft = $(currentDot).css('left');
+    var tempFlagTop = $(currentDotFlag).css('top');
+    var tempFlagLeft = $(currentDotFlag).css('left');
 
     $(currentDot).css('top', $(dot).css('top'));
     $(currentDot).css('left', $(dot).css('left'));
     $(currentDotBorder).css('top', $(dotBorder).css('top'));
     $(currentDotBorder).css('left', $(dotBorder).css('left'));
+    $(currentDotFlag).css('top', $(dotFlag).css('top'));
+    $(currentDotFlag).css('left', $(dotFlag).css('left'));
 
     $(dot).css('top', tempDotTop);
     $(dot).css('left', tempDotLeft);
     $(dotBorder).css('top', parseFloat(tempDotTop.slice(0,-2)) - 2);
     $(dotBorder).css('left', parseFloat(tempDotLeft.slice(0,-2)) - 2);
+    $(dotFlag).css('top', tempFlagTop);
+    $(dotFlag).css('left', tempFlagLeft);
 
     // change which taskdiv is current
     currentTaskDiv.removeClass('current');
@@ -259,15 +276,18 @@ $(document).on("click", "#checkmark", function() {
 
   var taskdot;
   var taskdotborder;
+  var taskflag;
   $('.tasksOnBar').each(function(index, element) {
     var children = $(element).children();
     var task = children[0];
     var dot = children[3];
     var border = children[4];
+    var flag = children[5];
 
     if($(task).text() === taskname) {
       taskdot = dot;
       taskdotborder = border;
+      taskflag = flag;
     }
   });
 
@@ -283,6 +303,7 @@ $(document).on("click", "#checkmark", function() {
       $('#flag-yellow-current').fadeOut();
       $(taskdot).css('background-color', 'green');
       $(taskdotborder).css('background-color', '#4c4c4d');
+      setTimeout(function(){$(taskflag).removeClass('hideflag');}, 1000);
       setTimeout(function(){location.reload();}, 3000);
     },
     error: function(xhr, status, error) {
