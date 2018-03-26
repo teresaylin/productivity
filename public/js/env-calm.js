@@ -64,7 +64,30 @@ $(function() {
     $(flag).css('left', dotLeft);
   });
 
-  // TODO IF NO TASKS LEFT
+  // if no tasks left
+  if(numFinished === numTasks) {
+    $('.dropdownTasks').hide();
+    $('#path').show();
+
+    $('#workingOn').width(400);
+    $('#workingOn').height(200);
+    $('#workingOn').css('font-size', 30);
+    $('#workingOn').css('text-align', 'center');
+    var workingWidth = $('#workingOn').width();
+    $('#workingOn').css('left', ($(window).width() - workingWidth)/2);
+    $('#workingOn').text("CONGRATS, YOU'RE DONE!");
+    $('#workingOn').show();
+
+    $('.tasksOnBar').each(function(index, element) {
+      var children = $(element).children();
+      var dot = children[3];
+      var border = children[4];
+      var greenflag = children[5];
+      $(dot).show();
+      $(border).show();
+      $(greenflag).removeClass('hideflag');
+    });
+  }
 
   // check every 10 seconds to see if the clock is still ticking
   setInterval(checkClock, 10000);
