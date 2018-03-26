@@ -75,7 +75,7 @@ $(function() {
     $('#workingOn').css('text-align', 'center');
     var workingWidth = $('#workingOn').width();
     $('#workingOn').css('left', ($(window).width() - workingWidth)/2);
-    $('#workingOn').text("CONGRATS, YOU'RE DONE!");
+    $('#workingOn').text("ALL TASKS COMPLETED");
     $('#workingOn').show();
 
     $('.tasksOnBar').each(function(index, element) {
