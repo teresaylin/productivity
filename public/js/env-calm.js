@@ -73,6 +73,8 @@ $(function() {
     $('#workingOn').height(200);
     $('#workingOn').css('font-size', 30);
     $('#workingOn').css('text-align', 'center');
+    $('#workingOn').css('z-index', 2);    // so that the text will not obstruct the first dot
+    $('#workingOn').css('top', 50);       // so that the text will not obstruct the first dot
     var workingWidth = $('#workingOn').width();
     $('#workingOn').css('left', ($(window).width() - workingWidth)/2);
     $('#workingOn').text("ALL TASKS COMPLETED");
