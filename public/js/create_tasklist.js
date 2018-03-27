@@ -1,6 +1,9 @@
 // Add a task to the list
 function addTask() {
   var task = $('#newtask').val();
+  // when passing task to newtaskInput, because attribute 'value' is given double quotes around its value, single quotes inside its value will work, but double quotes do not
+  // replace double quotes with single quotes, because replacing single quotes with double quotes is more awkward (it's => it"s?)
+  var task_escaped = task.replace(/(["])/g, "'");
   var deadline = $('#newdeadline').val();
   var deadline_formatted = moment(deadline).format('MMM D, h:mm a');    // ex: Jan 1, 5:08 pm
   var jsDate = moment(deadline).toDate();
@@ -12,12 +15,12 @@ function addTask() {
     // TODO check that date is at least today or later
 
     var numTasks = $('#tasklist').children().length;
-    var newtaskLI = "<li id='task" + numTasks + "'>" + task + "<span id='time" + numTasks + "' class='deadline'>" + deadline_formatted + "</span>" + "<span class='close'>\u00D7</span>" + "</li>";
+    var newtaskLI = "<li id='task" + numTasks + "'>" + task_escaped + "<span id='time" + numTasks + "' class='deadline'>" + deadline_formatted + "</span>" + "<span class='close'>\u00D7</span>" + "</li>";
     $('#tasklist').append(newtaskLI);
 
     // add a hidden input element so that tasks can be sent via POST request
-    var newtaskInput = "<input type='hidden' value='" + task + "' name='task" + numTasks + "' id='inputtask" + numTasks + "'>";
-    var newdateInput = "<input type='hidden' value='" + jsDate + "' name='time" + numTasks + "' id='inputtime" + numTasks + "'>";
+    var newtaskInput = '<input type="hidden" value="' + task_escaped + '" name="task' + numTasks + '" id="inputtask' + numTasks + '">';
+    var newdateInput = '<input type="hidden" value="' + jsDate + '" name="time' + numTasks + '" id="inputtime' + numTasks + '">';
     $('#taskform').append(newtaskInput);
     $('#taskform').append(newdateInput);
   }
