@@ -1,5 +1,8 @@
 var intervalId = null;
 var whichSnowman = '#snowman1';
+var numTasks;
+var numFinished;
+var numUnfinished;
 // TODO make sure that if there are 2 identical tasks, that checking one will not save both as completed
 
 function stage_of_snowman(percentFinished) {
@@ -17,9 +20,9 @@ function stage_of_snowman(percentFinished) {
 }
 
 $(function() {
-  var numTasks = $('.tasksOnBar').length;
-  var numFinished = 0; // number of tasks completed and expired
-  var numUnfinished = 0;
+  numTasks = $('.tasksOnBar').length;
+  numFinished = 0; // number of tasks completed and expired
+  numUnfinished = 0;
 
   // in "Right now" dropdown, format each task deadline
   $('.taskobj').each(function(index, element) {
@@ -68,7 +71,7 @@ $(function() {
   whichSnowman = stage_of_snowman(percentFinished);
 
   // set status and position
-  $('#status').text(Math.round(percentFinished) + '%');
+  $('#status').text(Math.round(percentFinished*100) + '%');
   $('#status').css('top', $(window).height()/2 - $('#status').height());
   $('#status').css('left', $(window).width()/2 - $('#status').width()/4);
   $('#youare').css('top', $(window).height()/2 - $('#status').height() - $('#youare').height());
@@ -91,7 +94,6 @@ $(document).on("click", ".taskobj", function() {
 
   // show certain elements
   $('#workingOn').text('Working on: ' + task);
-  $('#workingOn').show(); 
   $('#finishedCircleDiv').show();
   $(whichSnowman).show();
   $('#youare').show();
@@ -114,7 +116,7 @@ $(document).on("click", ".taskobj", function() {
     } else {
       $(element).removeClass('current');
     }
-    $(element).css('display', 'inline-flex');
+    $(element).css('display', 'inline-flex'); // puts deadline and task on the same line
     $(element).show();
   });
 
@@ -127,8 +129,38 @@ $(document).on("click", ".taskobj", function() {
 
 // TODO when user clicks on a task on a side, switch to that task
 
-// TODO when user clicks on checkmark
+// when user clicks on checkmark
+$(document).on("click", "#checkmark", function() {
+  var listname = $('#currentList').text();
+  var taskname = $('#workingOn').text().slice(12);  // slices off the "Working on: "
+  var percentFinished = (numFinished+1)/numTasks;
+  var nextSnowman = stage_of_snowman(percentFinished);
 
+  $.ajax({
+    url: '/home/' + listname + '/complete',
+    type: 'POST',
+    data: {
+      listname: listname,
+      taskname: taskname
+    },
+    success: function(data) {
+      // change task to green
+      $('.current').css('text-decoration', 'line-through');
+      $('.current').css('font-style', 'italic');
+      $('.current').css('background-color', '#6ed06e');
+      $('.current').css('border-color', 'gray');
+      // update percent done
+      $('#status').text(percentFinished*100+'%');
+      // update snowman
+      $(whichSnowman).fadeOut(750);
+      $(nextSnowman).fadeIn(750);
+      setTimeout(function(){location.reload();}, 3000);
+    },
+    error: function(xhr, status, error) {
+      location.reload();
+    }
+  });
+});
 
 // Display remaining time left
 function startClock(deadline) {

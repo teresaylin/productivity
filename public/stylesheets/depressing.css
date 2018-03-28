@@ -114,6 +114,7 @@ body {
   font-size: 30px;*/
   z-index: 5;
   text-align: center;
+  display: none;
 }
 
 /* Status */
