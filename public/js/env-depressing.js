@@ -126,10 +126,10 @@ $(document).on("click", ".taskobj", function() {
 // when user clicks on a task on a side, switch to that task
 $(document).on("click", ".tasksOnBar", function() {
   var element = this;
-  var bgcolor = $(this).css('background-color');
+  var textdecoration = $(this).css('text-decoration');
   var currentTaskDiv = $('.current');
 
-  if(bgcolor !== 'rgb(110, 208, 110)') {
+  if(!textdecoration.includes('line-through')) {
     // update which task is the currently selected one
     currentTaskDiv.removeClass('current');
     $(element).addClass('current');
