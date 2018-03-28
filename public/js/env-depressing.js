@@ -105,7 +105,8 @@ $(document).on("click", ".taskobj", function() {
   $('.tasksOnBar').each(function(index, element) {
     var children = $(element).children();
     var sideTask = children[0];
-    if($(sideTask).text() === task && !foundCurrent) {
+    var bgcolor = $(element).css('background-color');
+    if($(sideTask).text() === task && !foundCurrent && bgcolor !== 'rgb(110, 208, 110)') {
       $(element).addClass('current');
       $(element).css('border-color', 'red');
       $(element).css('color', 'red');
@@ -150,7 +151,7 @@ $(document).on("click", "#checkmark", function() {
       $('.current').css('background-color', '#6ed06e');
       $('.current').css('border-color', 'gray');
       // update percent done
-      $('#status').text(percentFinished*100+'%');
+      $('#status').text(Math.round(percentFinished*100)+'%');
       // update snowman
       $(whichSnowman).fadeOut(750);
       $(nextSnowman).fadeIn(750);
