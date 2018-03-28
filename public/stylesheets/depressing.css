@@ -99,11 +99,20 @@ body {
   height: 40px;
   width: 300px;
   z-index: 3;
+  color: black;
 }
 
 .tasksOnBar:hover {
   cursor: pointer;
   background-color: white;
+}
+
+.current {
+  border-width: 3px;
+  width: 298px;
+  z-index: 5;
+  color: red;
+  border-color: red;
 }
 
 #workingOn {

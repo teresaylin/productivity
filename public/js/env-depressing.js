@@ -108,11 +108,6 @@ $(document).on("click", ".taskobj", function() {
     var bgcolor = $(element).css('background-color');
     if($(sideTask).text() === task && !foundCurrent && bgcolor !== 'rgb(110, 208, 110)') {
       $(element).addClass('current');
-      $(element).css('border-color', 'red');
-      $(element).css('color', 'red');
-      $(element).css('z-index', 5);
-      $(element).css('border-width', 3);
-      $(element).width(298);
       foundCurrent = true;
     } else {
       $(element).removeClass('current');
@@ -128,7 +123,32 @@ $(document).on("click", ".taskobj", function() {
   }, 1000);
 });
 
-// TODO when user clicks on a task on a side, switch to that task
+// when user clicks on a task on a side, switch to that task
+$(document).on("click", ".tasksOnBar", function() {
+  var element = this;
+  var bgcolor = $(this).css('background-color');
+  var currentTaskDiv = $('.current');
+
+  if(bgcolor !== 'rgb(110, 208, 110)') {
+    // update which task is the currently selected one
+    currentTaskDiv.removeClass('current');
+    $(element).addClass('current');
+
+    // update the current task
+    var children = $(element).children();
+    var task = $(children[0]).text();
+    var date = $(children[1]).text();
+    $('#workingOn').text('Working on: ' + task);
+
+    // clear clock and start new countdown
+    var deadline = new Date(date).getTime();
+    clearInterval(intervalId);
+    intervalId = null;
+    intervalId = setInterval(function() {
+      startClock(deadline);
+    }, 1000);
+  }
+});
 
 // when user clicks on checkmark
 $(document).on("click", "#checkmark", function() {
