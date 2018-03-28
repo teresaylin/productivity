@@ -3,9 +3,13 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/depressing.css' />
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Serif" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
     <script src="/js/home.js"></script>
+    <script src="/js/env-depressing.js"></script>
   </head>
   <body>
     <div id='currentList'><%= listname %></div>
@@ -36,6 +40,58 @@
         <% }); %>
       </div>
     </div>
+
+    <span id='workingOn'></span>
+
+    <div id='countdown'>
+      <div class='containers'>
+        <span class='time' id='days'></span>
+        <div class='timetext'>days</div>
+      </div>
+      <div class='containers'>
+        <span class='time' id='hours'></span>
+        <div class='timetext'>hrs</div>
+      </div>
+      <div class='containers'>
+        <span class='time' id='minutes'></span>
+        <div class='timetext'>mins</div>
+      </div>
+      <div class='containers'>
+        <span class='time' id='seconds'></span>
+        <div class='timetext'>sec</div>
+      </div>
+    </div>
+
+    <div id='finishedCircleDiv'>
+      <div id='checkmark'></div>
+    </div>
+
+    <div>
+      <% tasks.forEach(function(task) { %>
+        <div class='tasksOnBar'>
+          <p class='task-bar'><%= task.objective %></p>
+          <p class='date-bar'><%= task.deadline %></p>
+          <p class='completed-bar'><%= task.completed %></p>
+          <p class='date-informal'></p>
+        </div>
+      <% }); %>
+    </div>
+    <div>
+      <img id='snowman1' src='/images/env-depressing-snowman1.png'>
+    </div>
+    <div>
+      <img id='snowman2' src='/images/env-depressing-snowman2.png'>
+    </div>
+    <div>
+      <img id='snowman3' src='/images/env-depressing-snowman3.png'>
+    </div>
+    <div>
+      <img id='snowman4' src='/images/env-depressing-snowman4.png'>
+    </div>
+
+    <span id='youare'>you are</span>
+    <span id='status'></span>
+    <span id='done'>done</span>
 
     <script>
       $('.dropdownTasks').css('left', ($(window).width() - 300)/2);

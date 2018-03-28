@@ -1,6 +1,26 @@
 var intervalId = null;
+var whichSnowman = '#snowman1';
+// TODO make sure that if there are 2 identical tasks, that checking one will not save both as completed
+
+function stage_of_snowman(percentFinished) {
+  var snowman = '';
+  if(percentFinished >= 0.75) {
+    snowman = '#snowman4';
+  } else if(percentFinished >= 0.5) {
+    snowman = '#snowman3';
+  } else if(percentFinished >= 0.25) {
+    snowman = '#snowman2';
+  } else {
+    snowman = '#snowman1';
+  }
+  return snowman;
+}
 
 $(function() {
+  var numTasks = $('.tasksOnBar').length;
+  var numFinished = 0; // number of tasks completed and expired
+  var numUnfinished = 0;
+
   // in "Right now" dropdown, format each task deadline
   $('.taskobj').each(function(index, element) {
     var children = $(element).children();
@@ -15,6 +35,49 @@ $(function() {
     }
   });
 
+  // Position tasks on the side, make an informal copy of deadline
+  $('.tasksOnBar').each(function(index, element) {
+    var children = $(element).children();
+    var complete = $(children[2]).text();
+    var date = $(children[1]).text();
+    var now = new Date().getTime();
+    var diff = new Date(date).getTime() - now;
+    var informaldate = $(children[3]);
+    var date_formatted = moment(date).format('h:mm a MMM D');
+
+    // var height = $(element).height();
+    var height = 85
+    $(element).css('top', (height+15)*index + 100);
+    informaldate.text(date_formatted);
+
+    if(diff <= 0) {
+      $(element).css('text-decoration', 'line-through');
+      $(element).css('font-style', 'italic');
+    } else if(complete == 'true') {
+      $(element).css('text-decoration', 'line-through');
+      $(element).css('font-style', 'italic');
+      $(element).css('background-color', '#6ed06e');
+      numFinished++;
+    } else {
+      numUnfinished++;
+    }
+  });
+
+  // set the snowman
+  var percentFinished = numFinished/numTasks;
+  whichSnowman = stage_of_snowman(percentFinished);
+
+  // set status and position
+  $('#status').text(Math.round(percentFinished) + '%');
+  $('#status').css('top', $(window).height()/2 - $('#status').height());
+  $('#status').css('left', $(window).width()/2 - $('#status').width()/4);
+  $('#youare').css('top', $(window).height()/2 - $('#status').height() - $('#youare').height());
+  $('#youare').css('left', $(window).width()/2 - $('#youare').width()/4);
+  $('#done').css('top', $(window).height()/2);
+  $('#done').css('left', $(window).width()/2 - $('#done').width()/4);
+
+  // TODO if all tasks are completed
+
   // check every 10 seconds to see if the clock is still ticking
   setInterval(checkClock, 10000);
 });
@@ -26,19 +89,34 @@ $(document).on("click", ".taskobj", function() {
   var date = $(children[1]).text();
   $('.dropdownTasks').hide();
 
-  // position the 'Working on' text
+  // show certain elements
   $('#workingOn').text('Working on: ' + task);
-  var timerWidth = $('#workingOn').width();
-  var timerHeight = $('#workingOn').height();
-  $('#workingOn').css('top', ($(window).height() - timerHeight)/2 - 200);
-  $('#workingOn').css('left', ($(window).width() - timerWidth)/2);
-  $('#workingOn').show();
-  
-  // position checkmark button
-  var checkmarkSide = $('#finishedCircleDiv').width();
-  $('#finishedCircleDiv').css('top', ($(window).height() - checkmarkSide)/2 + 50);
-  $('#finishedCircleDiv').css('left', ($(window).width() - checkmarkSide)/2);
+  $('#workingOn').show(); 
   $('#finishedCircleDiv').show();
+  $(whichSnowman).show();
+  $('#youare').show();
+  $('#status').show();
+  $('#done').show();
+
+  // mark selected task as 'current', highlight current task, and show tasks
+  var foundCurrent = false;   // in case there are 2 identical tasks
+  $('.tasksOnBar').each(function(index, element) {
+    var children = $(element).children();
+    var sideTask = children[0];
+    if($(sideTask).text() === task && !foundCurrent) {
+      $(element).addClass('current');
+      $(element).css('border-color', 'red');
+      $(element).css('color', 'red');
+      $(element).css('z-index', 5);
+      $(element).css('border-width', 3);
+      $(element).width(298);
+      foundCurrent = true;
+    } else {
+      $(element).removeClass('current');
+    }
+    $(element).css('display', 'inline-flex');
+    $(element).show();
+  });
 
   // implement countdown
   var deadline = new Date(date).getTime();
@@ -46,6 +124,11 @@ $(document).on("click", ".taskobj", function() {
     startClock(deadline);
   }, 1000);
 });
+
+// TODO when user clicks on a task on a side, switch to that task
+
+// TODO when user clicks on checkmark
+
 
 // Display remaining time left
 function startClock(deadline) {
@@ -75,7 +158,6 @@ function startClock(deadline) {
   // position entire div in vertical center
   var timerWidth = $('#countdown').width();
   var timerHeight = $('#countdown').height();
-  // $('#countdown').css('top', ($(window).height() - timerHeight)/2 - 100);
   $('#countdown').css('top', 0)
   $('#countdown').css('left', ($(window).width() - timerWidth)/2);
   $('#countdown').show();
