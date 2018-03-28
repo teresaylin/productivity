@@ -3,6 +3,7 @@ var whichSnowman = '#snowman1';
 var numTasks;
 var numFinished;
 var numUnfinished;
+var numExpired;
 // TODO make sure that if there are 2 identical tasks, that checking one will not save both as completed
 
 function stage_of_snowman(percentFinished) {
@@ -23,6 +24,7 @@ $(function() {
   numTasks = $('.tasksOnBar').length;
   numFinished = 0; // number of tasks completed and expired
   numUnfinished = 0;
+  numExpired = 0;
 
   // in "Right now" dropdown, format each task deadline
   $('.taskobj').each(function(index, element) {
@@ -56,6 +58,7 @@ $(function() {
     if(diff <= 0) {
       $(element).css('text-decoration', 'line-through');
       $(element).css('font-style', 'italic');
+      numExpired++;
     } else if(complete == 'true') {
       $(element).css('text-decoration', 'line-through');
       $(element).css('font-style', 'italic');
@@ -79,7 +82,20 @@ $(function() {
   $('#done').css('top', $(window).height()/2);
   $('#done').css('left', $(window).width()/2 - $('#done').width()/4);
 
-  // TODO if all tasks are completed
+  // if all tasks are completed
+  if(numFinished + numExpired === numTasks) {
+    $('.dropdownTasks').hide();
+    $(whichSnowman).show();
+    $('#youare').text('finished')
+    $('#youare').show();
+    $('#status').show();
+    $('#done').text('of tasks')
+    $('#done').show();
+    $('.tasksOnBar').each(function(index, element) {
+      $(element).css('display', 'inline-flex'); // puts deadline and task on the same line
+      $(element).show();
+    });
+  }
 
   // check every 10 seconds to see if the clock is still ticking
   setInterval(checkClock, 10000);
