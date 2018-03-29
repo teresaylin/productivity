@@ -113,6 +113,7 @@ body {
   z-index: 5;
   color: red;
   border-color: red;
+  background-color: white;
 }
 
 #workingOn {
