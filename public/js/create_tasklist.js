@@ -30,13 +30,16 @@ function addTask() {
 // Toggle "checked" class for corresponding hidden <input> element
 $(document).on("click", "li", function() {
   $(this).toggleClass("checked");
-  var inputId = 'input' + $(this).attr('id');   //e.g. #inputtask11
+  var inputId = 'input' + $(this).attr('id');   //e.g. 'inputtask11'
   $('#' + inputId).toggleClass("checked");  
 });
 
 // Make tasks disappear when the 'x' button is clicked
-// Add "removed" class to <li> task element that was removed
 $(document).on("click", ".close", function() {
-  $(this).parent().css("display", "none");;
-  $(this).parent().addClass("removed");
+  var parent = $(this).parent();
+  var inputId = 'input' + $(parent).attr('id');   //e.g. 'inputtask11'
+  var idnum = inputId.slice(9);   //e.g. '11'
+  $(parent).remove();
+  $('#' + inputId).remove();
+  $('#' + 'inputtime'+idnum).remove();
 });
