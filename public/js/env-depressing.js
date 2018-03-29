@@ -186,6 +186,7 @@ $(document).on("click", "#checkmark", function() {
       $('.current').css('font-style', 'italic');
       $('.current').css('background-color', '#6ed06e');
       $('.current').css('border-color', 'gray');
+      $('.current').css('color', 'black');
       // update percent done
       $('#status').text(Math.round(percentFinished*100)+'%');
       // update snowman
