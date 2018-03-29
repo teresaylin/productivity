@@ -33,7 +33,7 @@ $(function() {
     var informaldate = $(children[3]);
     var date_formatted = moment(date).format('h:mm a MMM D');
     var separation = 100;
-    var startingTop = 100;
+    var startingTop = 150;
 
     $(element).css('top', separation*index + startingTop);
     $(element).css('left', taskLeft);
@@ -81,6 +81,9 @@ $(document).on("click", ".taskobj", function() {
     $(element).show();
     $('#'+'cbox'+taskId).show();
   });
+
+  $('#savetasks').css('right', $('.tasksOnBar').css('right'));
+  $('#savetasks').show();
 });
 
 // when user clicks on a different task, switch to that task

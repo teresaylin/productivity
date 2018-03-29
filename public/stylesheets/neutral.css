@@ -100,6 +100,29 @@ div.checked {
   border-color: gray;
 }
 
+/* Save button */
+#savetasks {
+  position: absolute;
+  display: none;
+  color: white;
+  background-color: #b8babd;
+  width: 140px;
+  height: 30px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-family: 'Roboto Mono', monospace;
+  padding: 8px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 30px;  /* same as div height */
+  top: 100px;
+}
+
+#savetasks:hover {
+  cursor: pointer;
+  background-color: green;
+}
+
 #workingOn {
   display: none;
 }
