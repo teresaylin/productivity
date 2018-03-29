@@ -4,7 +4,6 @@ var numTasks;
 var numFinished;
 var numUnfinished;
 var numExpired;
-// TODO make sure that if there are 2 identical tasks, that checking one will not save both as completed
 
 function stage_of_snowman(percentFinished) {
   var snowman = '';
