@@ -44,7 +44,9 @@
 
     <div>
       <% tasks.forEach(function(task, index) { %>
-        <div class='checkbox' id='check<%= index %>'></div>
+        <div class='checkbox' id='cbox<%= index %>'>
+          <div class='checkmark' id='cmark<%= index %>'></div>
+        </div>
         <div class='tasksOnBar' id='task<%= index %>'>
           <p class='task-bar'><%= task.objective %></p>
           <p class='date-bar'><%= task.deadline %></p>

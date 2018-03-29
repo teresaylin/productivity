@@ -36,7 +36,7 @@
   border-radius: 15px;
   margin: 10px 0px 10px 0px;
   padding: 15px 15px 15px 15px;
-  background-color: #ececec;
+  background-color: white;
   height: 40px;
   width: 500px;
   z-index: 3;
@@ -52,9 +52,7 @@
   border-width: 3px;
   width: 498px;
   z-index: 5;
-  color: red;
   border-color: red;
-  background-color: white;
 }
 
 /* Checkboxes */
@@ -71,11 +69,35 @@
   height: 25px;
   width: 25px;
   z-index: 3;
-  color: black;
 }
 
 .checkbox:hover {
   cursor: pointer;
+}
+
+.checkmark {
+  display: none;
+  position: relative;
+  border-color: black;
+  border-style: solid;
+  border-width: 0 3px 3px 0;
+  top: -3px;
+  left: 6px;
+  transform: rotate(45deg);
+  height: 22px;
+  width: 10px;
+  cursor: pointer;
+}
+
+div.checked {
+  text-decoration: line-through;
+  font-style: italic;
+  background-color: #6ed06e;
+  color: black;
+  border-width: 2px;
+  width: 500px;
+  z-index: 3;
+  border-color: gray;
 }
 
 #workingOn {

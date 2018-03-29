@@ -38,8 +38,8 @@ $(function() {
     $(element).css('top', separation*index + startingTop);
     $(element).css('left', taskLeft);
     informaldate.text(date_formatted);
-    $('#'+'check'+taskId).css('top', separation*index + startingTop + (taskHeight - checkHeight)/2);
-    $('#'+'check'+taskId).css('left', checkLeft);
+    $('#'+'cbox'+taskId).css('top', separation*index + startingTop + (taskHeight - checkHeight)/2);
+    $('#'+'cbox'+taskId).css('left', checkLeft);
 
     if(diff <= 0) {
       $(element).css('text-decoration', 'line-through');
@@ -79,7 +79,7 @@ $(document).on("click", ".taskobj", function() {
     }
     $(element).css('display', 'inline-flex'); // puts deadline and task on the same line
     $(element).show();
-    $('#'+'check'+taskId).show();
+    $('#'+'cbox'+taskId).show();
   });
 });
 
@@ -101,4 +101,16 @@ $(document).on("click", ".tasksOnBar", function() {
   }
 });
 
-// TODO when user checks off a task
+// when user checks off a task
+$(document).on("click", ".checkbox", function() {
+  var index = $(this).attr('id').slice(4);  // cbox11 -> 11
+  var checkmark = $(this).children()[0];
+  var taskElement = $('#'+'task'+index);
+
+  taskElement.toggleClass('checked');
+  if(taskElement.hasClass('checked')) {
+    $(checkmark).show();
+  } else {
+    $(checkmark).hide();
+  }
+});
