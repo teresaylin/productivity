@@ -3,9 +3,12 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/neutral.css' />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
     <script src="/js/home.js"></script>
+    <script src="/js/env-neutral.js"></script>
   </head>
   <body>
     <div id='currentList'><%= listname %></div>
@@ -35,6 +38,20 @@
           </div>
         <% }); %>
       </div>
+    </div>
+
+    <span id='workingOn'></span>
+
+    <div>
+      <% tasks.forEach(function(task, index) { %>
+        <div class='checkbox' id='check<%= index %>'></div>
+        <div class='tasksOnBar' id='task<%= index %>'>
+          <p class='task-bar'><%= task.objective %></p>
+          <p class='date-bar'><%= task.deadline %></p>
+          <p class='completed-bar'><%= task.completed %></p>
+          <p class='date-informal'></p>
+        </div>
+      <% }); %>
     </div>
 
     <script>

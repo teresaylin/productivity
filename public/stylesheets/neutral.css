@@ -1,25 +1,83 @@
 /* NEUTRAL ENV */
-/* Timer */
-#countdown{
-  color: #676464;
+/* Tasks */
+.task-bar {
+  width: 400px;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  margin: 0px 20px 0px 0px;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.date-informal {
+  width: 80px;
+  position: relative;
+  top: 0px;
+  right: 0px;
+  text-align: right;
+  margin: 0px;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.date-bar {
   display: none;
-  text-align: center;
+}
+
+.completed-bar {
+  display: none;
+}
+
+.tasksOnBar {
+  display: none;
   position: absolute;
+  border-width: 2px;
+  border-color: gray;
+  border-style: solid;
+  border-radius: 15px;
+  margin: 10px 0px 10px 0px;
+  padding: 15px 15px 15px 15px;
+  background-color: #ececec;
+  height: 40px;
+  width: 500px;
+  z-index: 3;
+  color: black;
 }
 
-.time {
-  font-size: 30px;
-  color: #4e4e4e;
-  padding: 0px 7px 0px 7px;
-  display: inline-block;
+.tasksOnBar:hover {
+  cursor: pointer;
+  background-color: white;
 }
 
-.containers{
-  padding: 10px;
-  border-radius: 3px;
-  display: inline-block;
+.current {
+  border-width: 3px;
+  width: 498px;
+  z-index: 5;
+  color: red;
+  border-color: red;
+  background-color: white;
 }
 
-.timetext{
-  font-size: 15px;
+/* Checkboxes */
+.checkbox {
+  display: none;
+  position: absolute;
+  border-width: 2px;
+  border-color: gray;
+  border-style: solid;
+  border-radius: 8px;
+  margin: 10px 10px 10px 0px;
+  padding: 5px;
+  background-color: white;
+  height: 25px;
+  width: 25px;
+  z-index: 3;
+  color: black;
+}
+
+.checkbox:hover {
+  cursor: pointer;
+}
+
+#workingOn {
+  display: none;
 }
