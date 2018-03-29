@@ -21,7 +21,7 @@ function stage_of_snowman(percentFinished) {
 
 $(function() {
   numTasks = $('.tasksOnBar').length;
-  numFinished = 0; // number of tasks completed and expired
+  numFinished = 0; // number of tasks completed
   numUnfinished = 0;
   numExpired = 0;
 
