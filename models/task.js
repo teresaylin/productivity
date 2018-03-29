@@ -26,7 +26,7 @@ taskSchema.statics.create = function(listid, task, deadline, cb) {
 
 // Update task to have 'completed' = true
 taskSchema.statics.markComplete = function(listid, task, cb) {
-  Task.update({ list: listid, objective: task }, {$set: { completed: true }}, function(err) {
+  Task.update({ list: listid, objective: task, completed: false }, {$set: { completed: true }}, function(err) {
     if (err) {
       console.log(err);
       cb({ success: false });
