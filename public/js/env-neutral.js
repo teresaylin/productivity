@@ -83,6 +83,22 @@ $(document).on("click", ".taskobj", function() {
   });
 });
 
-// TODO when user clicks on a different task, switch to that task
+// when user clicks on a different task, switch to that task
+$(document).on("click", ".tasksOnBar", function() {
+  var element = this;
+  var textdecoration = $(this).css('text-decoration');
+  var currentTaskDiv = $('.current');
+
+  if(!textdecoration.includes('line-through')) {
+    // update which task is the currently selected one
+    currentTaskDiv.removeClass('current');
+    $(element).addClass('current');
+
+    // update the current task
+    var children = $(element).children();
+    var task = $(children[0]).text();
+    $('#workingOn').text('Working on: ' + task);
+  }
+});
 
 // TODO when user checks off a task
