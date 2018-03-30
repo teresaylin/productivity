@@ -1,6 +1,10 @@
-var intervalId = null;
+// var intervalId = null;
+// TODO change current if current task is checked off
+// TODO add title of list
 
 $(function() {
+  var numTasks = $('.tasksOnBar').length;
+
   // in "Right now" dropdown, format each task deadline
   $('.taskobj').each(function(index, element) {
     var children = $(element).children();
@@ -52,8 +56,16 @@ $(function() {
     }
   });
 
-  // TODO if all tasks are completed
-
+  // if all tasks are completed
+  if($('.saved').length === numTasks) {
+    $('.dropdownTasks').hide();
+    $('.tasksOnBar').each(function(index, element) {
+      var taskId = $(element).attr('id').slice(4);    // task11 -> 11
+      $(element).css('display', 'inline-flex');
+      $(element).show();
+      $('#'+'cbox'+taskId).show();
+    });
+  }
 });
 
 // Once user selects a task, starts the clock
