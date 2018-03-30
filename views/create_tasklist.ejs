@@ -11,7 +11,7 @@
     <h1>New Tasklist</h1>
     <p><%= message %></p>
     <form id='taskform' action='/tasks/create_tasklist' method='post'>
-      List Name: <input type='text' name='listname' placeholder='Name of your task list' required><br>
+      List Name: <input type='text' name='listname' placeholder='Name of your task list' maxlength='26' required><br>
       <input type='button' onclick="history.back()" value='Cancel' style='margin-bottom:12px'>
       <input type='submit' value='Save!'><br>
       Task: <input type='text' id='newtask' placeholder='Enter task' maxlength='45'><br>
