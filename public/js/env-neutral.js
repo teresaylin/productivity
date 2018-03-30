@@ -44,16 +44,10 @@ $(function() {
     checkbox.css('left', checkLeft);
 
     if(diff <= 0) {
-      $(element).css('text-decoration', 'line-through');
-      $(element).css('font-style', 'italic');
-      $(element).css('background-color', '#ececec');
-      $(element).addClass('saved');
+      $(element).addClass('saved expired');
       checkmark.show();
     } else if(complete == 'true') {
-      $(element).css('text-decoration', 'line-through');
-      $(element).css('font-style', 'italic');
-      $(element).css('background-color', '#6ed06e');
-      $(element).addClass('saved');
+      $(element).addClass('saved checked');
       checkmark.show();
     }
   });
