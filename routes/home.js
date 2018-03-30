@@ -93,4 +93,36 @@ router.post('/:listname/complete', function(req, res, next) {
   });
 });
 
+/* POST completion of a list of task */
+router.post('/:listname/complete/list', function(req, res, next) {
+  var user = req.session.currentUser;
+  var listname = req.body.listname;
+  var listtasks = JSON.parse(req.body.listtasks);
+
+  var promises = listtasks.map(function(taskname) {
+    return new Promise(function(resolve, reject) {
+      console.log('task:' + taskname);
+      Tasklist.findOne({ username: user.username, listname: listname }, '_id', function(err, listid) {
+        Task.markComplete(listid, taskname, function(result) {
+          console.log('result:' + result);
+          if(result) {
+            resolve(result);
+          } else {
+            reject(result);
+          }
+        });
+      });
+    });
+  });
+
+  Promise.all(promises).then(function(data) {
+    // if all promises resolved
+    res.send(true);
+  }, function(err) {
+    // not all tasks were marked complete
+    res.send(false);
+  });
+
+});
+
 module.exports = router;

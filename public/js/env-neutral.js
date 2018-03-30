@@ -117,3 +117,30 @@ $(document).on("click", ".checkbox", function() {
     $(checkmark).hide();
   }
 });
+
+// when user clicks on save button
+$(document).on("click", "#savetasks", function() {
+  var listname = $('#currentList').text();
+  var completedTasks = [];
+
+  $('.checked').each(function(index, element) {
+    var children = $(element).children();
+    var taskname = $(children[0]).text();
+    completedTasks.push(taskname);
+  });
+
+  $.ajax({
+    url: '/home/' + listname + '/complete/list',
+    type: 'POST',
+    data: {
+      listname: listname,
+      listtasks: JSON.stringify(completedTasks)
+    },
+    success: function(data) {
+      location.reload();
+    },
+    error: function(xhr, status, error) {
+      location.reload();
+    }
+  });
+});
