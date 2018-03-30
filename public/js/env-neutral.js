@@ -1,7 +1,3 @@
-// var intervalId = null;
-// TODO change current if current task is checked off
-// TODO add title of list
-
 $(function() {
   var numTasks = $('.tasksOnBar').length;
 
@@ -20,7 +16,7 @@ $(function() {
   });
 
   // position tasks and their checkboxes
-  var taskWidth = $('.tasksOnBar').width();
+  var taskWidth = $('.tasksOnBar').outerWidth(true);
   var checkWidth = $('.checkbox').outerWidth(true); //includes margin and padding
   var checkHeight = $('.checkbox').outerHeight(true);
   var taskLeft = ($(window).width() - taskWidth - checkWidth)/2 + checkWidth;
@@ -56,9 +52,19 @@ $(function() {
     }
   });
 
+  // position listname
+  var listWidth = $('#currentList').width();
+  var taskRight = taskLeft + taskWidth;
+  var taskMiddle = (taskLeft + taskRight)/2;
+  $('#currentList').css('left', taskMiddle - listWidth/2);
+
+  // position save button
+  $('#savetasks').css('left', taskMiddle - $('#savetasks').outerWidth(true)/2);
+
   // if all tasks are completed
   if($('.saved').length === numTasks) {
     $('.dropdownTasks').hide();
+    $('#currentList').show();
     $('.tasksOnBar').each(function(index, element) {
       var taskId = $(element).attr('id').slice(4);    // task11 -> 11
       $(element).css('display', 'inline-flex');
@@ -75,6 +81,8 @@ $(document).on("click", ".taskobj", function() {
   var date = $(children[1]).text();
   $('.dropdownTasks').hide();
 
+  $('#currentList').show();
+  $('#savetasks').show();
   $('#workingOn').text('Working on: ' + task);
 
   // mark selected task as 'current', highlight current task, and show tasks
@@ -94,9 +102,6 @@ $(document).on("click", ".taskobj", function() {
     $(element).show();
     $('#'+'cbox'+taskId).show();
   });
-
-  $('#savetasks').css('right', $('.tasksOnBar').css('right'));
-  $('#savetasks').show();
 });
 
 // when user clicks on a different task, switch to that task
@@ -123,7 +128,7 @@ $(document).on("click", ".checkbox", function() {
   var checkmark = $('#'+'cmark'+index);
   var taskElement = $('#'+'task'+index);
 
-  //only toggle if task has not been saved
+  // only toggle if task has not been saved
   if(!taskElement.hasClass('saved')) {
     taskElement.toggleClass('checked');
     if(taskElement.hasClass('checked')) {
@@ -132,11 +137,25 @@ $(document).on("click", ".checkbox", function() {
       checkmark.hide();
     }
   }
+
+  // if '.current' task is checked, then switch current to another
+  if($('.current').hasClass('checked')) {
+    var currentDiv = $('.current');
+    currentDiv.removeClass('current');
+    var switched = false;
+    $('.tasksOnBar').each(function(index, element) {
+      if(!$(element).hasClass('checked') && !$(element).hasClass('saved') && !switched) {
+        $(element).addClass('current');
+        switched = true;
+      }
+    });
+  }
 });
 
 // when user clicks on save button
 $(document).on("click", "#savetasks", function() {
-  var listname = $('#currentList').text();
+  var currentListLen = $('#currentList').text().length;
+  var listname = $('#currentList').text().slice(1,currentListLen-1);    // '"listname"' -> 'listname'
   var completedTasks = [];
 
   $('.checked').each(function(index, element) {
