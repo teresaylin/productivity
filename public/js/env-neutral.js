@@ -25,6 +25,8 @@ $(function() {
   $('.tasksOnBar').each(function(index, element) {
     var children = $(element).children();
     var taskId = $(element).attr('id').slice(4);
+    var checkbox = $('#'+'cbox'+taskId);
+    var checkmark = $('#'+'cmark'+taskId);
     var taskHeight = $('.tasksOnBar').outerHeight(true);
     var complete = $(children[2]).text();
     var date = $(children[1]).text();
@@ -38,16 +40,21 @@ $(function() {
     $(element).css('top', separation*index + startingTop);
     $(element).css('left', taskLeft);
     informaldate.text(date_formatted);
-    $('#'+'cbox'+taskId).css('top', separation*index + startingTop + (taskHeight - checkHeight)/2);
-    $('#'+'cbox'+taskId).css('left', checkLeft);
+    checkbox.css('top', separation*index + startingTop + (taskHeight - checkHeight)/2);
+    checkbox.css('left', checkLeft);
 
     if(diff <= 0) {
       $(element).css('text-decoration', 'line-through');
       $(element).css('font-style', 'italic');
+      $(element).css('background-color', '#ececec');
+      $(element).addClass('saved');
+      checkmark.show();
     } else if(complete == 'true') {
       $(element).css('text-decoration', 'line-through');
       $(element).css('font-style', 'italic');
       $(element).css('background-color', '#6ed06e');
+      $(element).addClass('saved');
+      checkmark.show();
     }
   });
 
@@ -107,14 +114,17 @@ $(document).on("click", ".tasksOnBar", function() {
 // when user checks off a task
 $(document).on("click", ".checkbox", function() {
   var index = $(this).attr('id').slice(4);  // cbox11 -> 11
-  var checkmark = $(this).children()[0];
+  var checkmark = $('#'+'cmark'+index);
   var taskElement = $('#'+'task'+index);
 
-  taskElement.toggleClass('checked');
-  if(taskElement.hasClass('checked')) {
-    $(checkmark).show();
-  } else {
-    $(checkmark).hide();
+  //only toggle if task has not been saved
+  if(!taskElement.hasClass('saved')) {
+    taskElement.toggleClass('checked');
+    if(taskElement.hasClass('checked')) {
+      checkmark.show();
+    } else {
+      checkmark.hide();
+    }
   }
 });
 
