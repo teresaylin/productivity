@@ -55,8 +55,9 @@
   cursor: pointer;
 }
 
-#checkmark:hover {
+#finishedCircleDiv:hover, #finishedCircleDiv:hover #checkmark {
   border-color: #5a5a5a;
+  cursor: pointer;
 }
 
 /* list of tasks on the side */

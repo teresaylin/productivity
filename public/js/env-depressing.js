@@ -167,7 +167,7 @@ $(document).on("click", ".tasksOnBar", function() {
 });
 
 // when user clicks on checkmark
-$(document).on("click", "#checkmark", function() {
+$(document).on("click", "#finishedCircleDiv", function() {
   var listname = $('#currentList').text();
   var taskname = $('#workingOn').text().slice(12);  // slices off the "Working on: "
   var percentFinished = (numFinished+1)/numTasks;

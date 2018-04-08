@@ -81,7 +81,7 @@ $(document).on("click", ".taskobj", function() {
 });
 
 // When the user clicks on the green checkmark, send update as POST request and reload
-$(document).on("click", "#checkmark", function() {
+$(document).on("click", "#finishedCircleDiv", function() {
   var listname = $('#currentList').text();
   var taskname = $('#workingOn').text().slice(12);
 

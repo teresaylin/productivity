@@ -52,10 +52,6 @@ body {
   cursor: pointer;
 }
 
-#checkmark:hover {
-  border-color: #5a5a5a;
-}
-
 #finishedCircleDiv:hover, #finishedCircleDiv:hover #checkmark {
   border-color: #5a5a5a;
   cursor: pointer;
