@@ -26,6 +26,15 @@ $(function() {
   path.setTesselationCount(numTasks);
   taskDots = path.getTesselationPoints();
 
+  var canvasTop = parseFloat($('#path').css('top').slice(0,-2));
+
+  // position 'Last Milestone' text
+  var endpt = taskDots[taskDots.length - 1];
+  var lastmilestone_width = $('#endpoint').width();
+  var lastmilestone_height = $('#endpoint').height();
+  $('#endpoint').css('top', canvasTop + endpt.y + 5);
+  $('#endpoint').css('left', endpt.x - lastmilestone_width/2);
+
   // position task dots based on finished (expired + completed) or unfinished
   $('.tasksOnBar').each(function(index, element) {
     var children = $(element).children();
@@ -36,8 +45,6 @@ $(function() {
     var date = $(children[1]).text();
     var now = new Date().getTime();
     var diff = new Date(date).getTime() - now;
-
-    var canvasTop = parseFloat($('#path').css('top').slice(0,-2));
 
     if(diff <= 0 || complete == 'true') {
       // put towards beginning of path
@@ -80,6 +87,7 @@ $(function() {
     $('#workingOn').css('left', ($(window).width() - workingWidth)/2);
     $('#workingOn').text("ALL TASKS COMPLETED");
     $('#workingOn').show();
+    $('#endpoint').show();
 
     $('.tasksOnBar').each(function(index, element) {
       var children = $(element).children();
@@ -107,6 +115,7 @@ $(document).on("click", ".taskobj", function() {
   $('#workingOn').text('FINISH ' + task + ' BY ' + date_formatted);
   $('#path').show();
   $('#finishedCircleDiv').show();
+  $('#endpoint').show();
 
   var firstYellowDot;
   var firstYellowDotBorder;

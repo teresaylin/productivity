@@ -150,3 +150,10 @@ body {
   width: 150px;
   display: none;
 }
+
+#endpoint {
+  font-family: 'Yantramanav', sans-serif;
+  font-size: 22px;
+  position: absolute;
+  display: none;
+}
