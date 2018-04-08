@@ -1,6 +1,6 @@
 $(function() {
   var numTasks = $('.tasksOnBar').length;
-
+  $('.dropdownTasks').css('display', 'inline-block');
   // in "Right now" dropdown, format each task deadline
   $('.taskobj').each(function(index, element) {
     var children = $(element).children();

@@ -3,6 +3,7 @@ var intervalId = null;
 // TODO when hovering on checkmark, give a hint as to what it does ('Mark as finished!')
 
 $(function() {
+  $('.dropdownTasks').css('display', 'inline-block');
   // in "Right now" dropdown, format each task deadline
   $('.taskobj').each(function(index, element) {
     var children = $(element).children();
@@ -68,6 +69,10 @@ $(document).on("click", ".taskobj", function() {
   $('#finishedCircleDiv').css('top', ($(window).height() - checkmarkSide)/2 + 50);
   $('#finishedCircleDiv').css('left', ($(window).width() - checkmarkSide)/2);
   $('#finishedCircleDiv').show();
+  // show tasks on the side
+  $('.taskoption').each(function(index, element) {
+    $(element).show();
+  });
   // implement countdown
   var deadline = new Date(date).getTime();
   intervalId = setInterval(function() { 
@@ -107,12 +112,12 @@ function startClock(deadline) {
 
   // if timer has run out
   if(diff <= 0) {
-    $('#days').text(0);
+    // $('#days').text(0);
     $('#hours').text(0);
     $('#minutes').text(0);
     $('#seconds').text(0);
   } else {
-    $('#days').text(days);
+    // $('#days').text(days);
     $('#hours').text(hours);
     $('#minutes').text(minutes);
     $('#seconds').text(seconds);
@@ -131,7 +136,8 @@ function startClock(deadline) {
 
 // Check to see if timer has expired, and if so, show the dropdown menu again
 function checkClock() {
-  if($('#days').text() === '0' && $('#hours').text() === '0' && $('#minutes').text() === '0' && $('#seconds').text() === '0' && intervalId !== null) {
+  // if($('#days').text() === '0' && $('#hours').text() === '0' && $('#minutes').text() === '0' && $('#seconds').text() === '0' && intervalId !== null) {
+  if($('#hours').text() === '0' && $('#minutes').text() === '0' && $('#seconds').text() === '0' && intervalId !== null) {
     clearInterval(intervalId);
     intervalId = null;
     location.reload();

@@ -5,6 +5,7 @@ $(function() {
   var numTasks = $('.tasksOnBar').length;
   var numFinished = 0;
   var numUnfinished = 1;
+  $('.dropdownTasks').css('display', 'inline-block');
 
   // in "Right now" dropdown, format each task deadline
   $('.taskobj').each(function(index, element) {
@@ -348,12 +349,12 @@ function startClock(deadline) {
 
   // if timer has run out
   if(diff <= 0) {
-    $('#days').text(0);
+    // $('#days').text(0);
     $('#hours').text(0);
     $('#minutes').text(0);
     $('#seconds').text(0);
   } else {
-    $('#days').text(days);
+    // $('#days').text(days);
     $('#hours').text(hours);
     $('#minutes').text(minutes);
     $('#seconds').text(seconds);
@@ -372,7 +373,8 @@ function startClock(deadline) {
 
 // Check to see if timer has expired, and if so, show the dropdown menu again
 function checkClock() {
-  if($('#days').text() === '0' && $('#hours').text() === '0' && $('#minutes').text() === '0' && $('#seconds').text() === '0' && intervalId !== null) {
+  // if($('#days').text() === '0' && $('#hours').text() === '0' && $('#minutes').text() === '0' && $('#seconds').text() === '0' && intervalId !== null) {
+  if($('#hours').text() === '0' && $('#minutes').text() === '0' && $('#seconds').text() === '0' && intervalId !== null) { 
     clearInterval(intervalId);
     intervalId = null;
     location.reload();

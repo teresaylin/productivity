@@ -68,6 +68,7 @@
 }
 
 .taskoption {
+  display: none;
   margin: 10px;
   width: 380px;
   position: relative;
