@@ -36,7 +36,7 @@ body {
   border-radius: 25px;
   background: #4eca45;
   top: 12.5px;
-  left: 870px;
+  left: 840px;
 }
 
 #checkmark {
@@ -54,6 +54,11 @@ body {
 
 #checkmark:hover {
   border-color: #5a5a5a;
+}
+
+#finishedCircleDiv:hover, #finishedCircleDiv:hover #checkmark {
+  border-color: #5a5a5a;
+  cursor: pointer;
 }
 
 /* Path */

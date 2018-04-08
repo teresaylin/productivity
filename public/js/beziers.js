@@ -279,8 +279,12 @@ window.BezierDrawer = function(canvas, autoTesselates, mode) {
 			count = tesselationSegmentsForLength(approximateLength());
 		}
 		
-		for (var i = 0; i < count; i++) { 
-			var t = i / (count - 1);
+		for (var i = 0; i < count; i++) {
+			var t = 1; 
+			if(count > 1) {
+				t = i / (count - 1);
+			}
+			
 			tesselationPoints.push(bezierAt(t));
 			perpendicularVectors.push(bezierPerpAt(t));
 		}
