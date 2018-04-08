@@ -1,8 +1,33 @@
 /* STRESSFUL ENV */
+body {
+  background-color: #ff3636;
+}
+
+/* Overriding Button CSS */
+.dropbtntasks {
+  background-color: #ff8888;
+}
+
+.dropbtntasks.unfinished:hover, .dropbtntasks:focus {
+  background-color: #a00708;
+}
+
+#homebtn {
+  background-color: #b1a5a5;
+}
+
+#skinbtn {
+  background-color: #b1a5a5;
+}
+
+#skinbtn:hover, #skinbtn:focus {
+  background-color: #a00708;
+}
+
 /* Timer */
 #countdown{
   /*font-family: sans-serif;*/
-  color: #676464;
+  color: black;
   display: none;
   /*font-weight: 100;*/
   text-align: center;
@@ -12,15 +37,22 @@
 
 .time {
   font-size: 60px;
-  color: #ffefef;
-  padding: 15px;
+  color: black;
+  padding: 5px;
   border-radius: 3px;
-  background: #ff1111;
+  display: inline-block;
+}
+
+.colon {
+  font-size: 60px;
+  color: black;
+  padding: 5px;
+  border-radius: 3px;
   display: inline-block;
 }
 
 .containers{
-  padding: 10px;
+  padding: 5px;
   border-radius: 3px;
   display: inline-block;
 }
@@ -28,6 +60,12 @@
 .timetext{
   padding-top: 5px;
   font-size: 16px;
+}
+
+.colonspace{
+  padding-top: 5px;
+  font-size: 16px;
+  color: #ff3636;
 }
 
 /* Div for marking current task finished */
@@ -108,6 +146,7 @@
   font-style: bold;
   font-size: 30px;
   text-align: center;
+  color: white;
 }
 
 .task-completed {
