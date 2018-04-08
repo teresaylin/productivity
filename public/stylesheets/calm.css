@@ -13,7 +13,7 @@ body {
 .time {
   font-size: 30px;
   color: #4e4e4e;
-  padding: 0px 7px 0px 7px;
+  /*padding: 0px 7px 0px 7px;*/
   display: inline-block;
 }
 
@@ -27,6 +27,18 @@ body {
   font-size: 15px;
 }
 
+.colon {
+  font-size: 30px;
+  color: #4e4e4e;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.colonspace{
+  font-size: 15px;
+  color: #ffddfe;
+}
+
 /* Div for marking current task finished */
 #finishedCircleDiv {
   display: none;
@@ -36,7 +48,7 @@ body {
   border-radius: 25px;
   background: #4eca45;
   top: 12.5px;
-  left: 840px;
+  left: 860px;
 }
 
 #checkmark {

@@ -205,21 +205,21 @@ function startClock(deadline) {
   var now = new Date().getTime();
   var diff = deadline - now;
   var days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor((diff % (1000 * 60)) / 1000);
+  var hours = "0" + Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = "0" + Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = "0" + Math.floor((diff % (1000 * 60)) / 1000);
 
   // if timer has run out
   if(diff <= 0) {
     // $('#days').text(0);
-    $('#hours').text(0);
-    $('#minutes').text(0);
-    $('#seconds').text(0);
+    $('#hours').text('00');
+    $('#minutes').text('00');
+    $('#seconds').text('00');
   } else {
     // $('#days').text(days);
-    $('#hours').text(hours);
-    $('#minutes').text(minutes);
-    $('#seconds').text(seconds);
+    $('#hours').text(hours.substr(hours.length - 2));
+    $('#minutes').text(minutes.substr(minutes.length - 2));
+    $('#seconds').text(seconds.substr(seconds.length - 2));
   }
   // make timer red if < 10 minutes remaining
   if(diff <= 600000) {
@@ -235,8 +235,7 @@ function startClock(deadline) {
 
 // Check to see if timer has expired, and if so, show the dropdown menu again
 function checkClock() {
-  // if($('#days').text() === '0' && $('#hours').text() === '0' && $('#minutes').text() === '0' && $('#seconds').text() === '0' && intervalId !== null) {
-  if($('#hours').text() === '0' && $('#minutes').text() === '0' && $('#seconds').text() === '0' && intervalId !== null) {
+  if($('#hours').text() === '00' && $('#minutes').text() === '00' && $('#seconds').text() === '00' && intervalId !== null) {
     clearInterval(intervalId);
     intervalId = null;
     location.reload();
