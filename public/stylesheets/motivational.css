@@ -76,6 +76,18 @@ body {
   left: 290px;
   display: none;
   cursor: pointer;
+  z-index: 4;
+}
+
+#progressdotborder {
+  height: 12px;
+  width: 12px;
+  background-color: #9c9c9c;
+  border-radius: 6px;
+  position: absolute;
+  left: 288px;
+  display: none;
+  z-index: 2;
 }
 
 #fullbloom {

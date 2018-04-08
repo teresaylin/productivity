@@ -38,6 +38,7 @@ $(function() {
   $('.tasksOnBar').each(function(index, element) {
     var children = $(element).children();
     var dot = children[3];
+    var dotborder = children[4];
     var complete = $(children[2]).text();
     var date = $(children[1]).text();
     var now = new Date().getTime();
@@ -50,8 +51,10 @@ $(function() {
       $(dot).css('background-color', 'green');
       numFinished++;
       $(dot).css('top', progressbarTop + (numTasks-numFinished)/numTasks * progressbarHeight + 4);
+      $(dotborder).css('top', progressbarTop + (numTasks-numFinished)/numTasks * progressbarHeight + 2);
     } else {
       $(dot).css('top', progressbarTop + numUnfinished/numTasks * progressbarHeight + 4);
+      $(dotborder).css('top', progressbarTop + numUnfinished/numTasks * progressbarHeight + 2);
       numUnfinished++;
     }
   });
@@ -69,6 +72,9 @@ $(function() {
     $('#progressbar').show();
     $('#fullbloom').show();
     $('.dots').each(function(index, element) {
+      $(element).show();
+    });
+    $('.dotborder').each(function(index, element) {
       $(element).show();
     });
     $(whichPlant).show();
@@ -91,9 +97,6 @@ $(document).on("click", ".taskobj", function() {
   $('#finishedCircleDiv').show();
   $('#progressbar').show();
   $('#fullbloom').show();
-  $('.dots').each(function(index, element) {
-    $(element).show();
-  });
   $(whichPlant).show();
 
   // implement countdown
@@ -107,6 +110,7 @@ $(document).on("click", ".taskobj", function() {
     var children = $(element).children();
     var dotTask = children[0];
     var dot = children[3];
+    var dotborder = children[4];
     if($(dotTask).text() === task) {
       $(element).addClass('current');
       var arrowHeight = $('#progressarrow').height()/2;
@@ -116,6 +120,8 @@ $(document).on("click", ".taskobj", function() {
     } else {
       $(element).removeClass('current');
     }
+    $(dot).show();
+    $(dotborder).show();
   });
 });
 
@@ -127,6 +133,7 @@ $(document).on({
     var task = $(children[0]).text();
     var date = $(children[1]).text();
     var date_formatted = moment(date).format('h:mm a MMM D');
+    var border = children[4];
 
     var dotColor = $(this).css('background-color');
     var dotTop = parseFloat($(this).css('top').slice(0,-2));
@@ -143,11 +150,16 @@ $(document).on({
     } else {
       $('#hoverIncompleteTask').show();
     }
+    $(border).css('background-color', 'black');
   },
   mouseleave: function() {
+    var parentTaskDiv = $(this).parent();
+    var children = $(parentTaskDiv).children();
+    var border = children[4];
     $('#hoverTask').text('');
     $('#hoverCompleteTask').hide();
     $('#hoverIncompleteTask').hide();
+    $(border).css('background-color', '#9c9c9c');
   }
 }, "#progressdot");
 
@@ -194,16 +206,19 @@ $(document).on("click", "#finishedCircleDiv", function() {
   var numTasks = $('.tasksOnBar').length;
   var numCompleted = 0;
   var taskdot;
+  var taskdotborder;
   $('.tasksOnBar').each(function(index, element) {
     var children = $(element).children();
     var task = children[0];
     var dot = children[3];
+    var border = children[4];
     var dotColor = $(dot).css('background-color');
     if(dotColor === 'rgb(0, 128, 0)') {
       numCompleted++;
     }
     if($(task).text() === taskname) {
       taskdot = dot;
+      taskdotborder = border;
     }
   });
 
@@ -219,6 +234,7 @@ $(document).on("click", "#finishedCircleDiv", function() {
     },
     success: function(data) {
       $(taskdot).css('background-color', 'green');
+      $(taskdotborder).css('background-color', 'black');
       $(whichPlant).fadeOut(750);
       $(nextPlant).fadeIn(750);
       setTimeout(function(){location.reload();}, 3000);
