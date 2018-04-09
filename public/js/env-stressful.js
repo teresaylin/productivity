@@ -1,5 +1,4 @@
 var intervalId = null;
-// TODO change appearance when all tasks are done
 
 $(function() {
   $('.dropdownTasks').css('display', 'inline-block');
@@ -45,12 +44,30 @@ $(function() {
     }
   });
 
-  // if no tasks left, disable the button
+  // if no tasks left, show no more time left
   if(numTasksLeft === 0) {
-    $('#taskbtn').text('No more tasks left!');
-    $('#taskbtn').removeClass('unfinished');
-    $('#taskbtn').addClass('finished');
-    $('#taskbtn').prop('disabled', true);
+    $('.dropdownTasks').hide();
+    $('.taskoption').each(function(index, element) {
+      $(element).css('display', 'inline-flex'); // puts deadline and task on the same line
+      $(element).show();
+    });
+
+    $('#hours').text('00');
+    $('#minutes').text('00');
+    $('#seconds').text('00');
+
+    // position entire div in vertical center
+    var timerWidth = $('#countdown').width();
+    var timerHeight = $('#countdown').height();
+    $('#countdown').css('top', ($(window).height() - timerHeight)/2 - 100);
+    $('#countdown').css('left', ($(window).width() - timerWidth)/2);
+    $('.time').css('color', 'white');
+    $('#countdown').css('color', 'black');
+    $('#countdown').show();
+    $('#workingOn').text('No more tasks left');
+    $('#workingOn').css('top', ($(window).height() - $('#workingOn').height())/2 - 200);
+    $('#workingOn').css('left', ($(window).width() - $('#workingOn').width())/2);
+    $('#workingOn').show();
   }
   // check every 10 seconds to see if the clock is still ticking
   setInterval(checkClock, 10000);
