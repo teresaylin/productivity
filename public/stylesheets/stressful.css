@@ -103,41 +103,65 @@ body {
   cursor: pointer;
 }
 
-/* list of tasks on the side */
-#alltasks {
-  position: absolute;
-  top: 100px;
-  left: 25px;
-  width: 400px;
+/* Tasks */
+.task-bar {
+  width: 190px;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  margin: 0px 10px 0px 0px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+}
+
+.date-informal {
+  width: 70px;
+  position: relative;
+  top: 0px;
+  right: 0px;
+  text-align: right;
+  margin: 0px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+}
+
+.date-bar {
+  display: none;
+}
+
+.completed-bar {
+  display: none;
 }
 
 .taskoption {
   display: none;
-  margin: 10px;
-  width: 380px;
-  position: relative;
+  position: absolute;
+  left: 50px;
+  border-width: 2px;
+  border-color: gray;
+  border-style: solid;
+  border-radius: 8px;
+  margin: 10px 0px 10px 0px;
+  padding: 15px 15px 15px 15px;
+  background-color: #bdbdbd;
+  height: 30px;
+  width: 270px;
+  z-index: 3;
+  color: black;
 }
 
-.task-description {
-  position: relative;
+.taskoption:hover {
+  cursor: pointer;
+  background-color: white;
 }
 
-.task-deadline {
-  position: relative;
-  color: blue;
-}
-
-.task-description.expired {
-  text-decoration: line-through;
-}
-
-.expired {
+.current {
+  border-width: 3px;
+  width: 268px;
+  z-index: 5;
   color: red;
-  font-style: italic;
-}
-
-.task-description.finished {
-  text-decoration: line-through;
+  border-color: #585858;
+  background-color: white;
 }
 
 .finished {
@@ -151,8 +175,5 @@ body {
   font-style: bold;
   font-size: 30px;
   text-align: center;
-}
-
-.task-completed {
-  display: none;
+  width: 600px;
 }

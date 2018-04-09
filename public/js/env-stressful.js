@@ -1,6 +1,5 @@
 var intervalId = null;
-// TODO clicking on task in side list changes timer to that
-// TODO when hovering on checkmark, give a hint as to what it does ('Mark as finished!')
+// TODO change appearance when all tasks are done
 
 $(function() {
   $('.dropdownTasks').css('display', 'inline-block');
@@ -26,18 +25,24 @@ $(function() {
     var date = $(children[1]).text();
     var now = new Date().getTime();
     var diff = new Date(date).getTime() - now;
+    var informaldate = $(children[3]);
+    var date_formatted = moment(date).format('h:mm a MMM D');
+
+    var height = 60;
+    $(element).css('top', (height+15)*index + 100);
+    informaldate.text(date_formatted);
+
     // check if complete, then check if expired
     if(complete == 'true') {
-      $(children[0]).addClass('finished');
-      $(children[1]).addClass('finished');
+      $(element).css('text-decoration', 'line-through');
+      $(element).css('font-style', 'italic');
+      $(element).css('background-color', '#6ed06e');
     } else if(diff <= 0) {
-      $(children[0]).addClass('expired');
-      $(children[1]).addClass('expired');
+      $(element).css('text-decoration', 'line-through');
+      $(element).css('font-style', 'italic');
     } else {
       numTasksLeft++;
     }
-    var date_formatted = moment(date).format('h:mm a MMM D, YYYY');
-    $(children[1]).text(date_formatted);
   });
 
   // if no tasks left, disable the button
@@ -70,7 +75,19 @@ $(document).on("click", ".taskobj", function() {
   $('#finishedCircleDiv').css('left', ($(window).width() - checkmarkSide)/2);
   $('#finishedCircleDiv').show();
   // show tasks on the side
+  // mark selected task as 'current', highlight current task, and show tasks
+  var foundCurrent = false;   // in case there are 2 identical tasks
   $('.taskoption').each(function(index, element) {
+    var children = $(element).children();
+    var sideTask = children[0];
+    var bgcolor = $(element).css('background-color');
+    if($(sideTask).text() === task && !foundCurrent && bgcolor !== 'rgb(110, 208, 110)') {
+      $(element).addClass('current');
+      foundCurrent = true;
+    } else {
+      $(element).removeClass('current');
+    }
+    $(element).css('display', 'inline-flex'); // puts deadline and task on the same line
     $(element).show();
   });
   // implement countdown
@@ -78,6 +95,33 @@ $(document).on("click", ".taskobj", function() {
   intervalId = setInterval(function() { 
     startClock(deadline);
   }, 1000);
+});
+
+// when user clicks on a task on a side, switch to that task
+$(document).on("click", ".taskoption", function() {
+  var element = this;
+  var textdecoration = $(this).css('text-decoration');
+  var currentTaskDiv = $('.current');
+
+  if(!textdecoration.includes('line-through')) {
+    // update which task is the currently selected one
+    currentTaskDiv.removeClass('current');
+    $(element).addClass('current');
+
+    // update the current task
+    var children = $(element).children();
+    var task = $(children[0]).text();
+    var date = $(children[1]).text();
+    $('#workingOn').text('Working on: ' + task);
+
+    // clear clock and start new countdown
+    var deadline = new Date(date).getTime();
+    clearInterval(intervalId);
+    intervalId = null;
+    intervalId = setInterval(function() {
+      startClock(deadline);
+    }, 1000);
+  }
 });
 
 // When the user clicks on the green checkmark, send update as POST request and reload
@@ -93,7 +137,12 @@ $(document).on("click", "#finishedCircleDiv", function() {
       taskname: taskname
     },
     success: function(data) {
-      location.reload();
+      $('.current').css('text-decoration', 'line-through');
+      $('.current').css('font-style', 'italic');
+      $('.current').css('background-color', '#6ed06e');
+      $('.current').css('border-color', 'gray');
+      $('.current').css('color', 'black');
+      setTimeout(function(){location.reload();}, 3000);
     },
     error: function(xhr, status, error) {
       location.reload();

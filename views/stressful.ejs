@@ -77,9 +77,10 @@
     <div id='alltasks'>
       <% tasks.forEach(function(task) { %>
         <div class='taskoption'>
-          <span class='task-description'><%= task.objective %></span>
-          <span class='task-deadline'><%= task.deadline %></span>
-          <span class='task-completed'><%= task.completed %></span>
+          <p class='task-bar'><%= task.objective %></p>
+          <p class='date-bar'><%= task.deadline %></p>
+          <p class='completed-bar'><%= task.completed %></p>
+          <p class='date-informal'></p>          
         </div>
       <% }); %>
     </div>
