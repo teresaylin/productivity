@@ -103,6 +103,7 @@ $(document).on("click", ".taskobj", function() {
     $(element).css('display', 'inline-flex'); // puts deadline and task on the same line
     $(element).show();
   });
+  $('#soundtrack').trigger('play');
   // implement countdown
   var deadline = new Date(date).getTime();
   intervalId = setInterval(function() { 
