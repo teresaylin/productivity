@@ -139,7 +139,7 @@ $(document).on("click", ".checkbox", function() {
   }
 
   // if '.current' task is checked, then switch current to another
-  if($('.current').hasClass('checked')) {
+  if($('.current').hasClass('checked') || $('.current').length === 0) {
     var currentDiv = $('.current');
     currentDiv.removeClass('current');
     var switched = false;
