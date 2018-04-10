@@ -1,29 +1,7 @@
 var intervalId = null;
-var whichSnowman = '#snowman1';
-var numTasks;
-var numFinished;
-var numUnfinished;
-var numExpired;
-
-function stage_of_snowman(percentFinished) {
-  var snowman = '';
-  if(percentFinished >= 0.75) {
-    snowman = '#snowman4';
-  } else if(percentFinished >= 0.5) {
-    snowman = '#snowman3';
-  } else if(percentFinished >= 0.25) {
-    snowman = '#snowman2';
-  } else {
-    snowman = '#snowman1';
-  }
-  return snowman;
-}
 
 $(function() {
-  numTasks = $('.tasksOnBar').length;
-  numFinished = 0; // number of tasks completed
-  numUnfinished = 0;
-  numExpired = 0;
+  var numUnfinished = 0;
   $('.dropdownTasks').css('display', 'inline-block');
 
   // in "Right now" dropdown, format each task deadline
@@ -40,8 +18,11 @@ $(function() {
     }
   });
 
+  var prevTombTask;
   // Position tasks on the side, make an informal copy of deadline
   $('.tasksOnBar').each(function(index, element) {
+    var parent = $(element).parent();
+    var tombtask = $(parent).children()[index*2+1];
     var children = $(element).children();
     var complete = $(children[2]).text();
     var date = $(children[1]).text();
@@ -50,51 +31,48 @@ $(function() {
     var informaldate = $(children[3]);
     var date_formatted = moment(date).format('h:mm a MMM D');
 
-    // var height = $(element).height();
-    var height = 85
+    var height = 85;
     $(element).css('top', (height+15)*index + 100);
     informaldate.text(date_formatted);
 
-    if(diff <= 0) {
-      $(element).css('text-decoration', 'line-through');
-      $(element).css('font-style', 'italic');
-      numExpired++;
-    } else if(complete == 'true') {
+    var tombTextTop = 380;
+    if(complete == 'true') {
       $(element).css('text-decoration', 'line-through');
       $(element).css('font-style', 'italic');
       $(element).css('background-color', '#6ed06e');
-      numFinished++;
+    } else if (diff <= 0) {
+      $(element).css('text-decoration', 'line-through');
+      $(element).css('font-style', 'italic');
+
+      if(!prevTombTask) {
+        $(tombtask).css('top', tombTextTop);
+        prevTombTask = tombtask;
+      } else {
+        var prevTombTaskTop = parseFloat($(prevTombTask).css('top').slice(0,-2));
+        var prevTombTaskHeight = $(prevTombTask).height();
+        $(tombtask).css('top', prevTombTaskTop + prevTombTaskHeight + 8);
+        prevTombTask = tombtask;
+      }
+      $(tombtask).addClass('expired');
     } else {
       numUnfinished++;
     }
   });
 
-  // set the snowman
-  var percentFinished = numFinished/numTasks;
-  whichSnowman = stage_of_snowman(percentFinished);
-
-  // set status and position
-  $('#status').text(Math.round(percentFinished*100) + '%');
-  $('#status').css('top', $(window).height()/2 - $('#status').height());
-  $('#status').css('left', $(window).width()/2 - $('#status').width()/4);
-  $('#youare').css('top', $(window).height()/2 - $('#status').height() - $('#youare').height());
-  $('#youare').css('left', $(window).width()/2 - $('#youare').width()/4);
-  $('#done').css('top', $(window).height()/2);
-  $('#done').css('left', $(window).width()/2 - $('#done').width()/4);
-
   // if all tasks are completed
-  if(numFinished + numExpired === numTasks) {
+  if(numUnfinished === 0) {
     $('.dropdownTasks').hide();
-    $(whichSnowman).show();
-    $('#youare').text('finished')
-    $('#youare').show();
-    $('#status').show();
-    $('#done').text('of tasks')
-    $('#done').show();
     $('.tasksOnBar').each(function(index, element) {
       $(element).css('display', 'inline-flex'); // puts deadline and task on the same line
       $(element).show();
     });
+    $('#graveyard').show();
+    $('.expired').each(function(index, element) {
+      $(element).show();
+    });
+    var doneWidth = $('#done').width();
+    $('#done').css('left', ($(window).width() - doneWidth)/2);
+    $('#done').show();
   }
 
   // check every 10 seconds to see if the clock is still ticking
@@ -111,24 +89,25 @@ $(document).on("click", ".taskobj", function() {
   // show certain elements
   $('#workingOn').text('Working on: ' + task);
   $('#finishedCircleDiv').show();
-  $(whichSnowman).show();
-  $('#youare').show();
-  $('#status').show();
-  $('#done').show();
 
   // mark selected task as 'current', highlight current task, and show tasks
   var foundCurrent = false;   // in case there are 2 identical tasks
   $('.tasksOnBar').each(function(index, element) {
     var children = $(element).children();
     var sideTask = children[0];
-    var bgcolor = $(element).css('background-color');
-    if($(sideTask).text() === task && !foundCurrent && bgcolor !== 'rgb(110, 208, 110)') {
+    var textdecoration = $(element).css('text-decoration');
+    if($(sideTask).text() === task && !foundCurrent && !textdecoration.includes('line-through')) {
       $(element).addClass('current');
       foundCurrent = true;
     } else {
       $(element).removeClass('current');
     }
     $(element).css('display', 'inline-flex'); // puts deadline and task on the same line
+    $(element).show();
+  });
+
+  $('#graveyard').show();
+  $('.expired').each(function(index, element) {
     $(element).show();
   });
 
@@ -170,8 +149,6 @@ $(document).on("click", ".tasksOnBar", function() {
 $(document).on("click", "#finishedCircleDiv", function() {
   var listname = $('#currentList').text();
   var taskname = $('#workingOn').text().slice(12);  // slices off the "Working on: "
-  var percentFinished = (numFinished+1)/numTasks;
-  var nextSnowman = stage_of_snowman(percentFinished);
 
   $.ajax({
     url: '/home/' + listname + '/complete',
@@ -187,11 +164,6 @@ $(document).on("click", "#finishedCircleDiv", function() {
       $('.current').css('background-color', '#6ed06e');
       $('.current').css('border-color', 'gray');
       $('.current').css('color', 'black');
-      // update percent done
-      $('#status').text(Math.round(percentFinished*100)+'%');
-      // update snowman
-      $(whichSnowman).fadeOut(750);
-      $(nextSnowman).fadeIn(750);
       setTimeout(function(){location.reload();}, 3000);
     },
     error: function(xhr, status, error) {

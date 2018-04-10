@@ -4,8 +4,8 @@
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/stylesheets/depressing.css' />
-    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Serif" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Bad+Script" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
     <script src="/js/home.js"></script>
@@ -82,24 +82,19 @@
           <p class='completed-bar'><%= task.completed %></p>
           <p class='date-informal'></p>
         </div>
+        <div class='tombtask'>
+          <p class='task-tomb'><%= task.objective %></p>
+        </div>
       <% }); %>
     </div>
+
     <div>
-      <img id='snowman1' src='/images/env-depressing-snowman1.png'>
-    </div>
-    <div>
-      <img id='snowman2' src='/images/env-depressing-snowman2.png'>
-    </div>
-    <div>
-      <img id='snowman3' src='/images/env-depressing-snowman3.png'>
-    </div>
-    <div>
-      <img id='snowman4' src='/images/env-depressing-snowman4.png'>
+      <img id='graveyard' src='/images/env-depressing-all.png'>
     </div>
 
-    <span id='youare'>you are</span>
-    <span id='status'></span>
-    <span id='done'>done</span>
+    <div>
+      <img id='done' src='/images/env-depressing-done.png'>
+    </div>
 
     <script>
       $('.dropdownTasks').css('left', ($(window).width() - 300)/2);
