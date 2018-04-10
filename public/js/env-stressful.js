@@ -31,12 +31,8 @@ $(function() {
     $(element).css('top', (height+15)*index + 100);
     informaldate.text(date_formatted);
 
-    // check if complete, then check if expired
-    if(complete == 'true') {
-      $(element).css('text-decoration', 'line-through');
-      $(element).css('font-style', 'italic');
-      $(element).css('background-color', '#6ed06e');
-    } else if(diff <= 0) {
+    // check if complete/expired
+    if(diff <= 0 || complete == 'true') {
       $(element).css('text-decoration', 'line-through');
       $(element).css('font-style', 'italic');
     } else {
@@ -97,8 +93,8 @@ $(document).on("click", ".taskobj", function() {
   $('.taskoption').each(function(index, element) {
     var children = $(element).children();
     var sideTask = children[0];
-    var bgcolor = $(element).css('background-color');
-    if($(sideTask).text() === task && !foundCurrent && bgcolor !== 'rgb(110, 208, 110)') {
+    var textdecoration = $(element).css('text-decoration');
+    if($(sideTask).text() === task && !foundCurrent && !textdecoration.includes('line-through')) {
       $(element).addClass('current');
       foundCurrent = true;
     } else {
