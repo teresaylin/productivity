@@ -43,11 +43,11 @@ $(function() {
     checkbox.css('top', separation*index + startingTop + (taskHeight - checkHeight)/2);
     checkbox.css('left', checkLeft);
 
-    if(diff <= 0) {
-      $(element).addClass('saved expired');
-      checkmark.show();
-    } else if(complete == 'true') {
+    if(complete == 'true') {
       $(element).addClass('saved checked');
+      checkmark.show();
+    } else if(diff <= 0) {
+      $(element).addClass('saved expired');
       checkmark.show();
     }
   });
