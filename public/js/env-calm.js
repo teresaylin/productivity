@@ -181,7 +181,7 @@ $(document).on("click", ".taskobj", function() {
 
   // position current yellow flag
   $('#flag-yellow-current').css('bottom', $(selectedDot).css('bottom'));
-  $('#flag-yellow-current').css('left', parseFloat($(selectedDot).css('left').slice(0,-2)) - 5);
+  $('#flag-yellow-current').css('left', parseFloat($(selectedDot).css('left').slice(0,-2)) - 9);
   $('#flag-yellow-current').show();
 
   // position current flag text
@@ -218,9 +218,9 @@ $(document).on({
     if(!$(parentTaskDiv).hasClass('current')) {
       // position flags
       $('#flag-green').css('bottom', dotBottom);
-      $('#flag-green').css('left', dotLeft - 5);
+      $('#flag-green').css('left', dotLeft - 9);
       $('#flag-yellow').css('bottom', dotBottom);
-      $('#flag-yellow').css('left', dotLeft - 5);
+      $('#flag-yellow').css('left', dotLeft - 9);
 
       // position flag text
       var flagTop = dotBottom + $('#flag-green').height();
@@ -260,40 +260,48 @@ $(document).on("click", "#progressdot", function() {
   var currentTaskDiv = $('.current');
 
   if(dotColor !== 'rgb(0, 128, 0)') {
-    // switch dot positions and their mini green flags' positions
-    var currentDot = currentTaskDiv.children()[3];
-    var currentDotBorder = currentTaskDiv.children()[4];
-    var currentDotFlag = currentTaskDiv.children()[5];
-    var tempDotTop = $(currentDot).css('top');
-    var tempDotLeft = $(currentDot).css('left');
-    var tempFlagTop = $(currentDotFlag).css('top');
-    var tempFlagLeft = $(currentDotFlag).css('left');
+    $('#flag-yellow-current').fadeOut();
+    $('#workingOn').fadeOut();
+    $('#flag-yellow-current').fadeIn();
+    
+    setTimeout(function(){
+      // switch dot positions and their mini green flags' positions
+      var currentDot = currentTaskDiv.children()[3];
+      var currentDotBorder = currentTaskDiv.children()[4];
+      var currentDotFlag = currentTaskDiv.children()[5];
+      var tempDotTop = $(currentDot).css('top');
+      var tempDotLeft = $(currentDot).css('left');
+      var tempFlagTop = $(currentDotFlag).css('top');
+      var tempFlagLeft = $(currentDotFlag).css('left');
 
-    $(currentDot).css('top', $(dot).css('top'));
-    $(currentDot).css('left', $(dot).css('left'));
-    $(currentDotBorder).css('top', $(dotBorder).css('top'));
-    $(currentDotBorder).css('left', $(dotBorder).css('left'));
-    $(currentDotFlag).css('top', $(dotFlag).css('top'));
-    $(currentDotFlag).css('left', $(dotFlag).css('left'));
+      $(currentDot).css('top', $(dot).css('top'));
+      $(currentDot).css('left', $(dot).css('left'));
+      $(currentDotBorder).css('top', $(dotBorder).css('top'));
+      $(currentDotBorder).css('left', $(dotBorder).css('left'));
+      $(currentDotFlag).css('top', $(dotFlag).css('top'));
+      $(currentDotFlag).css('left', $(dotFlag).css('left'));
 
-    $(dot).css('top', tempDotTop);
-    $(dot).css('left', tempDotLeft);
-    $(dotBorder).css('top', parseFloat(tempDotTop.slice(0,-2)) - 2);
-    $(dotBorder).css('left', parseFloat(tempDotLeft.slice(0,-2)) - 2);
-    $(dotFlag).css('top', tempFlagTop);
-    $(dotFlag).css('left', tempFlagLeft);
+      $(dot).css('top', tempDotTop);
+      $(dot).css('left', tempDotLeft);
+      $(dotBorder).css('top', parseFloat(tempDotTop.slice(0,-2)) - 2);
+      $(dotBorder).css('left', parseFloat(tempDotLeft.slice(0,-2)) - 2);
+      $(dotFlag).css('top', tempFlagTop);
+      $(dotFlag).css('left', tempFlagLeft);
 
-    // change which taskdiv is current
-    currentTaskDiv.removeClass('current');
-    $(parentTaskDiv).addClass('current');
+      // change which taskdiv is current
+      currentTaskDiv.removeClass('current');
+      $(parentTaskDiv).addClass('current');
 
-    // update the task displayed on the right
-    var children = $(parentTaskDiv).children();
-    var task = $(children[0]).text();
-    var date = $(children[1]).text();
-    var date_formatted = moment(date).format('h:mm a MMM D');
-    $('#workingOn').text('FINISH ' + task + ' BY ' + date_formatted);
+      // update the task displayed on the right
+      var children = $(parentTaskDiv).children();
+      var task = $(children[0]).text();
+      var date = $(children[1]).text();
+      var date_formatted = moment(date).format('h:mm a MMM D');
+      $('#workingOn').text('FINISH ' + task + ' BY ' + date_formatted);
 
+      $('#workingOn').fadeIn();
+    }, 1000);
+    
     // clear clock and start new countdown
     var deadline = new Date(date).getTime();
     clearInterval(intervalId);

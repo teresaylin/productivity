@@ -165,4 +165,5 @@ body {
   line-height: 15px;
   margin: 0px;
   padding: 0px;
+  word-wrap: break-word;
 }

@@ -144,6 +144,7 @@ body {
   position: absolute;
   left: 100px;
   width: 140px;
+  word-wrap: break-word;
 }
 
 /* Plant */
@@ -195,9 +196,10 @@ body {
   top: 250px;
   right: 400px;
   font-family: 'Shadows Into Light Two', cursive;
-  font-size: 30px;
+  font-size: 24px;
   z-index: 5;
   text-align: center;
+  word-wrap: break-word;
 }
 
 /* Progress bar arrow */
