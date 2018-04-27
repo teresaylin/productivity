@@ -41,7 +41,6 @@ router.post('/create_tasklist', function(req, res, next) {
   var tasks = Object.keys(tasks_dict).map(function(index) {
     return tasks_dict[index];
   });
-
   Tasklist.create(username, req.body.listname, tasks, function(result) {
     if (result.success) {
       Tasklist.find({ username: username }, function(err, lists) {

@@ -4,7 +4,7 @@ var User = require('./user')
 
 var tasklistSchema = new mongoose.Schema({
   username: { type: String, required: true, ref: 'User' },
-  listname: { type: String, required: true, index: { unique: true } },
+  listname: { type: String, required: true },
   tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }]   /* [Task object id] */
 });
 

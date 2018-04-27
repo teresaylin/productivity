@@ -16,7 +16,7 @@
       <% tasklists.forEach(function(list) { %>
         <a class='menulist' href='/home/<%= list.listname %>'><%= list.listname %></a>
       <% }); %>
-      <a href='#' style='margin-top:24px'>Edit Tasklists</a>
+      <!-- <a href='#' style='margin-top:24px'>Edit Tasklists</a> -->
       <!-- TODO add edit tasklist feature -->
     </div>
     <span style='font-size:30px;cursor:pointer' onclick='openNav()'>&#9776;Projects</span>
@@ -27,11 +27,11 @@
     <div class='dropdown'>
       <button onclick='drop()' class='dropbtn'>Select your environment</button>
       <div id='myDropdown' class='dropdown-content'>
-        <a href='/home/<%= thislist.listname %>/neutral'>Neutral</a>
-        <a href='/home/<%= thislist.listname %>/calm'>Calm</a>
-        <a href='/home/<%= thislist.listname %>/motivational'>Motivational</a>
-        <a href='/home/<%= thislist.listname %>/depressing'>Depressing</a>
-        <a href='/home/<%= thislist.listname %>/stressful'>Stressful</a>
+        <a href='/home/<%= thislist.listname %>/neutral'>A</a>
+        <a href='/home/<%= thislist.listname %>/calm'>B</a>
+        <a href='/home/<%= thislist.listname %>/motivational'>C</a>
+        <a href='/home/<%= thislist.listname %>/depressing'>D</a>
+        <a href='/home/<%= thislist.listname %>/stressful'>E</a>
       </div>
     </div>
     <script>
