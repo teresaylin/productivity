@@ -16,7 +16,7 @@ var tasks = require('./routes/tasks');
 var app = express();
 
 // database setup
-mongoose.connect('mongodb://localhost/nutella', { autoIndex: false });
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/nutella', { autoIndex: false });
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('open', function() {
