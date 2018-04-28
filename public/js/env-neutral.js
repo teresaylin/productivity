@@ -37,6 +37,22 @@ $(function() {
     var separation = 100;
     var startingTop = 150;
 
+    // parse task text for AT MOST 1 UNREPEATED hyperlink (must use HTTPS protocol)
+    var task = children[0];
+    var taskText = $(task).text();
+    var splitText = taskText.split(' ');
+    var link = '';
+    splitText.forEach(function(word) {
+      if(word.includes('https')) link = word;
+    });
+
+    // replace found link with hyperlink
+    if(link.length > 0) {
+      var splitTextByLink = taskText.split(link);
+      var replaceTask = splitTextByLink[0] + "<a href='" + link + "'>" + link + "</a>" + splitTextByLink[1];
+      $(task).html(replaceTask);
+    }
+
     $(element).css('top', separation*index + startingTop);
     $(element).css('left', taskLeft);
     informaldate.text(date_formatted);

@@ -1,5 +1,22 @@
 var intervalId = null;
 
+// parse task text for AT MOST 1 UNREPEATED hyperlink (must use HTTPS protocol)
+function replaceLink(task) {
+  var taskText = $(task).text();
+  var splitText = taskText.split(' ');
+  var link = '';
+  splitText.forEach(function(word) {
+    if(word.includes('https')) link = word;
+  });
+
+  // replace found link with hyperlink
+  if(link.length > 0) {
+    var splitTextByLink = taskText.split(link);
+    var replaceTask = splitTextByLink[0] + "<a href='" + link + "'>" + link + "</a>" + splitTextByLink[1];
+    $(task).html(replaceTask);
+  }
+}
+
 $(function() {
   $('.dropdownTasks').css('display', 'inline-block');
   // in "Right now" dropdown, format each task deadline
@@ -26,6 +43,9 @@ $(function() {
     var diff = new Date(date).getTime() - now;
     var informaldate = $(children[3]);
     var date_formatted = moment(date).format('h:mm a MMM D');
+
+    var task = children[0];
+    replaceLink(task);
 
     var height = 60;
     $(element).css('top', (height+15)*index + 100);
@@ -72,11 +92,13 @@ $(function() {
 // Once user selects a task, starts the clock
 $(document).on("click", ".taskobj", function() {
   var children = $(this).children();
-  var task = $(children[0]).text();
+  // var task = $(children[0]).text();
   var date = $(children[1]).text();
   $('.dropdownTasks').hide();
   // position the 'Working on' text
-  $('#workingOn').text('Working on: ' + task);
+  var task = children[0];
+  replaceLink(task);
+  $('#workingOn').html('Working on: ' + $(task).html());
   var timerWidth = $('#workingOn').width();
   var timerHeight = $('#workingOn').height();
   $('#workingOn').css('top', ($(window).height() - timerHeight)/2 - 200);
@@ -94,7 +116,7 @@ $(document).on("click", ".taskobj", function() {
     var children = $(element).children();
     var sideTask = children[0];
     var textdecoration = $(element).css('text-decoration');
-    if($(sideTask).text() === task && !foundCurrent && !textdecoration.includes('line-through')) {
+    if($(sideTask).text() === $(task).text() && !foundCurrent && !textdecoration.includes('line-through')) {
       $(element).addClass('current');
       foundCurrent = true;
     } else {
@@ -124,9 +146,10 @@ $(document).on("click", ".taskoption", function() {
 
     // update the current task
     var children = $(element).children();
-    var task = $(children[0]).text();
     var date = $(children[1]).text();
-    $('#workingOn').text('Working on: ' + task);
+    var task = children[0];
+    replaceLink(task);
+    $('#workingOn').html('Working on: ' + $(task).html());
 
     // clear clock and start new countdown
     var deadline = new Date(date).getTime();

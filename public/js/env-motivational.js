@@ -15,6 +15,23 @@ function stage_of_plant(percentFinished) {
   return plant;
 }
 
+// parse task text for AT MOST 1 UNREPEATED hyperlink (must use HTTPS protocol)
+function replaceLink(task) {
+  var taskText = $(task).text();
+  var splitText = taskText.split(' ');
+  var link = '';
+  splitText.forEach(function(word) {
+    if(word.includes('https')) link = word;
+  });
+
+  // replace found link with hyperlink
+  if(link.length > 0) {
+    var splitTextByLink = taskText.split(link);
+    var replaceTask = splitTextByLink[0] + "<a href='" + link + "'>" + link + "</a>" + splitTextByLink[1];
+    $(task).html(replaceTask);
+  }
+}
+
 $(function() {
   var numTasks = $('.tasksOnBar').length;
   var numFinished = 0; // number of tasks completed and expired
@@ -86,12 +103,14 @@ $(function() {
 // Once user selects a task, starts the clock
 $(document).on("click", ".taskobj", function() {
   var children = $(this).children();
-  var task = $(children[0]).text();
   var date = $(children[1]).text();
   var date_formatted = moment(date).format('h:mm a MMM D');
   $('.dropdownTasks').hide();
 
-  $('#workingOn').text('FINISH ' + task + ' BY ' + date_formatted);
+  var task = children[0];
+  replaceLink(task);
+
+  $('#workingOn').html('FINISH ' + $(task).html() + ' BY ' + date_formatted);
   $('#workingOn').show();
   $('#workingOnDisplay').show();
   $('#finishedCircleDiv').show();
@@ -111,7 +130,8 @@ $(document).on("click", ".taskobj", function() {
     var dotTask = children[0];
     var dot = children[3];
     var dotborder = children[4];
-    if($(dotTask).text() === task) {
+
+    if($(dotTask).text() === $(task).text()) {
       $(element).addClass('current');
       var arrowHeight = $('#progressarrow').height()/2;
       var arrowPos = parseFloat($(dot).css('top').slice(0,-2)) - arrowHeight + 4;
@@ -176,10 +196,12 @@ $(document).on("click", "#progressdot", function() {
 
     // update the task displayed on the right
     var children = $(parentTaskDiv).children();
-    var task = $(children[0]).text();
     var date = $(children[1]).text();
     var date_formatted = moment(date).format('h:mm a MMM D');
-    $('#workingOn').text('FINISH ' + task + ' BY ' + date_formatted);
+
+    var task = children[0];
+    replaceLink(task);
+    $('#workingOn').html('FINISH ' + $(task).html() + ' BY ' + date_formatted);
 
     // update progress arrow
     var arrowHeight = $('#progressarrow').height()/2;

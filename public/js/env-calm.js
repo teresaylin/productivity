@@ -1,6 +1,23 @@
 var intervalId = null;
 // TODO make canvas positioning (X coords) more flexible to different window sizes
 
+// parse task text for AT MOST 1 UNREPEATED hyperlink (must use HTTPS protocol)
+function replaceLink(task) {
+  var taskText = $(task).text();
+  var splitText = taskText.split(' ');
+  var link = '';
+  splitText.forEach(function(word) {
+    if(word.includes('https')) link = word;
+  });
+
+  // replace found link with hyperlink
+  if(link.length > 0) {
+    var splitTextByLink = taskText.split(link);
+    var replaceTask = splitTextByLink[0] + "<a href='" + link + "'>" + link + "</a>" + splitTextByLink[1];
+    $(task).html(replaceTask);
+  }
+}
+
 $(function() {
   var numTasks = $('.tasksOnBar').length;
   var numFinished = 0;
@@ -107,12 +124,14 @@ $(function() {
 // Once user selects a task, starts the clock
 $(document).on("click", ".taskobj", function() {
   var children = $(this).children();
-  var task = $(children[0]).text();
   var date = $(children[1]).text();
   var date_formatted = moment(date).format('h:mm a MMM D');
   $('.dropdownTasks').hide();
 
-  $('#workingOn').text('FINISH ' + task + ' BY ' + date_formatted);
+  var task = children[0];
+  replaceLink(task);
+  $('#workingOn').html('FINISH ' + $(task).html() + ' BY ' + date_formatted);
+
   $('#path').show();
   $('#finishedCircleDiv').show();
   $('#endpoint').show();
@@ -148,7 +167,7 @@ $(document).on("click", ".taskobj", function() {
       }
     }
     // make a note of selected task in the corresponding dot on the progress bar
-    if($(dotTask).text() === task) {
+    if($(dotTask).text() === $(task).text()) {
       $(element).addClass('current');
     } else {
       $(element).removeClass('current');
@@ -294,10 +313,12 @@ $(document).on("click", "#progressdot", function() {
 
       // update the task displayed on the right
       var children = $(parentTaskDiv).children();
-      var task = $(children[0]).text();
       var date = $(children[1]).text();
       var date_formatted = moment(date).format('h:mm a MMM D');
-      $('#workingOn').text('FINISH ' + task + ' BY ' + date_formatted);
+
+      var task = children[0];
+      replaceLink(task);
+      $('#workingOn').html('FINISH ' + $(task).html() + ' BY ' + date_formatted);
 
       $('#workingOn').fadeIn();
     }, 1000);
