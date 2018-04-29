@@ -73,9 +73,12 @@ body {
 /* Progress bar */
 #progressbar {
   position: absolute;
-  top: 170px;
-  left: 300px;
-  height: 500px;
+  /*top: 170px;*/
+  /*left: 300px;*/
+  top: 190px;
+  left: 450px;
+  /*height: 500px;*/
+  height: 700px;
   display: none;
 }
 
@@ -85,7 +88,8 @@ body {
   background-color: #fffc98;
   border-radius: 4px;
   position: absolute;
-  left: 290px;
+  /*left: 290px;*/
+  left: 435px;
   display: none;
   cursor: pointer;
   z-index: 4;
@@ -97,7 +101,8 @@ body {
   background-color: #9c9c9c;
   border-radius: 6px;
   position: absolute;
-  left: 288px;
+  /*left: 288px;*/
+  left: 433px;
   display: none;
   z-index: 2;
 }
@@ -106,7 +111,8 @@ body {
   position: absolute;
   width: 200px;
   top: 40px;
-  left: 215px;
+  /*left: 215px;*/
+  left: 365px;
   display: none;
 }
 
@@ -148,43 +154,24 @@ body {
 }
 
 /* Plant */
-#plant1 {
+.plant {
   display: none;
   position: absolute;
-  width: 150px;
+  /*width: 150px;
   bottom: 80px;
-  left: 450px;
-}
-
-#plant2 {
-  display: none;
-  position: absolute;
-  width: 150px;
-  bottom: 80px;
-  left: 450px;
-}
-
-#plant3 {
-  display: none;
-  position: absolute;
-  width: 150px;
-  bottom: 80px;
-  left: 450px;
-}
-
-#plant4 {
-  display: none;
-  position: absolute;
-  width: 150px;
-  bottom: 80px;
-  left: 450px;
+  left: 450px;*/
+  width: 200px;
+  bottom: 180px;
+  left: 600px;
 }
 
 /* Current Task */
 #workingOnDisplay {
-  width: 275px;
+  /*width: 275px;*/
+  width: 350px;
   position: absolute;
-  right: 350px;
+  /*right: 350px;*/
+  right: 400px;
   top: 200px;
   z-index: 3;
   display: none;
@@ -192,9 +179,12 @@ body {
 
 #workingOn {
   position: absolute;
-  width: 130px;
+  /*width: 130px;
   top: 250px;
-  right: 400px;
+  right: 400px;*/
+  width: 205px;
+  top: 300px;
+  right: 450px;
   font-family: 'Shadows Into Light Two', cursive;
   font-size: 24px;
   z-index: 5;
@@ -204,7 +194,8 @@ body {
 
 /* Progress bar arrow */
 #progressarrow {
-  left: 325px;
+  /*left: 325px;*/
+  left: 488px;
   position: absolute;
   width: 20px;
   display: none;
