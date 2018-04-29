@@ -1,5 +1,4 @@
 var intervalId = null;
-// TODO make canvas positioning (X coords) more flexible to different window sizes
 
 // parse task text for AT MOST 1 UNREPEATED hyperlink (must use HTTPS protocol)
 function replaceLink(task) {
@@ -43,6 +42,11 @@ $(function() {
   path.setTesselationCount(numTasks);
   taskDots = path.getTesselationPoints();
 
+  // position path
+  var pathW = $('#path').width();
+  var pathLeftAdjust = ($(window).width()-pathW)/2;
+  $('#path').css('left', pathLeftAdjust);
+
   var canvasTop = parseFloat($('#path').css('top').slice(0,-2));
 
   // position 'Last Milestone' text
@@ -66,17 +70,17 @@ $(function() {
     if(diff <= 0 || complete == 'true') {
       // put towards beginning of path
       $(dot).css('background-color', 'green');
-      $(dot).css('left', taskDots[numFinished].x - 6);
+      $(dot).css('left', taskDots[numFinished].x - 6 + pathLeftAdjust);
       $(dot).css('top', canvasTop + taskDots[numFinished].y - 6);
-      $(border).css('left', taskDots[numFinished].x - 8);
+      $(border).css('left', taskDots[numFinished].x - 8 + pathLeftAdjust);
       $(border).css('top', canvasTop + taskDots[numFinished].y - 8);
       $(border).css('background-color', '#4c4c4d');
       numFinished++;
     } else {
       // put towards end of path
-      $(dot).css('left', taskDots[numTasks - numUnfinished].x - 6);
+      $(dot).css('left', taskDots[numTasks - numUnfinished].x - 6 + pathLeftAdjust);
       $(dot).css('top', canvasTop + taskDots[numTasks - numUnfinished].y - 6);
-      $(border).css('left', taskDots[numTasks - numUnfinished].x - 8);
+      $(border).css('left', taskDots[numTasks - numUnfinished].x - 8 + pathLeftAdjust);
       $(border).css('top', canvasTop + taskDots[numTasks - numUnfinished].y - 8);
       numUnfinished++;
     }
@@ -99,7 +103,7 @@ $(function() {
     $('#workingOn').css('font-size', 30);
     $('#workingOn').css('text-align', 'center');
     $('#workingOn').css('z-index', 2);    // so that the text will not obstruct the first dot
-    $('#workingOn').css('top', 50);       // so that the text will not obstruct the first dot
+    $('#workingOn').css('top', 40);       // so that the text will not obstruct the first dot
     var workingWidth = $('#workingOn').width();
     $('#workingOn').css('left', ($(window).width() - workingWidth)/2);
     $('#workingOn').text("ALL TASKS COMPLETED");
