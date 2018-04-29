@@ -133,7 +133,8 @@ body {
   display: none;
   position: absolute;
   width: 200px;
-  left: 80px;
+  /*left: 80px;*/
+  left: 225px;
   z-index: 3;
 }
 
@@ -141,14 +142,16 @@ body {
   display: none;
   position: absolute;
   width: 200px;
-  left: 80px;
+  /*left: 80px;*/
+  left: 225px;
   z-index: 3;
 }
 
 #hoverTask {
   z-index: 5;
   position: absolute;
-  left: 100px;
+  /*left: 100px;*/
+  left: 245px;
   width: 140px;
   word-wrap: break-word;
 }
