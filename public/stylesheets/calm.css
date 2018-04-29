@@ -48,7 +48,7 @@ body {
   border-radius: 25px;
   background: #4eca45;
   top: 12.5px;
-  left: 860px;
+  left: 1100px;   /* For screens in BRL */
 }
 
 #checkmark {
