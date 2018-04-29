@@ -81,7 +81,7 @@ $(function() {
     $('#countdown').css('color', 'black');
     $('#countdown').show();
     $('#workingOn').text('No more tasks left');
-    $('#workingOn').css('top', ($(window).height() - $('#workingOn').height())/2 - 200);
+    $('#workingOn').css('top', ($(window).height() - $('#workingOn').height())/2 - 230);
     $('#workingOn').css('left', ($(window).width() - $('#workingOn').width())/2);
     $('#workingOn').show();
   }
@@ -101,7 +101,7 @@ $(document).on("click", ".taskobj", function() {
   $('#workingOn').html('Working on: ' + $(task).html());
   var timerWidth = $('#workingOn').width();
   var timerHeight = $('#workingOn').height();
-  $('#workingOn').css('top', ($(window).height() - timerHeight)/2 - 200);
+  $('#workingOn').css('top', ($(window).height() - timerHeight)/2 - 230);
   $('#workingOn').css('left', ($(window).width() - timerWidth)/2);
   $('#workingOn').show();
   // position checkmark button
