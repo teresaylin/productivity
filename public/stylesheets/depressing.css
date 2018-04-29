@@ -101,7 +101,8 @@ body {
 .tasksOnBar {
   display: none;
   position: absolute;
-  right: 150px;
+  /*right: 150px;*/
+  right: 300px;           /* better for BRL screens */
   border-width: 2px;
   border-color: gray;
   border-style: solid;
@@ -144,8 +145,10 @@ body {
 /* Graveyard */
 #graveyard {
   width: 750px;
-  top: 130px;
-  left: 100px;
+  /*top: 130px;*/
+  /*left: 100px;*/
+  top: 180px;           /* better for BRL screens */
+  left: 250px;          /* better for BRL screens */
   position: absolute;
   display: none;
 }
@@ -156,7 +159,8 @@ body {
 
 .tombtask {
   position: absolute;
-  left: 385px;
+  /*left: 385px;*/
+  left: 535px;          /* better for BRL screens */
   z-index: 10;
   width: 180px;
   display: none;

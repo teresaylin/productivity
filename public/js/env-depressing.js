@@ -47,11 +47,13 @@ $(function() {
       $(task).html(replaceTask);
     }
 
-    var height = 85;
-    $(element).css('top', (height+15)*index + 100);
+    var elementHeight = 100;
+    // $(element).css('top', elementHeight*index + 100);
+    $(element).css('top', elementHeight*index + 160);     /* better for BRL screens */
     informaldate.text(date_formatted);
 
-    var tombTextTop = 380;
+    // var tombTextTop = 380;
+    var tombTextTop = 430;      /* better for BRL screens */
     if(complete == 'true') {
       $(element).css('text-decoration', 'line-through');
       $(element).css('font-style', 'italic');
