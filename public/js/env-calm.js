@@ -90,7 +90,7 @@ $(function() {
     var dotLeft = parseFloat($(dot).css('left').slice(0,-2));
     var flagHeight = $(flag).height();
     console.log('green flag top: ' + (dotTop - flagHeight));
-    console.log('green flag left: ' + dotLeft)
+    console.log('green flag left: ' + dotLeft);
     $(flag).css('top', dotTop - flagHeight);
     $(flag).css('left', dotLeft);
     console.log($(flag).css('top'));

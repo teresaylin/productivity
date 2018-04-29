@@ -72,7 +72,7 @@ body {
 /* Path */
 #path {
   position: absolute;
-  top: 300px;
+  top: 320px;
   left: 0px;
   display: none;
 }
@@ -121,7 +121,7 @@ body {
 /* Flags */
 #flag-small {
   position: absolute;
-  width: 60px;
+  height: 70px;
 }
 
 .hideflag {
