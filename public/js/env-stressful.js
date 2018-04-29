@@ -47,8 +47,9 @@ $(function() {
     var task = children[0];
     replaceLink(task);
 
-    var height = 60;
-    $(element).css('top', (height+15)*index + 100);
+    var height = 75;
+    // $(element).css('top', height*index + 100);
+    $(element).css('top', height*index + 250);
     informaldate.text(date_formatted);
 
     // check if complete/expired
