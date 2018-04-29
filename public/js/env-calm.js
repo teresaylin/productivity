@@ -54,7 +54,7 @@ $(function() {
   var lastmilestone_width = $('#endpoint').width();
   var lastmilestone_height = $('#endpoint').height();
   $('#endpoint').css('top', canvasTop + endpt.y + 5);
-  $('#endpoint').css('left', endpt.x - lastmilestone_width/2);
+  $('#endpoint').css('left', endpt.x - lastmilestone_width/2 + pathLeftAdjust);
 
   // position task dots based on finished (expired + completed) or unfinished
   $('.tasksOnBar').each(function(index, element) {
@@ -85,12 +85,16 @@ $(function() {
       numUnfinished++;
     }
 
-    // position flag
+    // position small green flag
     var dotTop = parseFloat($(dot).css('top').slice(0,-2));
     var dotLeft = parseFloat($(dot).css('left').slice(0,-2));
     var flagHeight = $(flag).height();
+    console.log('green flag top: ' + (dotTop - flagHeight));
+    console.log('green flag left: ' + dotLeft)
     $(flag).css('top', dotTop - flagHeight);
     $(flag).css('left', dotLeft);
+    console.log($(flag).css('top'));
+    console.log($(flag).css('left'));
   });
 
   // if no tasks left
@@ -173,8 +177,12 @@ $(document).on("click", ".taskobj", function() {
     // make a note of selected task in the corresponding dot on the progress bar
     if($(dotTask).text() === $(task).text()) {
       $(element).addClass('current');
+      $(dot).addClass('currentDot');
+      $(dotborder).addClass('currentBorder');
     } else {
       $(element).removeClass('current');
+      $(dot).removeClass('currentDot');
+      $(dotborder).removeClass('currentBorder');
     }
   });
 
@@ -203,7 +211,7 @@ $(document).on("click", ".taskobj", function() {
   $(selectedDotFlag).css('left', tempFlagLeft);
 
   // position current yellow flag
-  $('#flag-yellow-current').css('bottom', $(selectedDot).css('bottom'));
+  $('#flag-yellow-current').css('bottom', parseFloat($(selectedDot).css('bottom').slice(0,-2)) + 13);
   $('#flag-yellow-current').css('left', parseFloat($(selectedDot).css('left').slice(0,-2)) - 9);
   $('#flag-yellow-current').show();
 
@@ -240,9 +248,9 @@ $(document).on({
     // if dot is current task, don't do anything
     if(!$(parentTaskDiv).hasClass('current')) {
       // position flags
-      $('#flag-green').css('bottom', dotBottom);
+      $('#flag-green').css('bottom', dotBottom + 13);
       $('#flag-green').css('left', dotLeft - 9);
-      $('#flag-yellow').css('bottom', dotBottom);
+      $('#flag-yellow').css('bottom', dotBottom + 13);
       $('#flag-yellow').css('left', dotLeft - 9);
 
       // position flag text
@@ -281,11 +289,14 @@ $(document).on("click", "#progressdot", function() {
   var dotColor = $(this).css('background-color');
   var dotFlag = $(parentTaskDiv).children()[5];
   var currentTaskDiv = $('.current');
+  var changedTask = false;
+  var date;
 
   if(dotColor !== 'rgb(0, 128, 0)') {
     $('#flag-yellow-current').fadeOut();
     $('#workingOn').fadeOut();
     $('#flag-yellow-current').fadeIn();
+    changedTask = true;
     
     setTimeout(function(){
       // switch dot positions and their mini green flags' positions
@@ -313,11 +324,15 @@ $(document).on("click", "#progressdot", function() {
 
       // change which taskdiv is current
       currentTaskDiv.removeClass('current');
+      $(currentDot).removeClass('currentDot');
+      $(currentDotBorder).removeClass('currentBorder');
       $(parentTaskDiv).addClass('current');
+      $(dot).addClass('currentDot');
+      $(dotBorder).addClass('currentBorder');
 
       // update the task displayed on the right
       var children = $(parentTaskDiv).children();
-      var date = $(children[1]).text();
+      date = $(children[1]).text();
       var date_formatted = moment(date).format('h:mm a MMM D');
 
       var task = children[0];
@@ -327,13 +342,17 @@ $(document).on("click", "#progressdot", function() {
       $('#workingOn').fadeIn();
     }, 1000);
     
-    // clear clock and start new countdown
-    var deadline = new Date(date).getTime();
-    clearInterval(intervalId);
-    intervalId = null;
-    intervalId = setInterval(function() {
-      startClock(deadline);
-    }, 1000);
+    if(changedTask) {
+      console.log('changing timer');
+      // clear clock and start new countdown
+      clearInterval(intervalId);
+      intervalId = null;
+      intervalId = setInterval(function() {
+        var deadline = new Date(date).getTime();
+        startClock(deadline);
+      }, 1000);
+    }
+    
   }
 });
 
@@ -371,7 +390,12 @@ $(document).on("click", "#finishedCircleDiv", function() {
       $('#flag-yellow-current').fadeOut();
       $(taskdot).css('background-color', 'green');
       $(taskdotborder).css('background-color', '#4c4c4d');
-      setTimeout(function(){$(taskflag).removeClass('hideflag');}, 1000);
+      setTimeout(function(){
+        console.log($(taskflag).css('top'));
+        console.log($(taskflag).css('left'));
+        $(taskflag).removeClass('hideflag');
+
+      }, 1000);
       setTimeout(function(){location.reload();}, 3000);
     },
     error: function(xhr, status, error) {
