@@ -89,12 +89,8 @@ $(function() {
     var dotTop = parseFloat($(dot).css('top').slice(0,-2));
     var dotLeft = parseFloat($(dot).css('left').slice(0,-2));
     var flagHeight = $(flag).height();
-    console.log('green flag top: ' + (dotTop - flagHeight));
-    console.log('green flag left: ' + dotLeft);
     $(flag).css('top', dotTop - flagHeight);
     $(flag).css('left', dotLeft);
-    console.log($(flag).css('top'));
-    console.log($(flag).css('left'));
   });
 
   // if no tasks left
@@ -343,7 +339,6 @@ $(document).on("click", "#progressdot", function() {
     }, 1000);
     
     if(changedTask) {
-      console.log('changing timer');
       // clear clock and start new countdown
       clearInterval(intervalId);
       intervalId = null;
@@ -390,12 +385,7 @@ $(document).on("click", "#finishedCircleDiv", function() {
       $('#flag-yellow-current').fadeOut();
       $(taskdot).css('background-color', 'green');
       $(taskdotborder).css('background-color', '#4c4c4d');
-      setTimeout(function(){
-        console.log($(taskflag).css('top'));
-        console.log($(taskflag).css('left'));
-        $(taskflag).removeClass('hideflag');
-
-      }, 1000);
+      setTimeout(function(){$(taskflag).removeClass('hideflag');}, 1000);
       setTimeout(function(){location.reload();}, 3000);
     },
     error: function(xhr, status, error) {
