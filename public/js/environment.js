@@ -15,8 +15,15 @@ function replaceLink(task) {
   }
 }
 
-// bounces checkmark to remind users
+// remind users to check off task
 function bounce() {
-  $('#finishedCircleDiv').effect('bounce', {times: 3, distance: -20}, "slow");
-  $('#checkremind').fadeIn(600).delay(1000).fadeOut(600);
+  // Only bounce checkmark if checkmark is displayed (otherwise bounce effect can change "top" and "left" css of checkmark)
+  if($('#finishedCircleDiv').css('display') !== "none") {
+    $('#finishedCircleDiv').effect('bounce', {times: 3, distance: -20}, "slow");
+  }
+  // Only fade in/out reminder if user has selected a task from dropdown
+  if(!$('#checkremind').hasClass('hidereminder')) {
+    $('#checkremind').fadeIn(600).delay(1000).fadeOut(600);
+  }
+  
 }

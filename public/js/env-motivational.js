@@ -104,6 +104,7 @@ $(document).on("click", ".taskobj", function() {
   $('#progressbar').show();
   $('#fullbloom').show();
   $(whichPlant).show();
+  $('#checkremind').removeClass('hidereminder');
 
   // implement countdown
   var deadline = new Date(date).getTime();

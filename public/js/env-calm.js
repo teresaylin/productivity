@@ -204,6 +204,8 @@ $(document).on("click", ".taskobj", function() {
   $('#workingOn').css('left', flagLeft + 20);
   $('#workingOn').show();
 
+  $('#checkremind').removeClass('hidereminder');
+
   // implement countdown
   var deadline = new Date(date).getTime();
   intervalId = setInterval(function() { 

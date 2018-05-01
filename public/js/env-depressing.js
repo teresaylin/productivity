@@ -97,6 +97,7 @@ $(document).on("click", ".taskobj", function() {
   // show certain elements
   $('#workingOn').text('Working on: ' + task);
   $('#finishedCircleDiv').show();
+  $('#checkremind').removeClass('hidereminder');
 
   // mark selected task as 'current', highlight current task, and show tasks
   var foundCurrent = false;   // in case there are 2 identical tasks
