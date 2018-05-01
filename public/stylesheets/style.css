@@ -278,3 +278,14 @@ li.checked::before {
 #currentList {
   display: none;
 }
+
+/* Reminder to check off task */
+#checkremind {
+  display: none;
+  position: absolute;
+  width: 100px;
+  word-wrap: break-word;
+  text-align: center;
+  top: 80px;
+  left: 1075px; 
+}

@@ -18,4 +18,5 @@ function replaceLink(task) {
 // bounces checkmark to remind users
 function bounce() {
   $('#finishedCircleDiv').effect('bounce', {times: 3, distance: -20}, "slow");
+  $('#checkremind').fadeIn(600).delay(1000).fadeOut(600);
 }
