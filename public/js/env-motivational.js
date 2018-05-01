@@ -15,23 +15,6 @@ function stage_of_plant(percentFinished) {
   return plant;
 }
 
-// parse task text for AT MOST 1 UNREPEATED hyperlink (must use HTTPS protocol)
-function replaceLink(task) {
-  var taskText = $(task).text();
-  var splitText = taskText.split(' ');
-  var link = '';
-  splitText.forEach(function(word) {
-    if(word.includes('https')) link = word;
-  });
-
-  // replace found link with hyperlink
-  if(link.length > 0) {
-    var splitTextByLink = taskText.split(link);
-    var replaceTask = splitTextByLink[0] + "<a href='" + link + "'>" + link + "</a>" + splitTextByLink[1];
-    $(task).html(replaceTask);
-  }
-}
-
 $(function() {
   var numTasks = $('.tasksOnBar').length;
   var numFinished = 0; // number of tasks completed and expired
