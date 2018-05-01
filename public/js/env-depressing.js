@@ -80,6 +80,9 @@ $(function() {
     $('#done').show();
   }
 
+  // bounce
+  setInterval(bounce, 3000);
+
   // check every 10 seconds to see if the clock is still ticking
   setInterval(checkClock, 10000);
 });

@@ -14,3 +14,8 @@ function replaceLink(task) {
     $(task).html(replaceTask);
   }
 }
+
+// bounces checkmark to remind users
+function bounce() {
+  $('#finishedCircleDiv').effect('bounce', {times: 3, distance: -20}, "slow");
+}
